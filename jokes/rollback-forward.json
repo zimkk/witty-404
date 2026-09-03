@@ -1,0 +1,21 @@
+{
+  "id": "rollback-forward",
+  "title": "We tried to rollback.\nThe rollback script rolled forward\nand deployed `main` again.",
+  "subtitle": "The incident commander typed `git revert HEAD~1` but forgot about the 14 squashed merge commits from the release train. The rollback introduced 3 new bugs while failing to fix the original one.",
+  "logs": [
+    "> incident declared: 'Production router failing'.",
+    "> incident Commander: 'Initiate emergency rollback!'.",
+    "> running automated rollback script `scripts/emergency-revert.sh`...",
+    "> script was written by an intern in 2022 who assumed linear git history.",
+    "> script pulled latest branch containing unreleased breaking changes.",
+    "> building and deploying untested main branch to 100% of fleet...",
+    "> original bug is still there.",
+    "> 3 new catastrophic bugs have joined the party.",
+    "> Incident Commander has gone silent in the Zoom room.",
+    "> someone typed 'oof' in the war room chat."
+  ],
+  "footnote": "Error code: `ROLL-SIDEWAYS-404` · Revert direction: Unpredictable · War room stress level: Critical",
+  "emoji": "🔄🔥",
+  "tags": ["deploy", "git", "devops"],
+  "pathTemplate": "We attempted to rollback `{path}`, but the rollback script got confused and deleted the database."
+}

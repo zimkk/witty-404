@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>witty-404 — The Open-Source 404 API for Developers</title>
+  <meta name="description" content="Embeddable, hilarious, developer-centric 404 pages & API. Point your broken links at witty-404 and turn error pages into comic relief." />
+  <meta property="og:title" content="witty-404 — Open-Source Witty 404 Error Pages & API" />
+  <meta property="og:description" content="Genuinely funny 404 pages for developers. Zero-config embeddable error handler hosted on Cloudflare Workers." />
+  <meta property="og:image" content="/svg?theme=dark" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <style>
+    /* ==========================================================================
+       DESIGN SYSTEM (Stripe / Vercel Engineering Aesthetic)
+       ========================================================================== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #0A0A0F;
+      --card-bg: #111118;
+      --card-elevated: #161622;
+      --border: #212130;
+      --border-hover: #34344D;
+      --accent: #5B7FFF;
+      --accent-bright: #6B8AFF;
+      --accent-dim: rgba(91, 127, 255, 0.12);
+      --text-white: #F3F4F6;
+      --text-muted: #9CA3AF;
+      --text-dim: #5E6472;
+      --code-bg: #08080C;
+      --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    html {
+      background-color: var(--bg);
+      color: var(--text-white);
+      font-family: var(--font-sans);
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* Subtle CRT scanline overlay */
+    .scanlines {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(rgba(10, 10, 15, 0) 50%, rgba(0, 0, 0, 0.3) 50%);
+      background-size: 100% 4px;
+      opacity: 0.08;
+      z-index: 1000;
+    }
+
+    /* Header Nav */
+    header.site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(10, 10, 15, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: var(--text-white);
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+    .nav-logo-badge {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      background: var(--accent-dim);
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.25rem;
+      align-items: center;
+    }
+    .nav-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.875rem;
+      transition: color 0.2s;
+    }
+    .nav-link:hover {
+      color: var(--text-white);
+    }
+    .nav-btn {
+      background: var(--card-elevated);
+      color: var(--text-white);
+      border: 1px solid var(--border);
+      padding: 0.4rem 0.85rem;
+      border-radius: 6px;
+      font-size: 0.825rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .nav-btn:hover {
+      border-color: var(--accent);
+      box-shadow: 0 0 12px var(--accent-dim);
+    }
+
+    /* Main Container */
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 3.5rem 1.5rem 6rem;
+      display: flex;
+      flex-direction: column;
+      gap: 4.5rem;
+    }
+
+    /* ==========================================================================
+       HERO (Asymmetric, developer-focused, no generic glow blobs)
+       ========================================================================== */
+    .hero-layout {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    .hero-content {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .status-pill-hero {
+      align-self: flex-start;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--accent);
+      background: var(--accent-dim);
+      border: 1px solid var(--accent);
+      padding: 0.3rem 0.75rem;
+      border-radius: 999px;
+      letter-spacing: 0.05em;
+    }
+
+    h1.hero-title {
+      font-size: 2.85rem;
+      line-height: 1.15;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+    h1.hero-title span.accent-text {
+      color: var(--accent-bright);
+    }
+
+    p.hero-lead {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 0.85rem;
+      flex-wrap: wrap;
+      margin-top: 0.5rem;
+    }
+
+    .btn-main {
+      background: var(--accent);
+      color: #FFFFFF;
+      font-weight: 600;
+      font-size: 0.95rem;
+      padding: 0.65rem 1.35rem;
+      border-radius: 8px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      border: none;
+      cursor: pointer;
+      transition: filter 0.2s;
+    }
+    .btn-main:hover {
+      filter: brightness(1.15);
+    }
+
+    .btn-secondary {
+      background: var(--card-bg);
+      color: var(--text-white);
+      border: 1px solid var(--border);
+      font-weight: 600;
+      font-size: 0.95rem;
+      padding: 0.65rem 1.35rem;
+      border-radius: 8px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s;
+    }
+    .btn-secondary:hover {
+      border-color: var(--border-hover);
+      background: var(--card-elevated);
+    }
+
+    /* Live 404 Embedded Frame Sandbox */
+    .sandbox-container {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.8);
+      position: sticky;
+      top: 90px;
+    }
+
+    .sandbox-header {
+      background: var(--card-elevated);
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .browser-dots {
+      display: flex;
+      gap: 6px;
+    }
+    .browser-dots span {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+    .b-red { background: #EF4444; }
+    .b-yellow { background: #F59E0B; }
+    .b-green { background: #10B981; }
+
+    .sandbox-url-bar {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      background: var(--code-bg);
+      padding: 0.25rem 0.85rem;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      max-width: 260px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .sandbox-links {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .sandbox-quick-link {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      transition: color 0.15s;
+    }
+    .sandbox-quick-link:hover {
+      text-decoration: underline;
+    }
+
+    .live-iframe-wrapper {
+      height: 480px;
+      width: 100%;
+      position: relative;
+    }
+    iframe.live-preview-frame {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+
+    /* Sandbox Interactive Control Strip */
+    .sandbox-controls {
+      padding: 0.85rem 1rem;
+      background: var(--card-elevated);
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .control-label {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      font-family: var(--font-mono);
+    }
+
+    .theme-buttons, .joke-buttons {
+      display: flex;
+      gap: 0.35rem;
+      flex-wrap: wrap;
+    }
+    .pill-btn {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      padding: 0.25rem 0.6rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .pill-btn:hover, .pill-btn.active {
+      border-color: var(--accent);
+      color: var(--text-white);
+      background: var(--accent-dim);
+    }
+
+    /* ==========================================================================
+       JOKE EXPLORER & GALLERY SECTION
+       ========================================================================== */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .joke-gallery-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 1rem;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .joke-gallery-card:hover {
+      border-color: var(--border-hover);
+      transform: translateY(-2px);
+    }
+
+    .gallery-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+    .gallery-emoji {
+      font-size: 1.8rem;
+    }
+    .gallery-id {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--accent);
+      background: var(--accent-dim);
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      border: 1px solid var(--accent);
+    }
+
+    .gallery-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-white);
+      line-height: 1.35;
+    }
+
+    .gallery-tags {
+      display: flex;
+      gap: 0.35rem;
+      flex-wrap: wrap;
+    }
+    .gallery-tag-pill {
+      font-size: 0.7rem;
+      font-family: var(--font-mono);
+      color: var(--text-dim);
+      background: rgba(255, 255, 255, 0.04);
+      padding: 0.1rem 0.4rem;
+      border-radius: 4px;
+    }
+
+    .gallery-actions {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+      padding-top: 0.75rem;
+      border-top: 1px solid var(--border);
+    }
+    .gallery-btn {
+      font-family: var(--font-mono);
+      font-size: 0.725rem;
+      color: var(--text-muted);
+      background: var(--card-elevated);
+      border: 1px solid var(--border);
+      padding: 0.25rem 0.55rem;
+      border-radius: 4px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .gallery-btn:hover {
+      color: var(--text-white);
+      border-color: var(--accent);
+      background: var(--accent-dim);
+    }
+    .gallery-btn-primary {
+      color: var(--accent-bright);
+      border-color: var(--accent);
+    }
+
+    /* ==========================================================================
+       EMBEDDING & INTEGRATION SECTION
+       ========================================================================== */
+    .section-header {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+    }
+    .section-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--accent);
+      letter-spacing: 0.05em;
+    }
+    .section-title {
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    .section-desc {
+      color: var(--text-muted);
+      font-size: 1rem;
+      max-width: 650px;
+    }
+
+    .embed-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .embed-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .embed-card-title {
+      font-size: 1.15rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .code-block {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: #93C5FD;
+      position: relative;
+      overflow-x: auto;
+      white-space: pre;
+    }
+    .copy-btn {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      background: var(--card-elevated);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 0.7rem;
+      font-family: var(--font-sans);
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .copy-btn:hover {
+      border-color: var(--accent);
+      color: var(--text-white);
+    }
+
+    /* ==========================================================================
+       API ENDPOINT REFERENCE TABLE
+       ========================================================================== */
+    .endpoint-table-container {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow-x: auto;
+    }
+    table.endpoint-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+      text-align: left;
+    }
+    table.endpoint-table th {
+      background: var(--card-elevated);
+      padding: 0.85rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-muted);
+      font-weight: 600;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+    }
+    table.endpoint-table td {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-muted);
+    }
+    table.endpoint-table tr:last-child td {
+      border-bottom: none;
+    }
+    .method-get {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #10B981;
+      background: rgba(16, 185, 129, 0.1);
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+      margin-right: 0.5rem;
+    }
+    .endpoint-path {
+      font-family: var(--font-mono);
+      color: var(--text-white);
+      font-weight: 600;
+    }
+
+    /* ==========================================================================
+       SHARE CARD & BADGES SECTION
+       ========================================================================== */
+    .share-card-container {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      align-items: center;
+    }
+    .svg-preview-img {
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      display: block;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    /* Footer */
+    footer.site-footer {
+      border-top: 1px solid var(--border);
+      background: var(--card-bg);
+      padding: 3rem 1.5rem;
+      color: var(--text-muted);
+      font-size: 0.875rem;
+    }
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+    .footer-links {
+      display: flex;
+      gap: 1.25rem;
+    }
+    .footer-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover {
+      color: var(--accent);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 900px) {
+      .hero-layout {
+        grid-template-columns: 1fr;
+      }
+      .share-card-container {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="scanlines" aria-hidden="true"></div>
+
+  <!-- Navigation -->
+  <header class="site-nav">
+    <div class="nav-container">
+      <a href="/" class="nav-logo">
+        <span>witty-404</span>
+        <span class="nav-logo-badge">v1.0</span>
+      </a>
+      <nav class="nav-links">
+        <a href="#gallery" class="nav-link">Joke Gallery</a>
+        <a href="#embed" class="nav-link">Embed Guide</a>
+        <a href="#api" class="nav-link">API Docs</a>
+        <a href="#svg-preview" class="nav-link">Share Cards</a>
+        <a href="https://github.com/zimkk/witty-404" target="_blank" rel="noopener noreferrer" class="nav-btn">
+          ⭐ Star on GitHub
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero Section -->
+    <section class="hero-layout">
+      <div class="hero-content">
+        <div class="status-pill-hero">OPEN SOURCE · CLOUDFLARE WORKERS</div>
+        <h1 class="hero-title">
+          404 error pages your users will <span class="accent-text">actually enjoy</span> hitting.
+        </h1>
+        <p class="hero-lead">
+          An open-source API and embeddable 404 product that turns dead links into genuine developer comic relief. Zero runtime dependencies, edge-hosted, with pure CSS animations and instant setup.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#embed" class="btn-main">
+            ⚡ Embed On Your Site
+          </a>
+          <a href="#gallery" class="btn-secondary">
+            🎭 Browse All 25 Jokes
+          </a>
+        </div>
+
+        <!-- Terminal Quick cURL -->
+        <div style="margin-top: 1rem;">
+          <div class="control-label" style="margin-bottom: 0.4rem;">FETCH A RANDOM JOKE FROM TERMINAL:</div>
+          <div class="code-block">
+            <button class="copy-btn" onclick="copyCode(this, 'curl -s https://witty-404.hassannazir.dev/json')">Copy</button>
+curl -s https://witty-404.hassannazir.dev/json
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Interactive Sandbox -->
+      <div class="sandbox-container">
+        <div class="sandbox-header">
+          <div class="browser-dots">
+            <span class="b-red"></span>
+            <span class="b-yellow"></span>
+            <span class="b-green"></span>
+          </div>
+          <div class="sandbox-url-bar" id="preview-url-display">
+            witty-404.hassannazir.dev/html?id=plane-crash
+          </div>
+          <div class="sandbox-links">
+            <a id="open-standalone-link" href="/html?id=plane-crash&theme=dark" target="_blank" class="sandbox-quick-link" title="Open full-bleed /html in new tab">
+              Full Page ↗
+            </a>
+            <span style="color: var(--border);">|</span>
+            <a id="open-svg-link" href="/svg?id=plane-crash&theme=dark" target="_blank" class="sandbox-quick-link" title="Open share card SVG in new tab">
+              SVG ↗
+            </a>
+          </div>
+        </div>
+
+        <div class="live-iframe-wrapper">
+          <iframe id="live-frame" class="live-preview-frame" src="/html?id=plane-crash&theme=dark" title="Witty 404 Live Preview"></iframe>
+        </div>
+
+        <div class="sandbox-controls">
+          <div>
+            <div class="control-label" style="margin-bottom: 0.25rem;">SELECT JOKE:</div>
+            <div class="joke-buttons">
+              <button class="pill-btn active" onclick="setJoke('plane-crash', this)">Plane Crash</button>
+              <button class="pill-btn" onclick="setJoke('daves-laptop', this)">Dave's Laptop</button>
+              <button class="pill-btn" onclick="setJoke('folder-structure', this)">Folder Reorg</button>
+              <button class="pill-btn" onclick="setJoke('node-modules', this)">node_modules</button>
+              <button class="pill-btn" onclick="setJoke('perfect-uptime', this)">99.999% Uptime</button>
+              <button class="pill-btn" onclick="setRandomJoke(this)">🎲 Random</button>
+            </div>
+          </div>
+          <div>
+            <div class="control-label" style="margin-bottom: 0.25rem;">THEME:</div>
+            <div class="theme-buttons">
+              <button class="pill-btn active" onclick="setTheme('dark', this)">Dark</button>
+              <button class="pill-btn" onclick="setTheme('light', this)">Light</button>
+              <button class="pill-btn" onclick="setTheme('matrix', this)">Matrix</button>
+              <button class="pill-btn" onclick="setTheme('glitch', this)">Glitch</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Joke Explorer & Gallery -->
+    <section id="gallery">
+      <div class="section-header">
+        <span class="section-eyebrow">// THE JOKE COLLECTION</span>
+        <h2 class="section-title">Explore All 25 Jokes & Live Pages</h2>
+        <p class="section-desc">
+          Click any joke to test it in the live sandbox, or open its standalone full-bleed <code>/html</code> page and dynamic <code>/svg</code> share card in a new tab.
+        </p>
+      </div>
+
+      <div class="gallery-grid" id="jokes-gallery-container">
+        <!-- Gallery cards populated dynamically or with initial static cards -->
+        <article class="joke-gallery-card">
+          <div class="gallery-top">
+            <span class="gallery-emoji">✈️💥</span>
+            <span class="gallery-id">plane-crash</span>
+          </div>
+          <h3 class="gallery-title">Your request took off, found nothing, and did not survive re-entry.</h3>
+          <div class="gallery-tags">
+            <span class="gallery-tag-pill">#deploy</span>
+            <span class="gallery-tag-pill">#refactor</span>
+            <span class="gallery-tag-pill">#blame</span>
+          </div>
+          <div class="gallery-actions">
+            <button class="gallery-btn gallery-btn-primary" onclick="loadJokeIntoSandbox('plane-crash')">▶ Test</button>
+            <a href="/html?id=plane-crash&theme=dark" target="_blank" class="gallery-btn">🌐 /html ↗</a>
+            <a href="/svg?id=plane-crash&theme=dark" target="_blank" class="gallery-btn">🖼️ /svg ↗</a>
+            <a href="/json?id=plane-crash" target="_blank" class="gallery-btn">⚡ JSON</a>
+          </div>
+        </article>
+
+        <article class="joke-gallery-card">
+          <div class="gallery-top">
+            <span class="gallery-emoji">💻👋</span>
+            <span class="gallery-id">daves-laptop</span>
+          </div>
+          <h3 class="gallery-title">This page only exists on Dave's MacBook. Dave left 6 months ago.</h3>
+          <div class="gallery-tags">
+            <span class="gallery-tag-pill">#legacy</span>
+            <span class="gallery-tag-pill">#blame</span>
+            <span class="gallery-tag-pill">#backend</span>
+          </div>
+          <div class="gallery-actions">
+            <button class="gallery-btn gallery-btn-primary" onclick="loadJokeIntoSandbox('daves-laptop')">▶ Test</button>
+            <a href="/html?id=daves-laptop&theme=dark" target="_blank" class="gallery-btn">🌐 /html ↗</a>
+            <a href="/svg?id=daves-laptop&theme=dark" target="_blank" class="gallery-btn">🖼️ /svg ↗</a>
+            <a href="/json?id=daves-laptop" target="_blank" class="gallery-btn">⚡ JSON</a>
+          </div>
+        </article>
+
+        <article class="joke-gallery-card">
+          <div class="gallery-top">
+            <span class="gallery-emoji">📁💥</span>
+            <span class="gallery-id">folder-structure</span>
+          </div>
+          <h3 class="gallery-title">We reorganized the folders. Nothing works now, but architecture is clean.</h3>
+          <div class="gallery-tags">
+            <span class="gallery-tag-pill">#refactor</span>
+            <span class="gallery-tag-pill">#frontend</span>
+            <span class="gallery-tag-pill">#backend</span>
+          </div>
+          <div class="gallery-actions">
+            <button class="gallery-btn gallery-btn-primary" onclick="loadJokeIntoSandbox('folder-structure')">▶ Test</button>
+            <a href="/html?id=folder-structure&theme=dark" target="_blank" class="gallery-btn">🌐 /html ↗</a>
+            <a href="/svg?id=folder-structure&theme=dark" target="_blank" class="gallery-btn">🖼️ /svg ↗</a>
+            <a href="/json?id=folder-structure" target="_blank" class="gallery-btn">⚡ JSON</a>
+          </div>
+        </article>
+
+        <article class="joke-gallery-card">
+          <div class="gallery-top">
+            <span class="gallery-emoji">📦🪐</span>
+            <span class="gallery-id">node-modules</span>
+          </div>
+          <h3 class="gallery-title">Your page was consumed by node_modules. It now weighs 4.8 GB.</h3>
+          <div class="gallery-tags">
+            <span class="gallery-tag-pill">#frontend</span>
+            <span class="gallery-tag-pill">#devops</span>
+            <span class="gallery-tag-pill">#deploy</span>
+          </div>
+          <div class="gallery-actions">
+            <button class="gallery-btn gallery-btn-primary" onclick="loadJokeIntoSandbox('node-modules')">▶ Test</button>
+            <a href="/html?id=node-modules&theme=dark" target="_blank" class="gallery-btn">🌐 /html ↗</a>
+            <a href="/svg?id=node-modules&theme=dark" target="_blank" class="gallery-btn">🖼️ /svg ↗</a>
+            <a href="/json?id=node-modules" target="_blank" class="gallery-btn">⚡ JSON</a>
+          </div>
+        </article>
+
+        <article class="joke-gallery-card">
+          <div class="gallery-top">
+            <span class="gallery-emoji">🟢🔥</span>
+            <span class="gallery-id">perfect-uptime</span>
+          </div>
+          <h3 class="gallery-title">99.999% Uptime Guaranteed. This page is the other 0.001%.</h3>
+          <div class="gallery-tags">
+            <span class="gallery-tag-pill">#infra</span>
+            <span class="gallery-tag-pill">#devops</span>
+            <span class="gallery-tag-pill">#blame</span>
+          </div>
+          <div class="gallery-actions">
+            <button class="gallery-btn gallery-btn-primary" onclick="loadJokeIntoSandbox('perfect-uptime')">▶ Test</button>
+            <a href="/html?id=perfect-uptime&theme=dark" target="_blank" class="gallery-btn">🌐 /html ↗</a>
+            <a href="/svg?id=perfect-uptime&theme=dark" target="_blank" class="gallery-btn">🖼️ /svg ↗</a>
+            <a href="/json?id=perfect-uptime" target="_blank" class="gallery-btn">⚡ JSON</a>
+          </div>
+        </article>
+
+        <article class="joke-gallery-card">
+          <div class="gallery-top">
+            <span class="gallery-emoji">🍺🔥</span>
+            <span class="gallery-id">friday-deploy</span>
+          </div>
+          <h3 class="gallery-title">Someone deployed at 4:58 PM on a sunny Friday. Have a great weekend.</h3>
+          <div class="gallery-tags">
+            <span class="gallery-tag-pill">#deploy</span>
+            <span class="gallery-tag-pill">#devops</span>
+          </div>
+          <div class="gallery-actions">
+            <button class="gallery-btn gallery-btn-primary" onclick="loadJokeIntoSandbox('friday-deploy')">▶ Test</button>
+            <a href="/html?id=friday-deploy&theme=dark" target="_blank" class="gallery-btn">🌐 /html ↗</a>
+            <a href="/svg?id=friday-deploy&theme=dark" target="_blank" class="gallery-btn">🖼️ /svg ↗</a>
+            <a href="/json?id=friday-deploy" target="_blank" class="gallery-btn">⚡ JSON</a>
+          </div>
+        </article>
+
+        <article class="joke-gallery-card">
+          <div class="gallery-top">
+            <span class="gallery-emoji">🌐📡</span>
+            <span class="gallery-id">dns-propagation</span>
+          </div>
+          <h3 class="gallery-title">It's not a bug. It's not a network error. It is, as always, DNS.</h3>
+          <div class="gallery-tags">
+            <span class="gallery-tag-pill">#dns</span>
+            <span class="gallery-tag-pill">#infra</span>
+          </div>
+          <div class="gallery-actions">
+            <button class="gallery-btn gallery-btn-primary" onclick="loadJokeIntoSandbox('dns-propagation')">▶ Test</button>
+            <a href="/html?id=dns-propagation&theme=dark" target="_blank" class="gallery-btn">🌐 /html ↗</a>
+            <a href="/svg?id=dns-propagation&theme=dark" target="_blank" class="gallery-btn">🖼️ /svg ↗</a>
+            <a href="/json?id=dns-propagation" target="_blank" class="gallery-btn">⚡ JSON</a>
+          </div>
+        </article>
+
+        <article class="joke-gallery-card">
+          <div class="gallery-top">
+            <span class="gallery-emoji">🏗️⏳</span>
+            <span class="gallery-id">ancient-todo</span>
+          </div>
+          <h3 class="gallery-title">// TODO: fix temporary hack before launch. Committed 7 years ago.</h3>
+          <div class="gallery-tags">
+            <span class="gallery-tag-pill">#legacy</span>
+            <span class="gallery-tag-pill">#refactor</span>
+          </div>
+          <div class="gallery-actions">
+            <button class="gallery-btn gallery-btn-primary" onclick="loadJokeIntoSandbox('ancient-todo')">▶ Test</button>
+            <a href="/html?id=ancient-todo&theme=dark" target="_blank" class="gallery-btn">🌐 /html ↗</a>
+            <a href="/svg?id=ancient-todo&theme=dark" target="_blank" class="gallery-btn">🖼️ /svg ↗</a>
+            <a href="/json?id=ancient-todo" target="_blank" class="gallery-btn">⚡ JSON</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Embedding Guide -->
+    <section id="embed">
+      <div class="section-header">
+        <span class="section-eyebrow">// ZERO-CONFIG INTEGRATION</span>
+        <h2 class="section-title">Use this as your site's 404 page</h2>
+        <p class="section-desc">
+          Drop `/html` into your web project in 30 seconds via iframe or standard CDN rewrites.
+        </p>
+      </div>
+
+      <div class="embed-grid">
+        <!-- Option 1: iframe -->
+        <div class="embed-card">
+          <div class="embed-card-title">
+            <span>🖼️</span> Option 1: Standalone HTML / iframe
+          </div>
+          <p style="color: var(--text-muted); font-size: 0.85rem;">
+            Fill your custom 404 container completely with no external dependencies or CSS leakage.
+          </p>
+          <div class="code-block">
+            <button class="copy-btn" onclick="copyCode(this, document.getElementById('code-iframe').innerText)">Copy</button>
+<code id="code-iframe">&lt;iframe
+  src="https://witty-404.hassannazir.dev/html?theme=dark"
+  style="width: 100vw; height: 100vh; border: none; display: block;"
+  title="404 Page"
+&gt;&lt;/iframe&gt;</code>
+          </div>
+        </div>
+
+        <!-- Option 2: Vercel vercel.json -->
+        <div class="embed-card">
+          <div class="embed-card-title">
+            <span>▲</span> Option 2: Vercel (vercel.json)
+          </div>
+          <p style="color: var(--text-muted); font-size: 0.85rem;">
+            Proxy any unhandled route directly to witty-404's roast engine.
+          </p>
+          <div class="code-block">
+            <button class="copy-btn" onclick="copyCode(this, document.getElementById('code-vercel').innerText)">Copy</button>
+<code id="code-vercel">{
+  "routes": [
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "https://witty-404.hassannazir.dev/roast?path=/$1&format=html",
+      "status": 404
+    }
+  ]
+}</code>
+          </div>
+        </div>
+
+        <!-- Option 3: Netlify _redirects -->
+        <div class="embed-card">
+          <div class="embed-card-title">
+            <span>🌐</span> Option 3: Netlify (_redirects)
+          </div>
+          <p style="color: var(--text-muted); font-size: 0.85rem;">
+            Add a single line in your <code>public/_redirects</code> file.
+          </p>
+          <div class="code-block">
+            <button class="copy-btn" onclick="copyCode(this, '/*  https://witty-404.hassannazir.dev/html  404!')">Copy</button>
+<code>/*  https://witty-404.hassannazir.dev/html  404!</code>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- API Reference -->
+    <section id="api">
+      <div class="section-header">
+        <span class="section-eyebrow">// HTTP ENDPOINTS</span>
+        <h2 class="section-title">Clean, unauthenticated, CORS-open API</h2>
+        <p class="section-desc">
+          All endpoints support <code>Access-Control-Allow-Origin: *</code> and respond in sub-millisecond edge latency.
+        </p>
+      </div>
+
+      <div class="endpoint-table-container">
+        <table class="endpoint-table">
+          <thead>
+            <tr>
+              <th>METHOD & PATH</th>
+              <th>RETURNS</th>
+              <th>DESCRIPTION & PARAMETERS</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="method-get">GET</span><span class="endpoint-path">/</span> or <span class="endpoint-path">/json</span></td>
+              <td>JSON</td>
+              <td>Random joke payload. Supports <code>?seed=</code>, <code>?id=</code>, <code>?tag=</code>.</td>
+            </tr>
+            <tr>
+              <td><span class="method-get">GET</span><span class="endpoint-path">/html</span></td>
+              <td>HTML</td>
+              <td>Standalone embeddable 404 page. Supports <code>?theme=system|dark|light|matrix|glitch</code>.</td>
+            </tr>
+            <tr>
+              <td><span class="method-get">GET</span><span class="endpoint-path">/roast?path=/...</span></td>
+              <td>JSON / HTML</td>
+              <td>Substitutes missing path with XSS sanitization. Use <code>&format=html</code> for full page.</td>
+            </tr>
+            <tr>
+              <td><span class="method-get">GET</span><span class="endpoint-path">/svg</span></td>
+              <td>SVG</td>
+              <td>1200x630 share card for OpenGraph & README embeds.</td>
+            </tr>
+            <tr>
+              <td><span class="method-get">GET</span><span class="endpoint-path">/terminal</span></td>
+              <td>JSON Array</td>
+              <td>Returns only the terminal logs array for quick CLI integration.</td>
+            </tr>
+            <tr>
+              <td><span class="method-get">GET</span><span class="endpoint-path">/text</span></td>
+              <td>Plain Text</td>
+              <td>Title, subtitle, and footnote formatted as plain text.</td>
+            </tr>
+            <tr>
+              <td><span class="method-get">GET</span><span class="endpoint-path">/all</span></td>
+              <td>JSON Array</td>
+              <td>Returns the entire joke library.</td>
+            </tr>
+            <tr>
+              <td><span class="method-get">GET</span><span class="endpoint-path">/stats</span></td>
+              <td>JSON</td>
+              <td>Most-shown jokes leaderboard with KV sampling.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Share Card Showcase -->
+    <section id="svg-preview">
+      <div class="section-header">
+        <span class="section-eyebrow">// DYNAMIC SOCIAL CARDS</span>
+        <h2 class="section-title">Generated OpenGraph SVGs</h2>
+        <p class="section-desc">
+          Drop dynamic cards into Twitter, Discord, and GitHub READMEs with zero rendering dependencies.
+        </p>
+      </div>
+
+      <div class="share-card-container">
+        <div>
+          <img id="dynamic-svg-img" src="/svg?id=plane-crash&theme=dark" alt="Witty 404 Dynamic Share Card" class="svg-preview-img" />
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 1rem;">
+          <h3 style="font-size: 1.3rem;">Embed in GitHub README:</h3>
+          <div class="code-block">
+            <button class="copy-btn" onclick="copyCode(this, document.getElementById('code-badge').innerText)">Copy</button>
+<code id="code-badge">[![404](https://witty-404.hassannazir.dev/svg?theme=dark)](https://witty-404.hassannazir.dev)</code>
+          </div>
+          <p style="color: var(--text-muted); font-size: 0.85rem;">
+            SVGs automatically default to dark theme for maximum contrast in rich embed previews.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div>
+        <strong>witty-404</strong> · MIT Licensed · Created by <a href="https://hassannazir.dev" target="_blank" style="color: var(--accent);">Hassan Nazir</a>
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com/zimkk/witty-404" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="https://github.com/zimkk/witty-404/blob/main/CONTRIBUTING.md" target="_blank">Add a Joke</a>
+        <a href="/stats">Leaderboard</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Client-side script for demo sandbox controls & dynamic joke loader -->
+  <script>
+    let currentJoke = 'plane-crash';
+    let currentTheme = 'dark';
+
+    function updatePreview() {
+      const url = `/html?id=${currentJoke}&theme=${currentTheme}`;
+      const svgUrl = `/svg?id=${currentJoke}&theme=${currentTheme}`;
+
+      document.getElementById('live-frame').src = url;
+      document.getElementById('preview-url-display').innerText = `witty-404.hassannazir.dev${url}`;
+      document.getElementById('dynamic-svg-img').src = svgUrl;
+
+      // Update sandbox top links
+      const pageLink = document.getElementById('open-standalone-link');
+      if (pageLink) pageLink.href = url;
+      const svgLink = document.getElementById('open-svg-link');
+      if (svgLink) svgLink.href = svgUrl;
+    }
+
+    function setJoke(jokeId, btn) {
+      currentJoke = jokeId;
+      document.querySelectorAll('.joke-buttons .pill-btn').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      updatePreview();
+    }
+
+    function loadJokeIntoSandbox(jokeId) {
+      currentJoke = jokeId;
+      updatePreview();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function setRandomJoke(btn) {
+      const jokeList = [
+        'plane-crash', 'daves-laptop', 'folder-structure', 'node-modules',
+        'perfect-uptime', 'friday-deploy', 'legacy-yaml', 'slack-silence',
+        'backlog-2019', 'env-prod-only', 'ancient-todo', 'coinflip-merge',
+        'lone-maintainer', 'pr-meeting', 'ai-unreviewed', 'cache-invalidation',
+        'env-example-lies', 'staging-is-prod', 'rollback-forward',
+        'green-empty-tests', 'dns-propagation', 'git-force-push',
+        'css-z-index', 'tab-vs-spaces', 'db-migration-prod'
+      ];
+      const randomId = jokeList[Math.floor(Math.random() * jokeList.length)];
+      setJoke(randomId, btn);
+    }
+
+    function setTheme(theme, btn) {
+      currentTheme = theme;
+      document.querySelectorAll('.theme-buttons .pill-btn').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      updatePreview();
+    }
+
+    function copyCode(btn, text) {
+      navigator.clipboard.writeText(text).then(() => {
+        const orig = btn.innerText;
+        btn.innerText = 'Copied!';
+        setTimeout(() => { btn.innerText = orig; }, 2000);
+      }).catch(() => {});
+    }
+
+    // Dynamically fetch and render all jokes into the gallery if /all is available
+    async function loadAllJokes() {
+      try {
+        const res = await fetch('/all');
+        if (!res.ok) return;
+        const allJokes = await res.json();
+        if (!Array.isArray(allJokes) || allJokes.length === 0) return;
+
+        const container = document.getElementById('jokes-gallery-container');
+        if (!container) return;
+
+        container.innerHTML = allJokes.map(j => `
+          <article class="joke-gallery-card">
+            <div class="gallery-top">
+              <span class="gallery-emoji">${j.emoji || '💥'}</span>
+              <span class="gallery-id">${j.id}</span>
+            </div>
+            <h3 class="gallery-title">${(j.title || '').replace(/\\n/g, ' ')}</h3>
+            <div class="gallery-tags">
+              ${(j.tags || []).map(t => `<span class="gallery-tag-pill">#${t}</span>`).join('')}
+            </div>
+            <div class="gallery-actions">
+              <button class="gallery-btn gallery-btn-primary" onclick="loadJokeIntoSandbox('${j.id}')">▶ Test</button>
+              <a href="/html?id=${j.id}&theme=${currentTheme}" target="_blank" class="gallery-btn">🌐 /html ↗</a>
+              <a href="/svg?id=${j.id}&theme=${currentTheme}" target="_blank" class="gallery-btn">🖼️ /svg ↗</a>
+              <a href="/json?id=${j.id}" target="_blank" class="gallery-btn">⚡ JSON</a>
+            </div>
+          </article>
+        `).join('');
+      } catch {
+        // Fallback to initial static gallery cards if offline
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadAllJokes);
+  </script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+{
+  "id": "daves-laptop",
+  "title": "This page only exists\non Dave's MacBook.\nDave left 6 months ago.",
+  "subtitle": "The endpoint was running on `localhost:8080` in a tmux session named `final_v2_really`. Dave took the charger, the repository access, and the passwords to the staging database with him.",
+  "logs": [
+    "> pinging dave-mbp.local...",
+    "> host unreachable.",
+    "> searching notion workspace for documentation...",
+    "> notion page last edited by Dave in 2021: 'WIP'",
+    "> checking Dave's slack status...",
+    "> Dave is offline (last active 184 days ago).",
+    "> attempting to recover credentials from sticky note...",
+    "> sticky note says: 'admin / hunter2'.",
+    "> connection refused.",
+    "> filing ticket to rewrite entire architecture in Go...",
+    "> ticket assigned to backlog limbo."
+  ],
+  "footnote": "Error code: `DAVE-GONE-404` · Missing artifact: `Dave's .env.local` · Severity: Existential",
+  "emoji": "💻👋",
+  "tags": ["legacy", "blame", "backend"],
+  "pathTemplate": "`{path}` was last seen running locally on Dave's machine before he moved to Portland."
+}

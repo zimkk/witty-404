@@ -1,0 +1,21 @@
+{
+  "id": "pr-meeting",
+  "title": "This 404 page is currently\nthe subject of a 1-hour\n\"Quick Alignment Sync\".",
+  "subtitle": "There are 9 people on the Google Meet, 4 Product Managers, 2 Scrum Masters, and 1 developer frantically trying to mute their microphone while eating pretzels.",
+  "logs": [
+    "> joining Google Meet (14 minutes past start time)...",
+    "> 'Can everyone see my screen?' (uttered 6 times).",
+    "> 'You\\'re on mute, Brad.' (uttered 4 times).",
+    "> PM asks: 'What is our target KPI for missing URL discovery?'",
+    "> Scrum Master creates Miro board with 84 colorful sticky notes.",
+    "> Developer in chat: 'I can fix this in 30 seconds with a regex'.",
+    "> Committee decides: 'Let\\'s set up a recurring bi-weekly working group'.",
+    "> calendar invite generated for 18 upcoming alignment sessions.",
+    "> original missing page is still missing.",
+    "> everyone logs off saying 'Great use of time, team!'"
+  ],
+  "footnote": "Error code: `MEETING-OVERHEAD-404` · Hours wasted: 9 · Resolution reached: Another meeting",
+  "emoji": "📅☕",
+  "tags": ["meetings", "blame"],
+  "pathTemplate": "Finding `{path}` has been deferred to next Thursday's cross-functional alignment workshop."
+}

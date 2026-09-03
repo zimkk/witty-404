@@ -1,0 +1,21 @@
+{
+  "id": "git-force-push",
+  "title": "Someone ran `git push --force`\non the `main` branch.\n3 weeks of commits evaporated.",
+  "subtitle": "The developer wanted to squash a typo in their README commit. Instead, they force-pushed their local branch that was 42 commits behind origin, rewriting company history in 0.8 seconds.",
+  "logs": [
+    "> listening to GitHub webhook events...",
+    "> event received: `push` on refs/heads/main.",
+    "> payload details: forced: true, deleted_commits: 42.",
+    "> Slack channel #dev-general erupts in collective panic.",
+    "> Developer: 'Wait, why is everyone pinging me?'",
+    "> Developer: 'I just wanted to fix my spelling mistake'.",
+    "> searching team laptops for who has the latest `git reflog`...",
+    "> running `git reset --hard origin/main` on 14 local workstations...",
+    "> 3 weeks of sprint work vanishes into the git object graveyard.",
+    "> branch protection rules have now been enabled (3 weeks late)."
+  ],
+  "footnote": "Error code: `FORCE-PUSH-DISASTER-404` · Commits vaporized: 42 · Branch protection: 'Oops'",
+  "emoji": "💥🔨",
+  "tags": ["git", "blame", "devops"],
+  "pathTemplate": "The code for `{path}` was in the repository 10 minutes ago, before someone force-pushed over it."
+}

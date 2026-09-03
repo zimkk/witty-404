@@ -1,0 +1,22 @@
+{
+  "id": "ancient-todo",
+  "title": "// TODO: fix this temporary hack\n// before we launch v1.0\nCommitted 7 years ago.",
+  "subtitle": "The comment sits directly above a `while(true)` loop with a `sleep(50)` that keeps the whole authentication subsystem from collapsing. The engineer who wrote it is now a VP of Product at a different company.",
+  "logs": [
+    "> parsing legacy codebase...",
+    "> found comment at router.ts:404: '// TODO: temporary workaround for release'.",
+    "> checking git blame...",
+    "> commit date: March 14, 2018.",
+    "> inspecting author: 'alex@startup-we-acquired-in-2019.io'.",
+    "> examining workaround logic...",
+    "> logic: `if (!page) { return 'vibes'; }`",
+    "> attempting to remove temporary workaround...",
+    "> build failed with 812 compilation errors.",
+    "> reinstating temporary workaround immediately.",
+    "> adding comment: '// TODO: do not touch this or everything explodes'."
+  ],
+  "footnote": "Error code: `LOAD-BEARING-HACK-404` · Technical debt age: 2,560 days · Status: Permanent architecture",
+  "emoji": "🏗️⏳",
+  "tags": ["legacy", "refactor", "backend"],
+  "pathTemplate": "`{path}` is blocked behind a temporary workaround committed during the Obama administration."
+}

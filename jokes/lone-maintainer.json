@@ -1,0 +1,22 @@
+{
+  "id": "lone-maintainer",
+  "title": "Our core router depends on a package\nmaintained by one person in Ohio\nwho hasn't logged in since 2017.",
+  "subtitle": "The entire billion-dollar digital supply chain rests on an unmaintained 40-line JavaScript library with 34 open security advisories and a README that just says *\"WIP - do not use in prod\"*.",
+  "logs": [
+    "> checking dependency tree for @core/url-router...",
+    "> resolved to: lib-slug-parser@0.1.2 (unmaintained).",
+    "> author profile: last commit was 8 years ago from an undisclosed location.",
+    "> checking open issues on GitHub...",
+    "> Issue #1: 'Does not support Node >= 10' (Open since 2018).",
+    "> Issue #2: 'CRITICAL remote code execution vulnerability' (Closed by bot).",
+    "> attempting to fork and patch locally...",
+    "> build requires Python 2.7 and a deprecated compiler toolchain.",
+    "> opening funding link to sponsor maintainer with $1/month...",
+    "> maintainer's PayPal account no longer exists.",
+    "> accepting our fate."
+  ],
+  "footnote": "Error code: `XKCD-2347-404` · Maintainers: 1 · Global dependencies: 4,000,000",
+  "emoji": "🕯️🧱",
+  "tags": ["legacy", "security", "frontend"],
+  "pathTemplate": "`{path}` could not be resolved because an unmaintained 40-line utility library stopped working."
+}

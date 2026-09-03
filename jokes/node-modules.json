@@ -1,0 +1,22 @@
+{
+  "id": "node-modules",
+  "title": "Your page was consumed\nby node_modules.\nIt now weighs 4.8 gigabytes.",
+  "subtitle": "You imported `is-odd` which imported `is-even` which imported `left-pad-revived` which pulled in the entire Chromium test suite and a compiled C++ binary for calculating lunar phases.",
+  "logs": [
+    "> running npm install...",
+    "> added 8,492 packages in 4m 32s.",
+    "> audited 14,000 packages.",
+    "> found 94 vulnerabilities (63 moderate, 31 severe, 4 supernatural).",
+    "> checking disk space...",
+    "> Available space: 12 KB.",
+    "> memory pressure rising...",
+    "> swap file expanding beyond physical reality...",
+    "> V8 garbage collector has entered an infinite meditation loop.",
+    "> node_modules event horizon has swallowed the router.",
+    "> running `rm -rf node_modules` and praying."
+  ],
+  "footnote": "Error code: `OOM-BLACK-HOLE-404` · Dependencies: 8,492 · Actual lines of product code: 14",
+  "emoji": "📦🪐",
+  "tags": ["frontend", "devops", "deploy"],
+  "pathTemplate": "`{path}` could not be resolved because the bundler ran out of heap space resolving 9 layers of transitive dependencies."
+}

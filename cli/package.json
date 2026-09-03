@@ -1,0 +1,12 @@
+{
+  "name": "witty-404-cli",
+  "version": "1.0.0",
+  "description": "CLI to fetch and display witty 404 error jokes right in your terminal",
+  "bin": {
+    "witty-404": "./index.js",
+    "witty-404-cli": "./index.js"
+  },
+  "keywords": ["404", "humor", "developer-tools", "cli"],
+  "author": "Hassan Nazir",
+  "license": "MIT"
+}

@@ -1,0 +1,21 @@
+{
+  "id": "tab-vs-spaces",
+  "title": "A linter auto-fixed the repo.\n52,000 lines changed.\n`git blame` now says you wrote it all.",
+  "subtitle": "Someone turned on Prettier with `tabWidth: 4` instead of `2`. Every single file in the repository was touched, turning every existing pull request into an irreconcilable conflict warzone.",
+  "logs": [
+    "> running `npm run format:all`...",
+    "> formatted 1,482 files across 96 directories.",
+    "> git status: 52,891 lines modified.",
+    "> committing with message: 'chore: minor styling fixes'.",
+    "> push to main completed.",
+    "> running `git blame` on auth system from 2015...",
+    "> author for security logic: 'You (2 minutes ago)'.",
+    "> CEO pings you: 'Why did you break authentication in 2015?'",
+    "> 14 teammates unable to merge feature branches.",
+    "> team lead announces immediate moratorium on all formatting."
+  ],
+  "footnote": "Error code: `PRETTIER-APOCALYPSE-404` · Files formatted: 1,482 · Blame shifted: Exclusively to you",
+  "emoji": "⌨️🌪️",
+  "tags": ["git", "refactor", "blame"],
+  "pathTemplate": "`{path}` was reformatted from 2 spaces to 4 spaces and became unparseable."
+}

@@ -1,0 +1,22 @@
+{
+  "id": "plane-crash",
+  "title": "Your request took off,\nfound nothing,\nand did not survive re-entry.",
+  "subtitle": "The page was either **never written**, **renamed by committee**, or **deleted during a refactor that was \"just cleanup\"**. The PR description said *\"minor housekeeping\"*. It was not minor. It was not housekeeping.",
+  "logs": [
+    "> checking if page exists...",
+    "> it does not.",
+    "> checking if it ever existed...",
+    "> also no.",
+    "> blaming the intern...",
+    "> intern quit in 2023.",
+    "> blaming the senior dev...",
+    "> senior dev is \"in a meeting\".",
+    "> reverting to last known good state...",
+    "> last known good state: 404.",
+    "> shipping anyway. 🚀"
+  ],
+  "footnote": "Error code: `PEBKAC-404` · Confidence level: extremely high · Root cause: *vibes*",
+  "emoji": "✈️💥",
+  "tags": ["deploy", "refactor", "blame"],
+  "pathTemplate": "We looked for `{path}` everywhere. It is not here. It was never here. Stop asking."
+}

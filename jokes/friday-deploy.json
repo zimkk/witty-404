@@ -1,0 +1,22 @@
+{
+  "id": "friday-deploy",
+  "title": "Someone deployed at 4:58 PM\non a sunny Friday.\nHave a great weekend.",
+  "subtitle": "The commit message said *\"Quick 1-line hotfix, what could go wrong lol\"*. The on-call engineer's phone is currently vibrating so hard it is vibrating off their nightstand.",
+  "logs": [
+    "> executing deployment pipeline at 16:58:21...",
+    "> skipping staging step (reason: 'urgent prod fix').",
+    "> skipping integration tests (reason: 'they take 4 minutes').",
+    "> deploy artifact uploaded to production cluster.",
+    "> error rate spiked from 0.01% to 99.8%.",
+    "> Slack bot: 🚨 42 alerts triggered in #prod-incidents.",
+    "> checking author's availability...",
+    "> author status: 🌴 On Vacation until Monday.",
+    "> paging on-call developer...",
+    "> on-call developer is weeping in the shower.",
+    "> welcome to the weekend."
+  ],
+  "footnote": "Error code: `TGIF-DISASTER-404` · PagerDuty alerts: 147 · Weekend status: Ruined",
+  "emoji": "🍺🔥",
+  "tags": ["deploy", "devops", "blame"],
+  "pathTemplate": "`{path}` was deployed at 4:59 PM on Friday and promptly vanished into the abyss."
+}

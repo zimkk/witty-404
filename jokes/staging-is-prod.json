@@ -1,0 +1,21 @@
+{
+  "id": "staging-is-prod",
+  "title": "We don't test in Staging\nbecause Staging has been down\nsince last Thanksgiving.",
+  "subtitle": "Staging costs $4,000/month on AWS and has a corrupted Postgres disk. Everyone tests directly in Production with feature flags named `test_final_for_real_pls_work`.",
+  "logs": [
+    "> checking health of staging environment...",
+    "> staging.internal.domain: 502 Bad Gateway.",
+    "> checking last deploy to staging: 284 days ago.",
+    "> asking DevOps team to fix staging...",
+    "> DevOps response: 'We are migrating staging to Kubernetes in Q4'.",
+    "> Q4 was last year.",
+    "> developer creates PR with flag: `if (user.email === 'my_personal_gmail')`.",
+    "> deploying directly to production cluster...",
+    "> production cluster takes the hit.",
+    "> congratulations, you are the staging environment now."
+  ],
+  "footnote": "Error code: `TEST-IN-PROD-404` · Staging cost: $4,200/mo · Staging utility: $0.00",
+  "emoji": "🧪💥",
+  "tags": ["infra", "deploy", "devops"],
+  "pathTemplate": "We wanted to test `{path}` on staging first, but staging is currently a digital graveyard."
+}

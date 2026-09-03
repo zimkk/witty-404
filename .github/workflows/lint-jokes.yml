@@ -1,0 +1,26 @@
+name: Lint Joke JSON Schema
+
+on:
+  push:
+    paths:
+      - 'jokes/**'
+      - 'scripts/validate-jokes.js'
+  pull_request:
+    paths:
+      - 'jokes/**'
+      - 'scripts/validate-jokes.js'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Validate Jokes Schema
+        run: node scripts/validate-jokes.js

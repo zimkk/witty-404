@@ -1,0 +1,22 @@
+{
+  "id": "coinflip-merge",
+  "title": "We resolved the merge conflict\nby flipping a nickel.\nHeads was `ours`. Tails was `theirs`.",
+  "subtitle": "It landed on tails. As a direct mathematical consequence, the routing table was deleted, the database connection pool was replaced with a string array, and all 404 pages now render this confession.",
+  "logs": [
+    "> git merge feature/hyper-modern-rewrite...",
+    "> CONFLICT (content): Merge conflict in routes.ts (942 conflicting lines).",
+    "> opening VS Code merge conflict editor...",
+    "> option A: 'Accept Current Change' (looks scary).",
+    "> option B: 'Accept Incoming Change' (also looks scary).",
+    "> option C: 'Accept Both Changes' (guaranteed syntax catastrophe).",
+    "> flipping physical 25-cent coin...",
+    "> coin result: TAILS.",
+    "> running `git checkout --theirs routes.ts`...",
+    "> committing with message: 'resolve tiny conflict'.",
+    "> git push origin main --no-verify."
+  ],
+  "footnote": "Error code: `COINFLIP-CHAOS-404` · Probability of breakage: 100% · Due diligence: None",
+  "emoji": "🪙⚔️",
+  "tags": ["git", "refactor", "blame"],
+  "pathTemplate": "The route handler for `{path}` was lost in a coin-toss conflict resolution on main."
+}

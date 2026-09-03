@@ -1,0 +1,22 @@
+{
+  "id": "backlog-2019",
+  "title": "Jira ticket PROJ-404:\n\"Implement this endpoint.\"\nCreated: Oct 14, 2019.",
+  "subtitle": "Priority: **Lowest**. Sprint: **Backlog (Sprint 94)**. Status: **In Grooming**. Story Points: **Estimated at 3 in 2020, re-estimated at 8 in 2022, moved to Icebox in 2024**.",
+  "logs": [
+    "> searching Jira for ticket PROJ-404...",
+    "> ticket found in backlog depths (rank: #1,492).",
+    "> reading ticket description: 'TBD - we will add details in grooming'.",
+    "> checking assigned sprint...",
+    "> sprint: 'Q4-Clean-Up-2019' (completed).",
+    "> checking assignee...",
+    "> assignee: 'Former Employee #42'.",
+    "> Product Manager added comment: 'Let\\'s revisit this next quarter'.",
+    "> 8 quarterly planning cycles elapsed since comment.",
+    "> story points changed from 3 -> 5 -> 8 -> 13 -> 'Spike Needed'.",
+    "> moving ticket to 'Done' to improve sprint velocity metrics."
+  ],
+  "footnote": "Error code: `JIRA-ICEBOX-404` · Age: 5 years, 8 months · Velocity impact: Pure fictional",
+  "emoji": "📋🧊",
+  "tags": ["legacy", "meetings", "backend"],
+  "pathTemplate": "`{path}` has been scheduled for implementation in Sprint 98 (Q3 2031)."
+}

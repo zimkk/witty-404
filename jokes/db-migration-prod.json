@@ -1,0 +1,22 @@
+{
+  "id": "db-migration-prod",
+  "title": "`ALTER TABLE users`\nlocked the production database\nfor 47 minutes.",
+  "subtitle": "Adding a nullable `is_cool` boolean column seemed harmless. In reality, Postgres acquired an exclusive table lock on 90 million rows during peak Black Friday checkout traffic.",
+  "logs": [
+    "> running database migration script #84...",
+    "> executing SQL: `ALTER TABLE users ADD COLUMN is_cool BOOLEAN DEFAULT FALSE;`",
+    "> acquiring ACCESS EXCLUSIVE lock on 'users' table...",
+    "> lock acquired. 4,200 incoming checkout queries queued.",
+    "> database CPU usage: 100.00%.",
+    "> database memory: Swapping to disk.",
+    "> connection pool exhausted (max 500 connections reached).",
+    "> backend services dropping connections across 8 microservices.",
+    "> DBA frantically trying to type `SELECT pg_cancel_backend(...)`...",
+    "> DBA terminal is also frozen.",
+    "> CEO joins incident Slack channel: 'Why is revenue $0 this hour?'"
+  ],
+  "footnote": "Error code: `EXCLUSIVE-LOCK-404` · Rows locked: 90,000,000 · DBA blood pressure: 220/140",
+  "emoji": "🗄️🔒",
+  "tags": ["database", "deploy", "backend"],
+  "pathTemplate": "Access to `{path}` was blocked while the database spent 45 minutes locking 90M rows for a boolean flag."
+}

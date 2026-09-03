@@ -1,0 +1,8 @@
+name = "witty-404"
+main = "src/index.ts"
+compatibility_date = "2024-12-01"
+workers_dev = true
+
+[[kv_namespaces]]
+binding = "WITTY_404_STATS"
+id = "01f13808aff34872b01447596a740450"

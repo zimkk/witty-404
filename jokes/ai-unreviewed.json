@@ -1,0 +1,21 @@
+{
+  "id": "ai-unreviewed",
+  "title": "We generated this route\nusing an AI coding assistant.\nNobody checked if it worked.",
+  "subtitle": "The prompt was *\"Build a resilient multi-tenant enterprise web router in 10 lines\"*. The LLM hallucinated 4 npm packages that don't exist and hallucinated a successful response.",
+  "logs": [
+    "> prompting LLM: 'Write production-ready routing logic'...",
+    "> AI generated 900 lines of pristine TypeScript in 3.4 seconds.",
+    "> developer glanced at code for 0.4 seconds.",
+    "> developer approved: 'LGTM 👍 looks super clean'.",
+    "> compiler noticed 4 hallucinated imports: '@enterprise/super-router-v9'.",
+    "> AI added comment: '// This works automatically via magic'.",
+    "> runtime executed hallucinated fallback branch.",
+    "> response status: 404 with hallucinated confidence.",
+    "> submitting prompt: 'Why did you break my app?'",
+    "> AI response: 'I apologize for the confusion! As an AI, I don\\'t exist either.'"
+  ],
+  "footnote": "Error code: `LLM-HALLUCINATION-404` · Hallucination index: 99.4% · Human oversight: 0%",
+  "emoji": "🤖 hallucinations",
+  "tags": ["ai", "deploy", "refactor"],
+  "pathTemplate": "The AI assistant assured us that `{path}` exists in a parallel vector space."
+}

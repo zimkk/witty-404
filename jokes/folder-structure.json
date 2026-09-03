@@ -1,0 +1,22 @@
+{
+  "id": "folder-structure",
+  "title": "We reorganized the folders.\nNothing works now,\nbut the architecture is clean.",
+  "subtitle": "Someone read a Medium article on **Atomic Clean Domain-Driven Hexagonal Architecture** at 2 AM on a Sunday. Now all 47 routes live in `/src/infrastructure/adapters/secondary/http/controllers/v1/impl/` and nobody knows how to import anything.",
+  "logs": [
+    "> resolving route handler...",
+    "> Error: Cannot find module '../../../../../../../../routes'",
+    "> calculating relative path depth...",
+    "> depth: 14 directories deep.",
+    "> consulting the architect who designed this...",
+    "> architect says: 'it scales better this way'.",
+    "> checking what it scales...",
+    "> it scales developer sorrow.",
+    "> attempting barrel export resolution...",
+    "> circular dependency detected in index.ts.",
+    "> giving up and creating /utils/helpers/common/misc2/"
+  ],
+  "footnote": "Error code: `CLEAN-ARCH-404` · Reorg status: 100% compliant · Functionality: 0%",
+  "emoji": "📁💥",
+  "tags": ["refactor", "frontend", "backend"],
+  "pathTemplate": "`{path}` was moved into an abstraction layer so deep that even the bundler gave up."
+}

@@ -1,0 +1,22 @@
+{
+  "id": "dns-propagation",
+  "title": "It's not a bug.\nIt's not a network error.\nIt is, as always, DNS.",
+  "subtitle": "You updated the A record 14 minutes ago with a TTL of 86,400 seconds. Some recursive resolver in New Zealand has cached your old IP address until the heat death of our sun.",
+  "logs": [
+    "> running `dig +trace your-domain.com`...",
+    "> root name servers queried successfully.",
+    "> authoritative nameserver returned new CNAME.",
+    "> checking local ISP resolver...",
+    "> local ISP resolver returned: 127.0.0.1.",
+    "> checking Google Public DNS (8.8.8.8)...",
+    "> Google DNS returned: NXDOMAIN.",
+    "> checking Cloudflare DNS (1.1.1.1)...",
+    "> Cloudflare DNS returned: Server Failure.",
+    "> running `ipconfig /flushdns` for the 18th time today...",
+    "> it was DNS. It is always DNS. It will always be DNS."
+  ],
+  "footnote": "Error code: `ALWAYS-DNS-404` · Root cause: DNS · Blame: DNS · Future outages: DNS",
+  "emoji": "🌐📡",
+  "tags": ["dns", "infra", "devops"],
+  "pathTemplate": "`{path}` has migrated to a new server, but your local DNS resolver doesn't believe in change."
+}

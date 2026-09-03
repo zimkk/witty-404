@@ -1,0 +1,22 @@
+{
+  "id": "css-z-index",
+  "title": "This page is rendered here,\nbut it is trapped underneath\na `z-index: 99999999` modal.",
+  "subtitle": "A marketing pop-up with an unclosable cookie banner has an opacity of 0.99 and a stacking context that spans 4 browser dimensions, physically blocking all user interactions.",
+  "logs": [
+    "> inspecting DOM element hierarchy...",
+    "> found #404-content container (z-index: 10).",
+    "> found .cookie-consent-overlay (z-index: 99999).",
+    "> found .newsletter-popup (z-index: 99999999).",
+    "> found .chatbot-bubble (z-index: 2147483647).",
+    "> calculating computed stacking context...",
+    "> chatbot bubble has attained consciousness and refuses to move.",
+    "> user attempted to click 'Dismiss'...",
+    "> click intercepted by transparent full-screen backdrop div.",
+    "> CSS specificity war has consumed the frontend team.",
+    "> applying `!important` to 418 CSS rules."
+  ],
+  "footnote": "Error code: `Z-INDEX-WARS-404` · Highest z-index: 2,147,483,647 · Element accessibility: 0%",
+  "emoji": "🎨🎭",
+  "tags": ["frontend", "refactor"],
+  "pathTemplate": "`{path}` is currently obscured underneath 7 layers of marketing modal overlays."
+}

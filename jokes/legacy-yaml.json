@@ -1,0 +1,22 @@
+{
+  "id": "legacy-yaml",
+  "title": "A 3,400-line Kubernetes YAML\nhas an extra space\non line 1,842.",
+  "subtitle": "Nobody knows what half these annotations do. The engineer who wrote this configuration retired to raise alpacas in 2021. Any attempt to format the document causes total pod evacuation.",
+  "logs": [
+    "> parsing deployment.yaml (3,412 lines)...",
+    "> indentation error detected near line 1842, column 7.",
+    "> comparing with values.production.override.final.yaml...",
+    "> helm template rendered 4.2 MB of raw manifest.",
+    "> kubectl apply --dry-run=server...",
+    "> API server rejected payload: 'unknown field: spec.template.spec.vibes'.",
+    "> inspecting git blame for line 1842...",
+    "> commit hash: a8f9c1d 'do not touch this space or auth breaks'.",
+    "> developer who made commit: no longer in LDAP directory.",
+    "> attempting to add 1 whitespace blindly...",
+    "> cluster status: Terminating."
+  ],
+  "footnote": "Error code: `YAML-SPACE-404` · White spaces: 18,941 · Tab characters found: 1 (fatal)",
+  "emoji": "📄👾",
+  "tags": ["infra", "devops", "legacy"],
+  "pathTemplate": "`{path}` could not be routed because line 1,842 of our 3,000-line YAML config had 3 spaces instead of 2."
+}

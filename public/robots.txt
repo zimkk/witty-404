@@ -1,0 +1,8 @@
+User-agent: *
+Disallow: /roast
+Allow: /
+Allow: /html
+Allow: /demo.html
+Allow: /stats
+Allow: /count
+Allow: /all

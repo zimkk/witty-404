@@ -1,0 +1,22 @@
+{
+  "id": "slack-silence",
+  "title": "\"Can someone take a look\nat this PR quick?\"\nPosted 9 weeks ago.",
+  "subtitle": "The message currently sits at **0 replies**, **1 ghost reaction (`:eyes:`)**, and **8 git rebase conflicts** because main has moved forward 400 commits while you waited.",
+  "logs": [
+    "> posting PR link in #team-dev...",
+    "> pinging @channel: 'Just a tiny 12-line change!'",
+    "> waiting 10 minutes...",
+    "> teammate reacted with 👀 emoji.",
+    "> waiting 3 days...",
+    "> teammate has not opened GitHub.",
+    "> waiting 2 weeks...",
+    "> GitHub says: 'This branch has conflicts that must be resolved'.",
+    "> rebasing on latest main (412 new commits)...",
+    "> rebase failed on 38 merge conflicts.",
+    "> reposting PR link: 'Bump? Anyone free today?'"
+  ],
+  "footnote": "Error code: `PR-STALEMATE-404` · Reviewers assigned: 4 · Actual reviews: 0",
+  "emoji": "💬👻",
+  "tags": ["meetings", "blame", "git"],
+  "pathTemplate": "The route handler for `{path}` is waiting for code review in a PR posted 3 months ago."
+}

@@ -1,0 +1,21 @@
+{
+  "id": "cache-invalidation",
+  "title": "There are 2 hard problems in CS:\n1. Cache Invalidation\n2. Naming Things\n3. 404s on Cached Pages",
+  "subtitle": "The page was fixed in the database 4 hours ago, but our edge CDN cached the 404 response with `Cache-Control: public, max-age=31536000, immutable` across 320 points of presence.",
+  "logs": [
+    "> database query returned: Record exists (Status: Published).",
+    "> checking edge cache node #142 (Frankfurt)...",
+    "> cache status: HIT (cached error response).",
+    "> TTL remaining: 31,535,840 seconds (roughly 1 Earth year).",
+    "> sending cache purge request across global CDN...",
+    "> CDN response: 'Purge queued in batch #99214'.",
+    "> estimated completion time: next Thursday.",
+    "> developer trying to append `?cache_bust=12345` to URL...",
+    "> edge rules stripped query parameters for optimization.",
+    "> page remains permanently 404 across Europe and Asia."
+  ],
+  "footnote": "Error code: `IMMUTABLE-CACHE-404` · Edge nodes affected: 320 · TTL: Until heat death of universe",
+  "emoji": "🗄️⏳",
+  "tags": ["cache", "infra", "devops"],
+  "pathTemplate": "`{path}` actually exists, but Cloudflare cached our mistake for the next 12 months."
+}

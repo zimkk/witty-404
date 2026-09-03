@@ -1,0 +1,29 @@
+{
+  "name": "witty-404",
+  "version": "1.0.0",
+  "description": "Open-source witty 404 API and embeddable error page",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "wrangler dev",
+    "build": "tsc",
+    "deploy": "wrangler deploy",
+    "test": "vitest run",
+    "validate-jokes": "node scripts/validate-jokes.js"
+  },
+  "keywords": [
+    "404",
+    "cloudflare-workers",
+    "developer-tools",
+    "api",
+    "humor",
+    "easter-egg"
+  ],
+  "author": "Hassan Nazir",
+  "license": "MIT",
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20241230.0",
+    "typescript": "^5.7.3",
+    "vitest": "^2.1.8",
+    "wrangler": "^3.99.0"
+  }
+}

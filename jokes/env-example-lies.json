@@ -1,0 +1,21 @@
+{
+  "id": "env-example-lies",
+  "title": "`.env.example` has been lying\nto every new hire\nsince October 2020.",
+  "subtitle": "It claims `DATABASE_URL=postgres://localhost:5432/app`. In reality, the database is an Amazon DocumentDB replica wrapped in SSH tunnels requiring 4 client certificates and a VPN from 2016.",
+  "logs": [
+    "> new engineer ran `cp .env.example .env`...",
+    "> running `npm run start`...",
+    "> Error: connection refused to localhost:5432.",
+    "> checking documentation in README: 'Just copy .env.example!'",
+    "> asking team channel: 'Hey, what are the actual env variables?'",
+    "> Senior Dev: 'Oh yeah, half of those are deprecated, DM me for the real ones'.",
+    "> Senior Dev sends secret string via unencrypted Slack DM.",
+    "> secret string has expired AWS credentials.",
+    "> new engineer's first day productivity: 0.00%.",
+    "> welcome to the onboarding experience."
+  ],
+  "footnote": "Error code: `DEPRECATED-CONFIG-404` · Lies told in README: 14 · Onboarding hours lost: 40",
+  "emoji": "🤥📝",
+  "tags": ["legacy", "security", "backend"],
+  "pathTemplate": "Finding `{path}` requires credentials that were never documented in `.env.example`."
+}

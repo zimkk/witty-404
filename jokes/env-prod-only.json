@@ -1,0 +1,22 @@
+{
+  "id": "env-prod-only",
+  "title": "It worked fine on localhost.\n`process.env.API_SECRET`\nis undefined in production.",
+  "subtitle": "The local `.env` had all 48 secrets hardcoded since May. The production secret manager had a typo in the variable name (`API_SEKRET`) that was silently ignored by the initialization wrapper.",
+  "logs": [
+    "> booting production runtime container...",
+    "> reading environment variables...",
+    "> process.env.NODE_ENV: 'production'.",
+    "> process.env.PORT: '8080'.",
+    "> process.env.API_SECRET: undefined.",
+    "> attempting to authenticate with database using undefined...",
+    "> DB response: 'FATAL: password authentication failed for user root'.",
+    "> fallback logic activated: using empty string \"\".",
+    "> security scan: panic triggered across all clusters.",
+    "> checking developer's localhost .env...",
+    "> localhost has: API_SECRET=super_secret_master_admin_password_123!"
+  ],
+  "footnote": "Error code: `ENV-UNDEFINED-404` · Root cause: `.env.production` was never committed",
+  "emoji": "🔑💥",
+  "tags": ["security", "deploy", "backend"],
+  "pathTemplate": "`{path}` relies on an environment variable that only exists on one developer's desktop."
+}

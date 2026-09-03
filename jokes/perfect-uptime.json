@@ -1,0 +1,22 @@
+{
+  "id": "perfect-uptime",
+  "title": "99.999% Uptime Guaranteed.\nThis page is the other\n0.001%.",
+  "subtitle": "According to our public status dashboard, all systems are **100% Operational** in luscious calming green. Please ignore the smoke, the sirens, and the fact that the database cluster has turned into molten slag.",
+  "logs": [
+    "> checking statuspage.io API...",
+    "> status: ALL SYSTEMS OPERATIONAL (Green Checkmark).",
+    "> checking primary cluster...",
+    "> cluster node 1: dead.",
+    "> cluster node 2: also dead.",
+    "> cluster node 3: currently on fire.",
+    "> checking automated health checks...",
+    "> health check endpoint is hardcoded to return `return true;`.",
+    "> dashboard says uptime streak: 842 days unbroken.",
+    "> updating incident banner: 'Investigating degraded performance...'",
+    "> management has scheduled a post-mortem for next Tuesday."
+  ],
+  "footnote": "Error code: `GREEN-DASH-404` · Status page truth factor: 0.00% · Fire rating: 5-alarm",
+  "emoji": "🟢🔥",
+  "tags": ["infra", "devops", "blame"],
+  "pathTemplate": "Our status page confirms `{path}` has 100.000% uptime. Your eyes are deceiving you."
+}

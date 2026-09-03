@@ -1,0 +1,22 @@
+{
+  "id": "green-empty-tests",
+  "title": "All 1,400 unit tests\nare glowing green.\nNone of them have `expect()`.",
+  "subtitle": "The code coverage tool reports **99.4% line coverage** because every test function simply invokes the method, catches any thrown error, and prints `console.log('Passed!')`.",
+  "logs": [
+    "> running test suite: `vitest run --coverage`...",
+    "> test file: auth.test.ts ... PASS (0.02s).",
+    "> test file: router.test.ts ... PASS (0.01s).",
+    "> test file: payment.test.ts ... PASS (0.01s).",
+    "> total: 1,420 tests passed, 0 failed, 0 skipped.",
+    "> inspecting test implementation for router.test.ts:32...",
+    "> code: `it('should handle 404 routes', () => { router.get('/missing'); });`",
+    "> missing assertions: all of them.",
+    "> actual response in production: Unhandled Promise Rejection.",
+    "> CI pipeline status: 🟢 GREEN (Build #941).",
+    "> developer ships to prod with complete peace of mind."
+  ],
+  "footnote": "Error code: `FALSE-CONFIDENCE-404` · Assertions written: 0 · False sense of security: Infinite",
+  "emoji": "🧪🟢",
+  "tags": ["frontend", "backend", "deploy"],
+  "pathTemplate": "`{path}` passed all 1,400 automated tests because none of the tests actually asserted anything."
+}
