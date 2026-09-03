@@ -4,6 +4,8 @@ import { renderSvgCard } from './svg';
 import { roastJoke } from './template';
 import { recordJokeImpression, getLeaderboard } from './stats';
 import { demoHtml } from './demoHtml';
+import { docsHtml } from './docsHtml';
+import { faviconSvg } from './faviconSvg';
 
 export interface Env {
   WITTY_404_STATS?: KVNamespace;
@@ -129,6 +131,23 @@ export default {
     // Route: GET /demo or GET /demo.html (Marketing Front Door)
     if (pathname === '/demo' || pathname === '/demo.html') {
       return htmlResponse(demoHtml);
+    }
+
+    // Route: GET /docs or GET /api-docs
+    if (pathname === '/docs' || pathname === '/api-docs') {
+      return htmlResponse(docsHtml);
+    }
+
+    // Route: GET /favicon.svg or GET /favicon.ico
+    if (pathname === '/favicon.svg' || pathname === '/favicon.ico') {
+      return new Response(faviconSvg, {
+        status: 200,
+        headers: {
+          'Content-Type': 'image/svg+xml; charset=utf-8',
+          'Cache-Control': 'public, max-age=86400',
+          'Access-Control-Allow-Origin': '*',
+        },
+      });
     }
 
     // Route: GET /count

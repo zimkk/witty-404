@@ -48,6 +48,7 @@ export function renderHtmlPage(joke: Joke, options: RenderOptions = {}): string 
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="404 — ${escapeHtml(joke.title.replace(/\n/g, ' '))}" />
   <meta name="twitter:image" content="/svg?id=${encodeURIComponent(joke.id)}&theme=${encodeURIComponent(selectedTheme)}" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <style>
     ${styles}
   </style>
@@ -74,7 +75,7 @@ export function renderHtmlPage(joke: Joke, options: RenderOptions = {}): string 
         <a href="/svg?id=${encodeURIComponent(joke.id)}&theme=${encodeURIComponent(selectedTheme)}" target="_blank" class="scene-btn" title="Open Share Card SVG">
           🖼️ Share Card
         </a>
-        <a href="/demo" target="_blank" class="scene-btn" title="Open Demo & Docs">
+        <a href="/docs" target="_blank" class="scene-btn" title="Open API Docs">
           ⚡ API Docs
         </a>
       </div>

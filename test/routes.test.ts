@@ -40,6 +40,28 @@ describe('Worker Routes Smoke Tests', () => {
     expect(html).toContain('The Open-Source 404 API for Developers');
   });
 
+  it('GET /docs returns 200 HTML documentation page', async () => {
+    const req = new Request('https://witty-404.dev/docs');
+    const res = await worker.fetch(req, mockEnv, mockCtx);
+
+    expect(res.status).toBe(200);
+    expect(res.headers.get('Content-Type')).toContain('text/html');
+    const html = await res.text();
+    expect(html).toContain('API Docs — witty-404');
+    expect(html).toContain('The API You Call When Everything Has Gone Horribly Wrong');
+  });
+
+  it('GET /favicon.svg returns 200 SVG favicon', async () => {
+    const req = new Request('https://witty-404.dev/favicon.svg');
+    const res = await worker.fetch(req, mockEnv, mockCtx);
+
+    expect(res.status).toBe(200);
+    expect(res.headers.get('Content-Type')).toContain('image/svg+xml');
+    const svg = await res.text();
+    expect(svg).toContain('<svg');
+    expect(svg).toContain('404');
+  });
+
   it('GET /html returns 200 HTML with standalone full-page scene', async () => {
     const req = new Request('https://witty-404.dev/html?id=plane-crash&theme=dark');
     const res = await worker.fetch(req, mockEnv, mockCtx);
