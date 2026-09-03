@@ -1,9 +1,10 @@
 ---
 name: Submit a New Joke
 about: Propose a funny developer-centric 404 joke to be added to witty-404
-title: '[JOKE]: '
-labels: 'joke-submission'
+title: "[JOKE]: "
+labels: ''
 assignees: ''
+
 ---
 
 ### Joke ID
