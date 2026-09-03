@@ -2,14 +2,14 @@
 
 # 💥 witty-404
 
-**Witty, embeddable 404 error scenes & API that your users will actually enjoy hitting.**
+**The open-source, edge-hosted 404 error engine that turns routing disasters into developer comic relief.**
 
 [![Witty 404 Card](https://witty-404.zimkk.workers.dev/svg?theme=dark)](https://witty-404.zimkk.workers.dev/docs)
 
 <p align="center">
-  <a href="https://witty-404.zimkk.workers.dev/docs"><strong>📖 Interactive API Documentation ↗</strong></a> •
-  <a href="https://witty-404.zimkk.workers.dev/demo"><strong>🎮 Interactive Sandbox ↗</strong></a> •
-  <a href="https://witty-404.zimkk.workers.dev/html"><strong>🎭 Live Random /html ↗</strong></a>
+  <a href="https://witty-404.zimkk.workers.dev/demo"><strong>🎮 Interactive Demo ↗</strong></a> •
+  <a href="https://witty-404.zimkk.workers.dev/docs"><strong>📖 Full API Documentation ↗</strong></a> •
+  <a href="https://witty-404.zimkk.workers.dev/html"><strong>🎭 Live Error Scene ↗</strong></a>
 </p>
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
@@ -22,215 +22,108 @@
 
 ---
 
-## ⚡ Why witty-404?
+## ⚡ What is witty-404?
 
-Most 404 pages are depressing, sterile corporate apologies. **witty-404** is the emergency API you call when everything has gone horribly wrong. It transforms dead links, DNS anomalies, and Friday merge regressions into genuine developer comic relief.
+Most 404 pages are sterile corporate apologies. **witty-404** is an emergency microservice for teams that break production with confidence. It serves full standalone error pages, structured JSON payloads, ASCII terminal logs, and dynamic social cards with **zero dependencies** and **sub-5ms edge latency**.
 
-- 🏛️ **Full-Page Theatrical Stage**: The monumental `404` numerals act as a physical set piece where planes crash, directories crumble, laptops sit abandoned, and SLA lights ignite in flames 🔥.
-- 🚀 **Zero Runtime Dependencies**: Ultra-fast pure TypeScript string templates running on Cloudflare Workers edge nodes (<10ms latency).
-- 🕹️ **Live & Interactive**: 3D pointer parallax, continuous idle physics (billowing smoke, infinite typing indicators, status pulses), and click-to-escalate shockwaves.
-- 🌙 **5 Built-in Themes**: `system` (auto), `dark`, `light`, `matrix`, `glitch`.
-- 🖼️ **Dynamic SVG Cards & Favicon**: Embed `/svg` into Discord/Twitter cards, and serve `/favicon.svg` directly to your tabs.
-- 🛡️ **Built-in Sanitization**: Untrusted paths on `/roast` are HTML-entity escaped and capped to eliminate XSS risks.
-
----
-
-## 🚀 60-Second Integration Recipes
-
-`witty-404` was built specifically to be dropped into any tech stack in under 60 seconds with zero configuration.
+- ✈️ **Theatrical Flight Trajectory Crash**: Synchronized CSS animations where an airplane crosses the screen and crashes into the terminal the exact split-second the witty punchline appears.
+- 🚀 **Zero Runtime Dependencies**: Ultra-fast pure TypeScript string templates running on Cloudflare Workers edge nodes.
+- 🕹️ **Interactive Sandbox & Playground**: Real-time iframe playground with scenario selector and theme switcher.
+- 🌙 **4 Built-in Themes**: `dark`, `light`, `matrix`, `glitch`.
+- 🛡️ **Built-in Sanitization**: Untrusted client routes on `/roast` are HTML-entity escaped to eliminate XSS risks.
 
 ---
 
-### 1. Next.js 14+ (App Router & Pages Router)
+## 🚀 30-Second Integration Recipes
 
-#### App Router (`app/not-found.tsx`):
+### 1. Next.js 14+ (App Router `app/not-found.tsx`)
 ```tsx
+// app/not-found.tsx
 export default function NotFound() {
   return (
-    <main style={{ width: '100vw', height: '100vh', margin: 0, padding: 0, overflow: 'hidden' }}>
-      <iframe
-        src="https://witty-404.zimkk.workers.dev/html?theme=dark"
-        style={{ width: '100%', height: '100%', border: 'none' }}
-        title="404 Not Found"
-      />
-    </main>
-  );
-}
-```
-
-#### Pages Router (`pages/404.tsx`):
-```tsx
-export default function Custom404() {
-  return (
     <iframe
-      src="https://witty-404.zimkk.workers.dev/html?theme=system"
-      style={{ width: '100vw', height: '100vh', border: 'none', display: 'block' }}
-      title="404 - Page Not Found"
+      src="https://witty-404.zimkk.workers.dev/html?theme=dark"
+      style={{ width: "100vw", height: "100vh", border: "none", display: "block" }}
+      title="404 Error Page"
     />
   );
 }
 ```
 
----
+### 2. Express.js / Fastify Middleware
+```javascript
+// Express catch-all 404 route
+app.use((req, res) => {
+  fetch('https://witty-404.zimkk.workers.dev/html')
+    .then(r => r.text())
+    .then(html => res.status(404).type('html').send(html));
+});
+```
 
-### 2. Vercel Hosting (`vercel.json`)
-
-Proxy all unhandled routes directly to witty-404's roast engine with the missing URL path automatically injected:
-
+### 3. Vercel Proxy (`vercel.json`)
 ```json
 {
   "routes": [
     { "handle": "filesystem" },
-    {
-      "src": "/(.*)",
-      "dest": "https://witty-404.zimkk.workers.dev/roast?path=/$1&format=html",
-      "status": 404
-    }
+    { "src": "/(.*)", "dest": "https://witty-404.zimkk.workers.dev/roast?path=/$1&format=html", "status": 404 }
   ]
 }
 ```
 
----
-
-### 3. Netlify & Cloudflare Pages (`public/_redirects`)
-
-Add this single line to your `public/_redirects` file:
-
-```
-/*  https://witty-404.zimkk.workers.dev/html  404!
-```
-
----
-
-### 4. Express / Node.js Backend
-
-Catch all unhandled routes and redirect or proxy to witty-404:
-
-```js
-// Place after all valid app routes
-app.use(async (req, res) => {
-  const roastUrl = `https://witty-404.zimkk.workers.dev/roast?path=${encodeURIComponent(req.originalUrl)}&format=html`;
-  const response = await fetch(roastUrl);
-  const html = await response.text();
-  res.status(404).set('Content-Type', 'text/html').send(html);
-});
-```
-
----
-
-### 5. Plain HTML / Static Website (`404.html`)
-
-Create a `404.html` file in your website's root:
-
+### 4. Raw HTML Embed
 ```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>404 — Not Found</title>
-  <link rel="icon" type="image/svg+xml" href="https://witty-404.zimkk.workers.dev/favicon.svg" />
-  <style>
-    body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #07090E; }
-    iframe { width: 100%; height: 100%; border: 0; display: block; }
-  </style>
-</head>
-<body>
-  <iframe src="https://witty-404.zimkk.workers.dev/html?theme=dark" title="404 Page"></iframe>
-</body>
-</html>
+<iframe
+  src="https://witty-404.zimkk.workers.dev/html?theme=dark"
+  style="width: 100vw; height: 100vh; border: none; display: block;"
+  title="404 Error Page"
+></iframe>
 ```
 
 ---
 
-## 💻 Terminal CLI
+## 📡 Complete Endpoint Matrix
 
-Fetch and enjoy jokes directly from your command line:
+| Method & Path | Return Type | Description & Query Options |
+| :--- | :--- | :--- |
+| `GET /html` | `text/html` | Standalone full-bleed 404 page. Options: `?id=`, `?theme=dark\|light\|matrix\|glitch`, `?tag=` |
+| `GET /json` (or `GET /`) | `application/json` | Structured JSON joke payload with title, logs, footnote, and metadata tags. |
+| `GET /roast` | `application/json` / `text/html` | Path-aware error engine. Options: `?path=/missing/route`, `&format=html` |
+| `GET /terminal` | `application/json` | Returns array of diagnostic log strings for CLI output. |
+| `GET /text` | `text/plain` | Plaintext disaster joke formatted for terminal / CI output. |
+| `GET /svg` | `image/svg+xml` | Crisp 1200x630 vector social card for OpenGraph / Discord embeds. |
+| `GET /all` | `application/json` | Returns the entire catalog of all 25+ disaster scenarios. |
+| `GET /stats` | `application/json` | Global impression leaderboard tracking disaster hits. |
+| `GET /favicon.svg` | `image/svg+xml` | Vector 404 SVG icon for browser tabs. |
+
+---
+
+## 💻 CLI Quickstart
+
+Fetch jokes directly inside your terminal or CI/CD pipelines:
 
 ```bash
-# Random joke with colors & debug trace
-npx witty-404
+# 1. Fetch formatted JSON payload
+curl -s https://witty-404.zimkk.workers.dev/json | jq
 
-# Filter by tags
-npx witty-404 --tag=deploy
-npx witty-404 --tag=git
+# 2. Fetch raw ASCII terminal logs
+curl -s https://witty-404.zimkk.workers.dev/text
 
-# Output raw JSON or terminal logs only
-npx witty-404 --json
-npx witty-404 --terminal
+# 3. Dynamic path roasting
+curl -s "https://witty-404.zimkk.workers.dev/roast?path=/api/v2/payment/checkout"
 ```
 
 ---
 
-## 📡 Complete API Reference
+## 👨‍💻 Incident Commander
 
-**Base Endpoint**: `https://witty-404.zimkk.workers.dev` • **[Interactive Docs ↗](https://witty-404.zimkk.workers.dev/docs)**
+Crafted with humor by **Hassan Nazir ([@zimkk](https://github.com/zimkk))**.
 
-| Endpoint | Returns | Description & Parameters |
-| :--- | :--- | :--- |
-| `GET /` or `GET /json` | JSON | Random structured joke. Supports `?seed=`, `?id=`, `?tag=` |
-| `GET /html` | HTML | Full-page 3D parallax scene. Supports `?theme=system\|dark\|light\|matrix\|glitch` |
-| `GET /roast?path=/foo` | JSON / HTML | Path-aware roast generator. Pass `&format=html` for styled scene |
-| `GET /svg` | SVG | 1200x630 dynamic OpenGraph share card image |
-| `GET /favicon.svg` | SVG | Official 404 vector favicon for browser tabs |
-| `GET /terminal` | JSON Array | Raw array of terminal logs to blame the intern |
-| `GET /text` | Plain Text | Plain text title + subtitle + footnote |
-| `GET /all` | JSON Array | Complete library of all 25 jokes |
-| `GET /count` | JSON | Total joke count `{ "count": 25 }` |
-| `GET /stats` | JSON | KV-backed global disaster leaderboard |
-| `GET /docs` | HTML | Interactive documentation and live endpoint tester |
-| `GET /demo` | HTML | Interactive developer sandbox & joke gallery |
-
-### Query Parameters
-
-- **`theme`**: `system` (default), `dark`, `light`, `matrix`, `glitch`
-- **`id`**: Request a specific joke (e.g. `?id=plane-crash`, `?id=daves-laptop`, `?id=node-modules`, `?id=perfect-uptime`, `?id=friday-deploy`).
-- **`tag`**: Filter pool by category (`deploy`, `refactor`, `blame`, `legacy`, `meetings`, `database`, `frontend`, `backend`, `security`, `ai`, `git`, `devops`, `infra`, `dns`, `cache`).
-- **`seed`**: Base-36 string or integer for reproducible picks across renders.
-
----
-
-## 🛠️ Self-Hosting on Cloudflare Workers
-
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/zimkk/witty-404.git
-   cd witty-404
-   npm install
-   ```
-
-2. **Create the KV Namespace**:
-   ```bash
-   npx wrangler kv:namespace create WITTY_404_STATS
-   ```
-   *Paste the resulting ID into `wrangler.toml`.*
-
-3. **Run Locally**:
-   ```bash
-   npm run dev
-   ```
-
-4. **Deploy**:
-   ```bash
-   npm run deploy
-   ```
-
----
-
-## 🤝 Contributing Jokes
-
-We love community submissions!
-1. Add your joke JSON in `jokes/<kebab-case-id>.json`.
-2. Follow the guidelines in [`jokes/_schema.md`](jokes/_schema.md).
-3. Validate locally:
-   ```bash
-   npm run validate-jokes
-   npm test
-   ```
-4. Open a PR! See [`CONTRIBUTING.md`](CONTRIBUTING.md).
+- 🐙 **GitHub**: [@zimkk](https://github.com/zimkk)
+- 📦 **Repository**: [zimkk/witty-404](https://github.com/zimkk/witty-404)
+- 🤝 **Contributing**: [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ---
 
 ## 📄 License
 
-MIT © [Hassan Nazir](https://hassannazir.dev)
+MIT License — see [LICENSE](LICENSE) for details.

@@ -9,7 +9,7 @@ export const docsHtml: string = `<!DOCTYPE html>
 
   <style>
     /* ==========================================================================
-       OBSIDIAN MINIMALIST API DOCUMENTATION
+       INTENSE PITCH-BLACK DEVELOPER DOCUMENTATION DESIGN SYSTEM
        ========================================================================== */
     *, *::before, *::after {
       box-sizing: border-box;
@@ -18,21 +18,21 @@ export const docsHtml: string = `<!DOCTYPE html>
     }
 
     :root {
-      --bg: #07090E;
-      --sidebar-bg: #0B0E14;
-      --card-bg: #0D1117;
-      --card-elevated: #161B22;
-      --border: #21262D;
-      --border-hover: #30363D;
-      --text-white: #F0F6FC;
+      --bg: #000000;
+      --sidebar-bg: #04060A;
+      --card-bg: #07090E;
+      --card-elevated: #0E121A;
+      --border: #181C26;
+      --border-hover: #262D3D;
+      --text-white: #FFFFFF;
       --text-muted: #8B949E;
-      --text-dim: #6E7681;
+      --text-dim: #545D68;
       --accent: #38BDF8;
-      --accent-dim: rgba(56, 189, 248, 0.1);
+      --accent-dim: rgba(56, 189, 248, 0.08);
       --success: #10B981;
       --danger: #EF4444;
       --warning: #F59E0B;
-      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
       --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco, Consolas, monospace;
     }
 
@@ -49,22 +49,24 @@ export const docsHtml: string = `<!DOCTYPE html>
       display: flex;
       flex-direction: column;
       line-height: 1.6;
+      background: #000000;
     }
 
-    /* Top Nav */
+    /* Top Navigation */
     header.docs-nav {
       position: sticky;
       top: 0;
       z-index: 100;
-      background: rgba(7, 9, 14, 0.9);
-      backdrop-filter: blur(12px);
+      background: rgba(0, 0, 0, 0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--border);
     }
 
     .nav-container {
       max-width: 1360px;
       margin: 0 auto;
-      padding: 0.8rem 1.5rem;
+      padding: 0.85rem 1.5rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -73,11 +75,18 @@ export const docsHtml: string = `<!DOCTYPE html>
     .nav-brand {
       display: flex;
       align-items: center;
-      gap: 0.6rem;
+      gap: 0.65rem;
       text-decoration: none;
       color: var(--text-white);
-      font-weight: 700;
+      font-weight: 800;
       font-size: 1.05rem;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-logo-svg {
+      width: 24px;
+      height: 24px;
+      display: block;
     }
 
     .nav-brand-badge {
@@ -85,10 +94,10 @@ export const docsHtml: string = `<!DOCTYPE html>
       font-size: 0.7rem;
       color: var(--accent);
       background: var(--accent-dim);
-      border: 1px solid rgba(56, 189, 248, 0.3);
+      border: 1px solid rgba(56, 189, 248, 0.25);
       padding: 0.15rem 0.5rem;
       border-radius: 4px;
-      font-weight: 600;
+      font-weight: 700;
     }
 
     .nav-actions {
@@ -100,7 +109,8 @@ export const docsHtml: string = `<!DOCTYPE html>
     .nav-link {
       color: var(--text-muted);
       text-decoration: none;
-      font-size: 0.875rem;
+      font-size: 0.85rem;
+      font-weight: 500;
       transition: color 0.15s;
     }
     .nav-link:hover { color: var(--text-white); }
@@ -114,6 +124,9 @@ export const docsHtml: string = `<!DOCTYPE html>
       font-size: 0.825rem;
       font-weight: 600;
       text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
       transition: all 0.15s;
     }
     .nav-btn:hover { border-color: var(--accent); }
@@ -165,7 +178,7 @@ export const docsHtml: string = `<!DOCTYPE html>
       text-decoration: none;
       font-size: 0.85rem;
       padding: 0.3rem 0.6rem;
-      border-radius: 6px;
+      border-radius: 4px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -204,18 +217,21 @@ export const docsHtml: string = `<!DOCTYPE html>
 
     .doc-heading {
       font-size: 1.85rem;
-      font-weight: 800;
+      font-weight: 900;
       letter-spacing: -0.03em;
       color: var(--text-white);
+      text-transform: uppercase;
       display: flex;
       align-items: center;
       gap: 0.75rem;
     }
 
     .doc-subheading {
-      font-size: 1.3rem;
-      font-weight: 700;
+      font-size: 1.25rem;
+      font-weight: 800;
       color: var(--text-white);
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
       margin-top: 0.5rem;
     }
 
@@ -229,7 +245,7 @@ export const docsHtml: string = `<!DOCTYPE html>
     .docs-table-container {
       background: var(--card-bg);
       border: 1px solid var(--border);
-      border-radius: 8px;
+      border-radius: 6px;
       overflow-x: auto;
     }
 
@@ -247,7 +263,9 @@ export const docsHtml: string = `<!DOCTYPE html>
       color: var(--text-muted);
       font-family: var(--font-mono);
       font-size: 0.75rem;
-      font-weight: 600;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
     }
 
     table.docs-table td {
@@ -260,7 +278,7 @@ export const docsHtml: string = `<!DOCTYPE html>
     .param-name {
       font-family: var(--font-mono);
       color: #38BDF8;
-      font-weight: 600;
+      font-weight: 700;
     }
 
     .param-type {
@@ -271,9 +289,9 @@ export const docsHtml: string = `<!DOCTYPE html>
 
     /* Code Blocks */
     .code-block-container {
-      background: #040508;
+      background: #000000;
       border: 1px solid var(--border);
-      border-radius: 8px;
+      border-radius: 6px;
       padding: 1rem;
       position: relative;
       overflow-x: auto;
@@ -308,9 +326,9 @@ export const docsHtml: string = `<!DOCTYPE html>
 
     /* Callout Note */
     .callout-note {
-      background: rgba(56, 189, 248, 0.06);
+      background: rgba(56, 189, 248, 0.04);
       border-left: 3px solid var(--accent);
-      border-radius: 0 6px 6px 0;
+      border-radius: 0 4px 4px 0;
       padding: 0.85rem 1.15rem;
       color: var(--text-muted);
       font-size: 0.875rem;
@@ -322,7 +340,7 @@ export const docsHtml: string = `<!DOCTYPE html>
     .tester-card {
       background: var(--card-bg);
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius: 8px;
       padding: 1.5rem;
       display: flex;
       flex-direction: column;
@@ -331,7 +349,7 @@ export const docsHtml: string = `<!DOCTYPE html>
 
     .tester-form-row {
       display: grid;
-      grid-template-columns: 120px 1fr 100px;
+      grid-template-columns: 140px 1fr 100px;
       gap: 0.75rem;
     }
 
@@ -340,7 +358,7 @@ export const docsHtml: string = `<!DOCTYPE html>
       border: 1px solid var(--border);
       color: var(--text-white);
       padding: 0.5rem 0.85rem;
-      border-radius: 6px;
+      border-radius: 4px;
       font-family: var(--font-mono);
       font-size: 0.85rem;
     }
@@ -350,16 +368,16 @@ export const docsHtml: string = `<!DOCTYPE html>
     }
 
     .btn-tester-send {
-      background: var(--accent);
-      color: #000;
+      background: #FFFFFF;
+      color: #000000;
       font-weight: 700;
       font-size: 0.85rem;
       border: none;
-      border-radius: 6px;
+      border-radius: 4px;
       cursor: pointer;
       transition: filter 0.15s;
     }
-    .btn-tester-send:hover { filter: brightness(1.15); }
+    .btn-tester-send:hover { filter: brightness(0.9); }
 
     .tester-response-header {
       display: flex;
@@ -379,9 +397,9 @@ export const docsHtml: string = `<!DOCTYPE html>
     }
 
     .tester-response-viewer {
-      background: #040508;
+      background: #000000;
       border: 1px solid var(--border);
-      border-radius: 8px;
+      border-radius: 6px;
       padding: 1rem;
       max-height: 340px;
       overflow: auto;
@@ -391,19 +409,41 @@ export const docsHtml: string = `<!DOCTYPE html>
       white-space: pre-wrap;
     }
 
+    /* Footer */
+    footer.docs-footer {
+      border-top: 1px solid var(--border);
+      background: #000000;
+      padding: 2.5rem 1.5rem;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    .footer-inner {
+      max-width: 1360px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.25rem;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 1.25rem;
+    }
+    .footer-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .footer-links a:hover { color: var(--text-white); }
+
     @media (max-width: 860px) {
-      .docs-layout {
-        grid-template-columns: 1fr;
-      }
-      aside.docs-sidebar {
-        display: none;
-      }
-      main.docs-content {
-        padding: 2rem 1.25rem 4rem;
-      }
-      .tester-form-row {
-        grid-template-columns: 1fr;
-      }
+      .docs-layout { grid-template-columns: 1fr; }
+      aside.docs-sidebar { display: none; }
+      main.docs-content { padding: 2rem 1.25rem 4rem; }
+      .tester-form-row { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -412,15 +452,21 @@ export const docsHtml: string = `<!DOCTYPE html>
   <!-- Top Navigation -->
   <header class="docs-nav">
     <div class="nav-container">
-      <a href="/" class="nav-brand">
-        <span>💥 witty-404</span>
+      <a href="/demo" class="nav-brand" title="witty-404 Demo">
+        <svg class="nav-logo-svg" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="32" height="32" rx="7" fill="#05070B"/>
+          <rect x="0.5" y="0.5" width="31" height="31" rx="6.5" stroke="#1E2538"/>
+          <text x="16" y="21" fill="#38BDF8" font-family="-apple-system, BlinkMacSystemFont, 'SF Mono', ui-monospace, monospace" font-size="11" font-weight="900" text-anchor="middle" letter-spacing="-0.5">404</text>
+          <circle cx="26" cy="7" r="2.5" fill="#EF4444"/>
+        </svg>
+        <span>witty-404</span>
         <span class="nav-brand-badge">DOCS</span>
       </a>
       <div class="nav-actions">
         <a href="/demo" class="nav-link">Interactive Demo</a>
         <a href="/html" target="_blank" class="nav-link">Live Scene ↗</a>
         <a href="https://github.com/zimkk/witty-404" target="_blank" rel="noopener noreferrer" class="nav-btn">
-          ⭐ GitHub
+          ⭐ Star on GitHub
         </a>
       </div>
     </div>
@@ -433,7 +479,6 @@ export const docsHtml: string = `<!DOCTYPE html>
         <div class="sidebar-section-title">Overview</div>
         <ul class="sidebar-nav-list">
           <li><a href="#quickstart" class="sidebar-link active">60-Second Quickstart</a></li>
-          <li><a href="#edge-arch" class="sidebar-link">Edge Architecture</a></li>
           <li><a href="#tester" class="sidebar-link">Live API Tester</a></li>
         </ul>
       </div>
@@ -496,11 +541,11 @@ export const docsHtml: string = `<!DOCTYPE html>
       <section id="quickstart" class="doc-section">
         <h1 class="doc-heading">API Documentation — witty-404</h1>
         <p class="doc-lead">
-          <strong>witty-404</strong> is a zero-dependency, open-source HTTP API that delivers hilarious, developer-relatable 404 disaster scenes, formatted JSON payloads, ASCII terminal diagnostics, and dynamic SVG share cards in sub-5ms latency from Cloudflare Workers edge nodes globally.
+          <strong>witty-404</strong> is an open-source, zero-dependency HTTP error engine hosted globally on Cloudflare Workers edge nodes. It delivers standalone error pages with pure CSS animated diagnostics, formatted JSON payloads, ASCII terminal logs, and dynamic social cards in sub-5ms latency.
         </p>
 
         <div class="callout-note">
-          <strong>Zero API Keys Required:</strong> All endpoints are public, unauthenticated, and return <code>Access-Control-Allow-Origin: *</code>. Dynamic responses include strict anti-caching headers (<code>Cache-Control: no-store</code>) so every request shuffles fresh comedic relief.
+          <strong>Zero API Keys Required:</strong> All endpoints are public, unauthenticated, and return <code>Access-Control-Allow-Origin: *</code>. Dynamic responses include strict anti-caching headers (<code>Cache-Control: no-store</code>) so every request delivers fresh comedic relief.
         </div>
 
         <h2 class="doc-subheading">60-Second Terminal Quickstart</h2>
@@ -519,7 +564,7 @@ curl -s "https://witty-404.zimkk.workers.dev/roast?path=/api/v1/auth/token"</div
 
       <!-- Live Interactive API Tester -->
       <section id="tester" class="doc-section">
-        <h2 class="doc-heading">⚡ Live API Tester Console</h2>
+        <h2 class="doc-heading">Live API Tester Console</h2>
         <p class="doc-lead">Test any witty-404 endpoint directly in your browser without leaving the documentation.</p>
 
         <div class="tester-card">
@@ -549,7 +594,7 @@ curl -s "https://witty-404.zimkk.workers.dev/roast?path=/api/v1/auth/token"</div
       <section id="endpoint-html" class="doc-section">
         <h2 class="doc-heading"><code>GET /html</code> — Standalone Error Scene</h2>
         <p class="doc-lead">
-          Renders a complete, full-bleed standalone HTML 404 page with the diagnostic terminal, animated streaming logs, and synchronized airplane flight crash sequence.
+          Renders a complete, full-bleed standalone HTML 404 page featuring the diagnostic terminal, animated streaming logs, synchronized airplane flight crash sequence, and action buttons.
         </p>
 
         <h3 class="doc-subheading">Query Parameters</h3>
@@ -596,7 +641,7 @@ curl -s "https://witty-404.zimkk.workers.dev/roast?path=/api/v1/auth/token"</div
       <section id="endpoint-json" class="doc-section">
         <h2 class="doc-heading"><code>GET /json</code> (or <code>GET /</code>) — Random Joke Payload</h2>
         <p class="doc-lead">
-          Returns the complete structured JSON payload for a joke, including title, subtitle, diagnostic logs array, footnote, and metadata.
+          Returns the complete structured JSON payload for a disaster joke, including title, subtitle, diagnostic logs array, footnote, and metadata tags.
         </p>
 
         <div class="code-block-container">
@@ -651,6 +696,27 @@ curl -s "https://witty-404.zimkk.workers.dev/roast?path=/api/v1/auth/token"</div
         </div>
       </section>
 
+      <!-- Endpoint: GET /terminal -->
+      <section id="endpoint-terminal" class="doc-section">
+        <h2 class="doc-heading"><code>GET /terminal</code> — Diagnostic Log Array</h2>
+        <p class="doc-lead">
+          Returns an array of strings representing terminal diagnostic steps for direct insertion into custom CLI scripts, CI runners, or custom terminals.
+        </p>
+
+        <div class="code-block-container">
+          <button class="btn-copy-code" onclick="copyCode(this, 'curl -s https://witty-404.zimkk.workers.dev/terminal?id=daves-laptop')">Copy</button>
+          <div class="code-block">[
+  "> checking local git log...",
+  "> last modified: 6 months ago by dave@acme.corp",
+  "> pinging Dave on Slack...",
+  "> Dave's status: 'hiking in Patagonia until 2027'",
+  "> searching internal wiki...",
+  "> wiki page last updated by Dave: 'TODO: document this'",
+  "> closing ticket as WONTFIX"
+]</div>
+        </div>
+      </section>
+
       <!-- Endpoint: GET /svg -->
       <section id="endpoint-svg" class="doc-section">
         <h2 class="doc-heading"><code>GET /svg</code> — Dynamic 1200x630 Social Card</h2>
@@ -662,6 +728,63 @@ curl -s "https://witty-404.zimkk.workers.dev/roast?path=/api/v1/auth/token"</div
           <button class="btn-copy-code" onclick="copyCode(this, '[![404](https://witty-404.zimkk.workers.dev/svg?theme=dark)](https://witty-404.zimkk.workers.dev)')">Copy</button>
           <div class="code-block">&lt;!-- GitHub Markdown Embed --&gt;
 [![404](https://witty-404.zimkk.workers.dev/svg?theme=dark)](https://witty-404.zimkk.workers.dev)</div>
+        </div>
+      </section>
+
+      <!-- Endpoint: GET /text -->
+      <section id="endpoint-text" class="doc-section">
+        <h2 class="doc-heading"><code>GET /text</code> — Plaintext Terminal Banner</h2>
+        <p class="doc-lead">
+          Returns a formatted plain text block ready to pipe into terminal scripts, webhooks, or serverless logs without JSON parsing.
+        </p>
+
+        <div class="code-block-container">
+          <button class="btn-copy-code" onclick="copyCode(this, 'curl -s https://witty-404.zimkk.workers.dev/text')">Copy</button>
+          <div class="code-block">=== HTTP 404: Your request took off, found nothing, and did not survive re-entry. ===
+The page was deleted during a refactor that was 'just cleanup'.
+
+> verifying route exists in routing table...
+> route deleted in commit: 3f8a91c ('minor cleanup')
+> PR description: 'cleaned up some unused files'
+> files deleted: 412
+> blaming the intern...
+> intern quit in 2023.
+> shipping anyway 🚀
+
+--- HTTP 404 • Flight Recorder Recovered ---</div>
+        </div>
+      </section>
+
+      <!-- Endpoint: GET /all, /stats, /count -->
+      <section id="endpoint-meta" class="doc-section">
+        <h2 class="doc-heading">Metadata & Utilities: <code>/all</code>, <code>/stats</code>, <code>/count</code></h2>
+        <p class="doc-lead">
+          Explore the disaster catalog, inspect global hit analytics, and query current database metrics.
+        </p>
+
+        <div class="docs-table-container">
+          <table class="docs-table">
+            <thead>
+              <tr><th>ENDPOINT</th><th>RESPONSE</th><th>DESCRIPTION</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>GET /all</code></td>
+                <td>JSON Array</td>
+                <td>Returns all 25+ disaster joke objects.</td>
+              </tr>
+              <tr>
+                <td><code>GET /stats</code></td>
+                <td>JSON</td>
+                <td>Returns the global joke impression leaderboard.</td>
+              </tr>
+              <tr>
+                <td><code>GET /count</code></td>
+                <td>JSON</td>
+                <td>Returns total active disaster scenarios count.</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </section>
 
@@ -694,9 +817,42 @@ app.use((req, res) => {
     .then(html => res.status(404).type("html").send(html));
 });</div>
         </div>
+
+        <h3 class="doc-subheading" id="recipe-vercel">Vercel Proxy (vercel.json)</h3>
+        <div class="code-block-container">
+          <button class="btn-copy-code" onclick="copyCode(this, '{\n  \"routes\": [\n    { \"handle\": \"filesystem\" },\n    { \"src\": \"/(.*)\", \"dest\": \"https://witty-404.zimkk.workers.dev/roast?path=/$1&format=html\", \"status\": 404 }\n  ]\n}')">Copy</button>
+          <div class="code-block">{
+  "routes": [
+    { "handle": "filesystem" },
+    { "src": "/(.*)", "dest": "https://witty-404.zimkk.workers.dev/roast?path=/$1&format=html", "status": 404 }
+  ]
+}</div>
+        </div>
+
+        <h3 class="doc-subheading" id="recipe-netlify">Netlify (_redirects)</h3>
+        <div class="code-block-container">
+          <button class="btn-copy-code" onclick="copyCode(this, '/*  https://witty-404.zimkk.workers.dev/html?theme=dark  404')">Copy</button>
+          <div class="code-block"># _redirects
+/*  https://witty-404.zimkk.workers.dev/html?theme=dark  404</div>
+        </div>
       </section>
     </main>
   </div>
+
+  <!-- Site Footer -->
+  <footer class="docs-footer">
+    <div class="footer-inner">
+      <div>
+        <a href="/demo" style="color: var(--text-white); text-decoration: none; font-weight: 800;">witty-404</a> · MIT Licensed · Created by <a href="https://github.com/zimkk" target="_blank" style="color: var(--accent); text-decoration: none;">Hassan Nazir</a>
+      </div>
+      <div class="footer-links">
+        <a href="/demo">Interactive Demo</a>
+        <a href="/html" target="_blank">Live Scene</a>
+        <a href="https://github.com/zimkk/witty-404" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="/stats">Leaderboard</a>
+      </div>
+    </div>
+  </footer>
 
   <script>
     async function runApiTest() {
