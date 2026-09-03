@@ -54,40 +54,52 @@ export function renderHtmlPage(joke: Joke, options: RenderOptions = {}): string 
   </style>
 </head>
 <body>
-  <!-- Ambient CRT scanline overlay -->
-  <div class="scene-scanlines" aria-hidden="true"></div>
 
-  <!-- Full-Page Scene Root Container -->
-  <div class="scene-viewport-root">
+  <main class="main-wrapper">
+    <!-- Top Status Indicator -->
+    <div class="top-hud">
+      <div class="hud-badge">
+        <span class="dot"></span>
+        <span>HTTP 404 NOT FOUND</span>
+      </div>
+      <div class="hud-badge">
+        <span>THEME: ${escapeHtml(selectedTheme.toUpperCase())}</span>
+      </div>
+    </div>
 
-    <!-- 1. Monumental 404 Numeral Stage (Z-Index: 1) -->
+    <!-- Big Bold 404 -->
     ${numeralsHtml}
 
-    <!-- 2. Scattered Debris, Pinned Logs & Graffiti Title (Z-Index: 20) -->
+    <!-- Joke Headline Block -->
+    <div class="joke-headline-block">
+      <h1 class="joke-title">${joke.emoji} ${context.formattedTitle}</h1>
+      <p class="joke-subtitle">${context.formattedSubtitle}</p>
+    </div>
+
+    <!-- Core Meme Card / Terminal Set Piece -->
     ${debrisHtml}
 
-    <!-- 3. Sticky Bottom Action Toolbar (Z-Index: 40) -->
-    <footer class="scene-action-toolbar">
-      <div class="toolbar-grp">
-        <button type="button" class="scene-btn" id="btn-copy-logs" onclick="copyLogs()">
-          📋 Copy Logs
-        </button>
-        <a href="/svg?id=${encodeURIComponent(joke.id)}&theme=${encodeURIComponent(selectedTheme)}" target="_blank" class="scene-btn" title="Open Share Card SVG">
-          🖼️ Share Card
-        </a>
-        <a href="/docs" target="_blank" class="scene-btn" title="Open API Docs">
-          ⚡ API Docs
-        </a>
-      </div>
+    <!-- Footnote -->
+    <div class="joke-footnote-text">
+      ${context.formattedFootnote}
+    </div>
 
-      <div class="toolbar-grp">
-        <button type="button" class="scene-btn scene-btn-primary" onclick="loadAnotherJoke()">
-          🎲 Another Joke
-        </button>
-      </div>
+    <!-- Action Toolbar -->
+    <footer class="action-toolbar">
+      <button type="button" class="btn-action" id="btn-copy-logs" onclick="copyLogs()">
+        📋 Copy Logs
+      </button>
+      <button type="button" class="btn-action btn-action-primary" onclick="loadAnotherJoke()">
+        🎲 Another Joke
+      </button>
+      <a href="/svg?id=${encodeURIComponent(joke.id)}&theme=${encodeURIComponent(selectedTheme)}" target="_blank" class="btn-action" title="Open Share Card SVG">
+        🖼️ Share Card
+      </a>
+      <a href="/docs" target="_blank" class="btn-action" title="Open API Docs">
+        ⚡ API Docs
+      </a>
     </footer>
-
-  </div>
+  </main>
 
   <script>
     ${scripts}

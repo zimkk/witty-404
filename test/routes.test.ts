@@ -62,7 +62,7 @@ describe('Worker Routes Smoke Tests', () => {
     expect(svg).toContain('404');
   });
 
-  it('GET /html returns 200 HTML with standalone full-page scene', async () => {
+  it('GET /html returns 200 HTML with standalone page', async () => {
     const req = new Request('https://witty-404.dev/html?id=plane-crash&theme=dark');
     const res = await worker.fetch(req, mockEnv, mockCtx);
 
@@ -70,31 +70,27 @@ describe('Worker Routes Smoke Tests', () => {
     expect(res.headers.get('Content-Type')).toContain('text/html');
     const html = await res.text();
     expect(html).toContain('<!DOCTYPE html>');
-    expect(html).toContain('monumental-404-stage');
-    expect(html).toContain('set-plane-crash');
-    expect(html).toContain('scene-graffiti-block');
+    expect(html).toContain('big-404-title');
+    expect(html).toContain('terminal-card');
     expect(html).toContain('data-theme="dark"');
   });
 
-  it('GET /html renders tailored full-page set pieces and debris per joke', async () => {
+  it('GET /html renders tailored meme card formats per joke', async () => {
     const reqDave = new Request('https://witty-404.dev/html?id=daves-laptop');
     const resDave = await worker.fetch(reqDave, mockEnv, mockCtx);
     const htmlDave = await resDave.text();
-    expect(htmlDave).toContain('set-daves-laptop');
-    expect(htmlDave).toContain('inscene-chat-widget');
-    expect(htmlDave).toContain('typing forever...');
+    expect(htmlDave).toContain('imessage-card');
+    expect(htmlDave).toContain('is typing...');
 
     const reqTweet = new Request('https://witty-404.dev/html?id=friday-deploy');
     const resTweet = await worker.fetch(reqTweet, mockEnv, mockCtx);
     const htmlTweet = await resTweet.text();
-    expect(htmlTweet).toContain('set-friday-deploy');
-    expect(htmlTweet).toContain('inscene-tweet-card');
+    expect(htmlTweet).toContain('tweet-card');
 
     const reqStatus = new Request('https://witty-404.dev/html?id=perfect-uptime');
     const resStatus = await worker.fetch(reqStatus, mockEnv, mockCtx);
     const htmlStatus = await resStatus.text();
-    expect(htmlStatus).toContain('set-perfect-uptime');
-    expect(htmlStatus).toContain('uptime-lamp-fixture');
+    expect(htmlStatus).toContain('status-card');
   });
 
   it('GET /text returns 200 plain text', async () => {

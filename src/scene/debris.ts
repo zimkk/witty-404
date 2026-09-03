@@ -12,160 +12,139 @@ export interface SceneContext {
 
 export function getSceneDebrisHtml(ctx: SceneContext): string {
   const cfg = getJokeFormatConfig(ctx.joke.id);
-  const sampleLog = ctx.sanitizedLogs[0] || '> checking if route exists...';
-  const lastPunchline = ctx.sanitizedLogs[ctx.sanitizedLogs.length - 1] || '> 404 NOT FOUND';
+  const logLines = ctx.sanitizedLogs;
 
-  // Format log lines for the pinned sticky note or telemetry card
-  const pinnedLogsList = ctx.sanitizedLogs
-    .slice(0, 4)
-    .map((l) => `<div class="sticky-log-line">${escapeHtml(l)}</div>`)
-    .join('');
-
-  return `
-    <div class="scattered-scene-viewport">
-
-      <!-- 1. Top Perimeter: Status & Live Victim Readout -->
-      <div class="scene-top-hud">
-        <div class="victim-counter-pill" title="Live incident tracking">
-          <span class="victim-pulse-dot"></span>
-          <span class="victim-text">INCIDENT VICTIM #4,213 TODAY</span>
-        </div>
-        <div class="scene-location-tag">
-          <span class="hud-region">IAD1-EDGE</span> • <span class="hud-route">404 VAPORIZED</span>
-        </div>
-      </div>
-
-      <!-- 2. Pinned Sticky Note / Terminal Log Scrap (Top-Left) -->
-      <div class="pinned-sticky-note" data-drag-sticker="true" title="Drag this note">
-        <div class="sticky-pin">📌</div>
-        <div class="sticky-header">// LOG TELEMETRY</div>
-        <div class="sticky-content">
-          ${pinnedLogsList}
-        </div>
-        <div class="sticky-tag">${escapeHtml(cfg.badge || 'ERROR DUMP')}</div>
-      </div>
-
-      <!-- 3. In-Scene Native Meme Fragment (Top-Right / Asymmetric) -->
-      ${getInSceneMemeSnippet(ctx, cfg)}
-
-      <!-- 4. Foreground Graffiti Punchline & Title (Compositionally Offset) -->
-      <div class="scene-graffiti-block" data-draggable="true">
-        <div class="graffiti-eyebrow">
-          <span class="eyebrow-tag">${ctx.joke.emoji} #${ctx.joke.tags[0] || 'incident'}</span>
-          <span class="graffiti-stamp">${escapeHtml(cfg.stampText || 'CERTIFIED SKILL ISSUE')}</span>
-        </div>
-        <h1 class="graffiti-title">${ctx.formattedTitle}</h1>
-        <p class="graffiti-subtitle">${ctx.formattedSubtitle}</p>
-        <div class="graffiti-punchline-highlight">
-          <span class="punch-arrow">↳</span> ${escapeHtml(lastPunchline)}
-        </div>
-      </div>
-
-      <!-- 5. Floating Stickers / Debris Badges -->
-      <div class="floating-sticker sticker-a" data-drag-sticker="true">🔥 IT WORKED ON LOCALHOST</div>
-      <div class="floating-sticker sticker-b" data-drag-sticker="true">💀 LGTM SHIP IT</div>
-
-      <!-- 6. Bottom Fine Print Footnote -->
-      <div class="scene-fineprint-footer">
-        <div class="fineprint-content">
-          ${ctx.formattedFootnote}
-        </div>
-      </div>
-
-      <!-- 7. Full-Bleed Breaking News Ticker (for news-archetype jokes) -->
-      ${
-        cfg.archetype === 'news_chyron'
-          ? `
-        <div class="scene-bottom-ticker-bar">
-          <div class="ticker-live-badge"><span class="ticker-dot"></span> BREAKING</div>
-          <div class="ticker-marquee-track">
-            <span class="ticker-text-item">${escapeHtml(cfg.tickerText || 'LIVE: HTTP 404 CRASH SITE CONFIRMED • ON-CALL SEEN PACKING BAGS')}</span>
-            <span class="ticker-text-item">${escapeHtml(cfg.tickerText || 'LIVE: HTTP 404 CRASH SITE CONFIRMED • ON-CALL SEEN PACKING BAGS')}</span>
-          </div>
-        </div>
-      `
-          : ''
-      }
-
-    </div>
-  `;
-}
-
-function getInSceneMemeSnippet(ctx: SceneContext, cfg: any): string {
   switch (cfg.archetype) {
     case 'imessage':
       return `
-        <div class="inscene-chat-widget" data-drag-sticker="true">
-          <div class="chat-widget-header">
-            <span class="chat-av">${cfg.avatarEmoji || '💻'}</span>
-            <span class="chat-name">${escapeHtml(cfg.authorName || 'Dave')}</span>
+        <div class="meme-card imessage-card">
+          <div class="imessage-top">
+            <span>${cfg.avatarEmoji || '💻'}</span>
+            <span>${escapeHtml(cfg.authorName || 'Dave')}</span>
+            <span style="color: var(--text-dim); font-size: 0.75rem; margin-left: auto;">${escapeHtml(cfg.handle || 'iMessage')}</span>
           </div>
-          <div class="chat-widget-bubble">
-            "It was working before I closed my laptop."
-          </div>
-          <div class="chat-widget-typing">
-            <div class="typing-dot-jump"></div>
-            <div class="typing-dot-jump"></div>
-            <div class="typing-dot-jump"></div>
-            <span class="typing-who">typing forever...</span>
-          </div>
-        </div>
-      `;
 
-    case 'storage_panic':
-      return `
-        <div class="inscene-panic-stack" data-drag-sticker="true" onclick="escalatePanic(this)">
-          <div class="panic-alert-box">
-            <div class="panic-icon">⚠️</div>
-            <div class="panic-text">
-              <strong>Disk Warning</strong><br/>
-              4.8 GB node_modules detected
+          <div class="chat-bubble-stack">
+            ${logLines.map((l, i) => {
+              const isMe = i % 2 === 1;
+              return `<div class="bubble ${isMe ? 'bubble-me' : 'bubble-them'}">${escapeHtml(l)}</div>`;
+            }).join('')}
+          </div>
+
+          <div class="typing-row">
+            <div class="typing-box">
+              <span class="typing-dot"></span>
+              <span class="typing-dot"></span>
+              <span class="typing-dot"></span>
             </div>
+            <span class="typing-text">${escapeHtml((cfg.authorName || 'Dave').split(' ')[0])} is typing...</span>
           </div>
         </div>
       `;
 
     case 'tweet':
       return `
-        <div class="inscene-tweet-card" data-drag-sticker="true">
-          <div class="tweet-top-mini">
-            <span class="t-av">${cfg.avatarEmoji || '🧑‍💻'}</span>
-            <span class="t-name">${escapeHtml(cfg.authorName || 'DevOps')}</span>
-            <span class="t-badge">✓</span>
+        <div class="meme-card tweet-card">
+          <div class="tweet-author-header">
+            <span class="tweet-av">${cfg.avatarEmoji || '🧑‍💻'}</span>
+            <div class="tweet-names">
+              <div class="tweet-name-line">
+                <span>${escapeHtml(cfg.authorName || 'DevOps Lead')}</span>
+                <span class="tweet-verified">✓</span>
+              </div>
+              <span class="tweet-handle">${escapeHtml(cfg.handle || '@on_call_survivor')}</span>
+            </div>
           </div>
-          <div class="tweet-body-mini">
-            "Just pushed directly to main. Hope nothing breaks!"
+
+          <div style="font-size: 1.05rem; font-weight: 600; color: #FFF; margin-bottom: 0.5rem;">
+            ${ctx.formattedTitle}
           </div>
-          <div class="tweet-stat-mini">
-            404 Reposts • 0 Passing Tests
+
+          <div class="tweet-quote-box">
+            <div style="font-size: 0.75rem; color: #64748B; margin-bottom: 0.35rem;">REPLYING TO @production_server:</div>
+            ${logLines.slice(0, 3).map(l => `<div>${escapeHtml(l)}</div>`).join('')}
+          </div>
+
+          <div class="tweet-stats-line">
+            <span><strong>404</strong> Reposts</span>
+            <span><strong>1.2M</strong> Views</span>
+            <span><strong>0</strong> Passing Tests</span>
           </div>
         </div>
       `;
 
     case 'status_page':
       return `
-        <div class="inscene-status-strip" data-drag-sticker="true" onclick="triggerStatusGlitch()">
-          <span class="status-pulse-green"></span>
-          <span>Status: 100% Operational</span>
-          <span class="status-fire-tag">🔥 (UNTRUE)</span>
+        <div class="meme-card status-card">
+          <div class="status-header-line">
+            <span>⚡ Global Cloud Status</span>
+            <span style="color: #34D399; font-family: var(--font-mono); font-size: 0.75rem;">99.999% SLA</span>
+          </div>
+
+          <div class="status-banner">
+            <span style="color: #10B981;">🟢</span> All Systems Operational
+          </div>
+
+          <div class="status-grid">
+            <div class="status-row"><span>Authentication Gateway</span> <span style="color: #34D399;">Operational</span></div>
+            <div class="status-row"><span>Billing Pipeline</span> <span style="color: #34D399;">Operational</span></div>
+            <div class="status-row failing"><span>Your Requested URL</span> <span>🔥 404 VAPORIZED</span></div>
+          </div>
+        </div>
+      `;
+
+    case 'receipt_stamp':
+      return `
+        <div class="meme-card receipt-card">
+          <div style="text-align: center; margin-bottom: 0.75rem; font-weight: 800;">
+            💥 INCIDENT REPORT AUDIT 💥
+          </div>
+          <div style="border-top: 1px dashed var(--card-border); padding-top: 0.75rem; display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.8rem; color: #38BDF8;">
+            ${logLines.map((l, i) => `<div>#${i + 1} ${escapeHtml(l)}</div>`).join('')}
+          </div>
+          <div class="receipt-stamp-overlay">
+            ${escapeHtml(cfg.stampText || 'CERTIFIED BRUH MOMENT')}
+          </div>
         </div>
       `;
 
     case 'stackoverflow':
       return `
-        <div class="inscene-so-box" data-drag-sticker="true">
-          <div class="so-mini-badge">[CLOSED - DUPLICATE]</div>
-          <div class="so-mini-ans">
-            <em>"Never mind, solved it."</em>
-            <div class="so-mini-foot">(Last seen 8 years ago)</div>
+        <div class="meme-card" style="padding: 1.5rem;">
+          <div style="display: inline-block; background: rgba(239, 68, 68, 0.15); color: #F87171; font-family: var(--font-mono); font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.5rem; border-radius: 4px; margin-bottom: 0.75rem;">
+            [CLOSED - DUPLICATE]
+          </div>
+          <div style="font-size: 1.1rem; font-weight: 700; color: #FFF; margin-bottom: 0.75rem;">
+            ${ctx.formattedTitle}
+          </div>
+          <div style="background: #05070B; border: 1px solid var(--card-border); border-radius: 6px; padding: 0.85rem; font-family: var(--font-mono); font-size: 0.8rem; color: #93C5FD; margin-bottom: 1rem;">
+            ${logLines.slice(0, 3).map(l => `<div>${escapeHtml(l)}</div>`).join('')}
+          </div>
+          <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 6px; padding: 0.75rem 1rem; font-size: 0.85rem; color: #E2E8F0;">
+            <strong style="color: #34D399;">✓ Accepted Answer:</strong> <em>"Never mind guys, I figured out the fix."</em> <span style="color: #64748B; font-size: 0.75rem;">(No solution attached • 8 yrs ago)</span>
           </div>
         </div>
       `;
 
     default:
+      // Standard Terminal Flight Recorder
       return `
-        <div class="inscene-stamp-card" data-drag-sticker="true" onclick="slamStamp(this)">
-          <div class="stamp-border">${escapeHtml(cfg.stampText || 'CERTIFIED BRUH MOMENT')}</div>
+        <div class="meme-card terminal-card">
+          <div class="terminal-header">
+            <div class="mac-dots">
+              <span class="dot-r"></span>
+              <span class="dot-y"></span>
+              <span class="dot-g"></span>
+            </div>
+            <span>flight_recorder_${escapeHtml(ctx.joke.id)}.log</span>
+            <span style="color: #EF4444; font-weight: 700;">ERR_404</span>
+          </div>
+          <div class="terminal-body">
+            ${logLines.map((l, i) => {
+              const isLast = i === logLines.length - 1;
+              return `<div class="term-line ${isLast ? 'term-line-punch' : ''}">${escapeHtml(l)}</div>`;
+            }).join('')}
+          </div>
         </div>
       `;
   }
