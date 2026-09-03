@@ -120,7 +120,7 @@ export function renderSvgCard(joke: Joke, options: SvgOptions = {}): string {
   <text x="260" y="107" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="13" font-weight="600" fill="${subtitleColor}" text-anchor="middle">#${joke.tags[0] || 'dev'}</text>
 
   <!-- Watermark / URL badge -->
-  <text x="1060" y="107" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" font-weight="600" fill="${accentColor}" text-anchor="end">witty-404.hassannazir.dev</text>
+  <text x="1060" y="107" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" font-weight="600" fill="${accentColor}" text-anchor="end">witty-404.zimkk.workers.dev</text>
 
   <!-- Large Emoji -->
   <text x="1030" y="210" font-size="72" text-anchor="end">${joke.emoji}</text>

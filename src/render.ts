@@ -971,7 +971,7 @@ export function renderHtmlPage(joke: Joke, options: RenderOptions = {}): string 
         <a href="/svg?id=${encodeURIComponent(joke.id)}&theme=${encodeURIComponent(selectedTheme)}" target="_blank" class="btn" title="Open Share Card SVG">
           🖼️ Share Card
         </a>
-        <a href="https://witty-404.hassannazir.dev" target="_blank" class="btn" title="Marketing & Docs">
+        <a href="https://witty-404.zimkk.workers.dev" target="_blank" class="btn" title="Marketing & Docs">
           ⚡ API Docs
         </a>
       </div>

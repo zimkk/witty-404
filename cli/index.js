@@ -69,7 +69,7 @@ https.get(url, (res) => {
       }
 
       console.log(`\n${colors.dim}${parsed.footnote}${colors.reset}\n`);
-      console.log(`${colors.blue}👉 Embed this 404: https://witty-404.hassannazir.dev/html${colors.reset}\n`);
+      console.log(`${colors.blue}👉 Embed this 404: https://witty-404.zimkk.workers.dev/html${colors.reset}\n`);
     } catch (err) {
       console.error('Failed to parse response:', err.message);
       process.exit(1);
