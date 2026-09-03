@@ -1,23 +1,7 @@
+import { getTemplateScripts } from '../templates/scripts';
+
 export function getFullPageSceneScripts(logs: string[]): string {
-  const jsonLogs = JSON.stringify(logs);
-
-  return `
-    const sceneLogs = ${jsonLogs};
-
-    // Copy Logs to Clipboard
-    function copyLogs() {
-      const text = sceneLogs.join('\\n');
-      navigator.clipboard.writeText(text).then(() => {
-        const btn = document.getElementById('btn-copy-logs');
-        if (btn) {
-          const original = btn.innerHTML;
-          btn.innerHTML = '✅ Copied!';
-          setTimeout(() => { btn.innerHTML = original; }, 2000);
-        }
-      });
-    }
-
-    // Load Another Random Joke (Forces Cache-Busting & ID Clearing)
+  return getTemplateScripts(logs) + `
     function loadAnotherJoke() {
       const url = new URL(window.location.href);
       url.searchParams.delete('id');

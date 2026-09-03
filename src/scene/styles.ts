@@ -1,90 +1,11 @@
+import { getTemplateStyles } from '../templates/styles';
+
 export function getFullPageSceneStyles(): string {
-  return `
-    /* ==========================================================================
-       CLEAN, MODERN, DEVELOPER-CENTRIC DESIGN SYSTEM
-       ========================================================================== */
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+  return getTemplateStyles() + `
 
-    :root {
-      --bg: #07090E;
-      --card-bg: #0E121B;
-      --card-border: #1E2638;
-      --card-border-hover: #2F3B54;
-      --text-main: #F8FAFC;
-      --text-muted: #94A3B8;
-      --text-dim: #64748B;
-      --accent: #3B82F6;
-      --accent-glow: rgba(59, 130, 246, 0.2);
-      --danger: #EF4444;
-      --danger-glow: rgba(239, 68, 68, 0.2);
-      --warning: #F59E0B;
-      --success: #10B981;
-      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    }
-
-    [data-theme="light"] {
-      --bg: #F8FAFC;
-      --card-bg: #FFFFFF;
-      --card-border: #E2E8F0;
-      --card-border-hover: #CBD5E1;
-      --text-main: #0F172A;
-      --text-muted: #475569;
-      --text-dim: #94A3B8;
-      --accent: #2563EB;
-      --accent-glow: rgba(37, 99, 235, 0.15);
-    }
-
-    [data-theme="matrix"] {
-      --bg: #020B04;
-      --card-bg: #051408;
-      --card-border: #0F3816;
-      --card-border-hover: #22C55E;
-      --text-main: #4ADE80;
-      --text-muted: #22C55E;
-      --text-dim: #15803D;
-      --accent: #10B981;
-      --accent-glow: rgba(34, 197, 94, 0.3);
-    }
-
-    [data-theme="glitch"] {
-      --bg: #090014;
-      --card-bg: #130424;
-      --card-border: #4C1D95;
-      --card-border-hover: #F43F5E;
-      --text-main: #F43F5E;
-      --text-muted: #E0E7FF;
-      --text-dim: #818CF8;
-      --accent: #06B6D4;
-      --accent-glow: rgba(244, 63, 94, 0.35);
-    }
-
-    html, body {
-      min-height: 100vh;
-      background-color: var(--bg);
-      color: var(--text-main);
-      font-family: var(--font-sans);
-      -webkit-font-smoothing: antialiased;
-      line-height: 1.5;
-    }
-
-    body {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      align-items: center;
-      padding: 2rem 1.5rem;
-      background-image: 
-        radial-gradient(circle at 50% 15%, var(--accent-glow) 0%, transparent 55%),
-        linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-      background-size: 100% 100%, 36px 36px, 36px 36px;
-    }
-
+    /* =====================================================================
+       SCENE WRAPPER — layout used by render.ts
+       ===================================================================== */
     .main-wrapper {
       width: 100%;
       max-width: 780px;
@@ -92,15 +13,14 @@ export function getFullPageSceneStyles(): string {
       flex-direction: column;
       align-items: center;
       text-align: center;
-      margin: auto 0;
+      margin: auto;
+      gap: 1.25rem;
     }
 
-    /* Top HUD / Brand */
     .top-hud {
       display: flex;
       align-items: center;
       gap: 0.75rem;
-      margin-bottom: 1.25rem;
       font-family: var(--font-mono);
       font-size: 0.75rem;
     }
@@ -123,367 +43,220 @@ export function getFullPageSceneStyles(): string {
       border-radius: 50%;
       background: var(--danger);
       box-shadow: 0 0 8px var(--danger);
+      animation: pulseAlert 1.2s infinite ease-in-out;
     }
 
-    /* Big Bold 404 Header */
+    /* =====================================================================
+       404 HERO NUMBER
+       ===================================================================== */
     .hero-404-container {
-      margin-bottom: 0.75rem;
       position: relative;
+      line-height: 1;
     }
 
     .big-404-title {
-      font-size: clamp(6.5rem, 18vw, 11rem);
+      font-size: clamp(7rem, 22vw, 14rem);
       font-weight: 900;
-      line-height: 0.85;
+      line-height: 0.8;
       letter-spacing: -0.06em;
-      background: linear-gradient(180deg, #FFFFFF 20%, #64748B 100%);
+      background: linear-gradient(180deg, #FFFFFF 10%, #3F4860 100%);
       -webkit-background-clip: text;
+      background-clip: text;
       -webkit-text-fill-color: transparent;
-      text-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+      user-select: none;
     }
 
-    [data-theme="matrix"] .big-404-title {
-      background: linear-gradient(180deg, #86EFAC 20%, #15803D 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    [data-theme="glitch"] .big-404-title {
-      background: linear-gradient(180deg, #FDA4AF 20%, #9F1239 100%);
-      -webkit-background-clip: text;
+    /* Per-archetype 404 gradient — changes with the joke's visual world */
+    [data-archetype="news_chyron"] .big-404-title {
+      background: linear-gradient(180deg, #FFFFFF 0%, #EF4444 55%, #7F1D1D 100%);
+      -webkit-background-clip: text; background-clip: text;
       -webkit-text-fill-color: transparent;
     }
-
-    [data-theme="light"] .big-404-title {
-      background: linear-gradient(180deg, #0F172A 20%, #94A3B8 100%);
-      -webkit-background-clip: text;
+    [data-archetype="tweet"] .big-404-title {
+      background: linear-gradient(180deg, #FFFFFF 0%, #1D9BF0 55%, #0C4A6E 100%);
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    [data-archetype="stackoverflow"] .big-404-title {
+      background: linear-gradient(180deg, #FFFFFF 0%, #F48024 55%, #7C2D12 100%);
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    [data-archetype="pr_review"] .big-404-title {
+      background: linear-gradient(180deg, #FFFFFF 0%, #3FB950 55%, #14532D 100%);
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    [data-archetype="storage_panic"] .big-404-title {
+      background: linear-gradient(180deg, #FFFFFF 0%, #FF9500 55%, #7C2D12 100%);
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    [data-archetype="glitch_terminal"] .big-404-title {
+      background: linear-gradient(180deg, #39FF14 0%, #00FFFF 50%, #FF00FF 100%);
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: glitch404 4s infinite;
+    }
+    [data-archetype="receipt_stamp"] .big-404-title {
+      background: linear-gradient(180deg, #FBBF24 0%, #D97706 55%, #92400E 100%);
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    [data-archetype="imessage"] .big-404-title {
+      background: linear-gradient(180deg, #FFFFFF 0%, #0A84FF 55%, #0369A1 100%);
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    [data-archetype="status_page"] .big-404-title {
+      background: linear-gradient(180deg, #34D399 0%, #059669 55%, #064E3B 100%);
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    [data-archetype="corporate_memo"] .big-404-title {
+      background: linear-gradient(180deg, #E2E8F0 0%, #64748B 55%, #1E293B 100%);
+      -webkit-background-clip: text; background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
-    /* Joke Headline & Subtitle */
-    .joke-headline-block {
-      margin-bottom: 1.75rem;
+    /* =====================================================================
+       PER-ARCHETYPE BODY BACKGROUND — the whole page reflects the joke world
+       ===================================================================== */
+    [data-archetype="news_chyron"] body {
+      background-color: #07080C;
+      background-image:
+        radial-gradient(at 50% 0%, rgba(239,68,68,0.28) 0%, transparent 55%),
+        linear-gradient(to right, rgba(255,255,255,0.015) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,0.015) 1px, transparent 1px);
+      background-size: 100% 100%, 32px 32px, 32px 32px;
+    }
+    [data-archetype="tweet"] body {
+      background-color: #000000;
+      background-image:
+        radial-gradient(at 50% 0%, rgba(29,155,240,0.2) 0%, transparent 55%),
+        linear-gradient(to right, rgba(255,255,255,0.015) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,0.015) 1px, transparent 1px);
+      background-size: 100% 100%, 32px 32px, 32px 32px;
+    }
+    [data-archetype="stackoverflow"] body {
+      background-color: #0D0E10;
+      background-image:
+        radial-gradient(at 50% 0%, rgba(244,128,36,0.22) 0%, transparent 55%),
+        linear-gradient(to right, rgba(255,255,255,0.015) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,0.015) 1px, transparent 1px);
+      background-size: 100% 100%, 32px 32px, 32px 32px;
+    }
+    [data-archetype="pr_review"] body {
+      background-color: #010409;
+      background-image:
+        radial-gradient(at 50% 0%, rgba(63,185,80,0.2) 0%, transparent 55%),
+        linear-gradient(to right, rgba(255,255,255,0.012) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,0.012) 1px, transparent 1px);
+      background-size: 100% 100%, 32px 32px, 32px 32px;
+    }
+    [data-archetype="glitch_terminal"] body {
+      background-color: #040308;
+      background-image:
+        radial-gradient(at 25% 0%, rgba(57,255,20,0.18) 0%, transparent 45%),
+        radial-gradient(at 75% 0%, rgba(255,0,255,0.18) 0%, transparent 45%);
+    }
+    [data-archetype="storage_panic"] body {
+      background-color: #08080B;
+      background-image:
+        radial-gradient(at 50% 0%, rgba(255,149,0,0.22) 0%, transparent 55%),
+        linear-gradient(to right, rgba(255,255,255,0.015) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,0.015) 1px, transparent 1px);
+      background-size: 100% 100%, 32px 32px, 32px 32px;
+    }
+    [data-archetype="status_page"] body {
+      background-color: #060C0A;
+      background-image:
+        radial-gradient(at 50% 0%, rgba(16,185,129,0.2) 0%, transparent 55%),
+        linear-gradient(to right, rgba(255,255,255,0.012) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,0.012) 1px, transparent 1px);
+      background-size: 100% 100%, 32px 32px, 32px 32px;
+    }
+    [data-archetype="receipt_stamp"] body {
+      background-color: #09080A;
+      background-image:
+        radial-gradient(at 50% 0%, rgba(251,191,36,0.2) 0%, transparent 55%),
+        linear-gradient(to right, rgba(255,255,255,0.015) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,0.015) 1px, transparent 1px);
+      background-size: 100% 100%, 32px 32px, 32px 32px;
+    }
+    [data-archetype="imessage"] body {
+      background-color: #000000;
+      background-image:
+        radial-gradient(at 50% 0%, rgba(10,132,255,0.15) 0%, transparent 55%);
+    }
+    [data-archetype="corporate_memo"] body {
+      background-color: #090B11;
+      background-image:
+        radial-gradient(at 50% 0%, rgba(100,116,139,0.18) 0%, transparent 55%),
+        linear-gradient(to right, rgba(255,255,255,0.015) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,0.015) 1px, transparent 1px);
+      background-size: 100% 100%, 32px 32px, 32px 32px;
     }
 
-    .joke-title {
-      font-size: clamp(1.4rem, 3.5vw, 2.1rem);
-      font-weight: 800;
-      color: #FFFFFF;
-      line-height: 1.25;
-      letter-spacing: -0.02em;
-      margin-bottom: 0.5rem;
+    /* =====================================================================
+       MISSING ANIMATION TRIGGERS from formats.ts inline --d vars
+       ===================================================================== */
+    .news-tele-line {
+      animation: fadeSlideIn 0.4s var(--d, 0s) both;
     }
-
-    [data-theme="light"] .joke-title {
-      color: #0F172A;
+    .chat-bubble {
+      animation: bubbleIn 0.35s var(--d, 0s) both;
     }
-
-    .joke-subtitle {
-      font-size: clamp(0.95rem, 2vw, 1.1rem);
-      color: var(--text-muted);
-      max-width: 640px;
-      margin: 0 auto;
-      line-height: 1.6;
+    .panic-log-entry {
+      animation: fadeSlideIn 0.3s var(--d, 0s) both;
     }
-
-    /* ==========================================================================
-       CORE MEME SET PIECES (CLEAN & SCREENSHOT-WORTHY)
-       ========================================================================== */
-    .meme-card {
-      width: 100%;
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7);
-      margin-bottom: 1.5rem;
-      text-align: left;
-    }
-
-    /* Format: Terminal / Flight Recorder */
-    .terminal-card {
-      font-family: var(--font-mono);
-    }
-
-    .terminal-header {
-      background: rgba(255, 255, 255, 0.03);
-      border-bottom: 1px solid var(--card-border);
-      padding: 0.65rem 1rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.75rem;
-      color: var(--text-dim);
-    }
-
-    .mac-dots {
-      display: flex;
-      gap: 6px;
-    }
-    .mac-dots span {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-    }
-    .dot-r { background: #EF4444; }
-    .dot-y { background: #F59E0B; }
-    .dot-g { background: #10B981; }
-
-    .terminal-body {
-      padding: 1.25rem 1.5rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.45rem;
-      font-size: 0.85rem;
-    }
-
     .term-line {
-      color: #94A3B8;
-      line-height: 1.5;
+      animation: fadeSlideIn 0.3s var(--d, 0s) both;
     }
 
-    .term-line-punch {
-      color: #38BDF8;
-      font-weight: 700;
+    @keyframes fadeSlideIn {
+      from { opacity: 0; transform: translateX(-10px); }
+      to   { opacity: 1; transform: none; }
     }
 
-    /* Format: Fake iMessage Thread */
-    .imessage-card {
-      padding: 1.25rem 1.5rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
+    @keyframes bubbleIn {
+      from { opacity: 0; transform: scale(0.85) translateY(6px); }
+      to   { opacity: 1; transform: none; }
     }
 
-    .imessage-top {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.85rem;
-      font-weight: 700;
-      color: var(--text-main);
-      border-bottom: 1px solid var(--card-border);
-      padding-bottom: 0.6rem;
+    /* Receipt tear edges */
+    .receipt-zigzag-top {
+      height: 0;
+      border-top: 2px dashed rgba(255,255,255,0.08);
+      margin-bottom: 1.25rem;
+    }
+    .receipt-zigzag-bottom {
+      height: 0;
+      border-bottom: 2px dashed rgba(255,255,255,0.08);
+      margin-top: 1.25rem;
     }
 
-    .chat-bubble-stack {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-
-    .bubble {
-      padding: 0.55rem 0.95rem;
-      border-radius: 18px;
-      font-size: 0.875rem;
-      max-width: 80%;
-      font-family: var(--font-mono);
-    }
-
-    .bubble-them {
-      align-self: flex-start;
-      background: #1E293B;
-      color: #F8FAFC;
-      border-bottom-left-radius: 4px;
-    }
-
-    .bubble-me {
-      align-self: flex-end;
-      background: #2563EB;
-      color: #FFFFFF;
-      border-bottom-right-radius: 4px;
-    }
-
-    .typing-row {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      align-self: flex-start;
-      margin-top: 0.25rem;
-    }
-
-    .typing-box {
-      background: #1E293B;
-      padding: 0.45rem 0.75rem;
-      border-radius: 16px;
-      display: flex;
-      gap: 4px;
-      border-bottom-left-radius: 4px;
-    }
-
-    .typing-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: #94A3B8;
-      animation: jumpDot 1.2s infinite ease-in-out;
-    }
-    .typing-dot:nth-child(2) { animation-delay: 0.2s; }
-    .typing-dot:nth-child(3) { animation-delay: 0.4s; }
-
-    .typing-text {
-      font-size: 0.75rem;
-      color: var(--text-dim);
-      font-style: italic;
-    }
-
-    /* Format: Fake Tweet */
-    .tweet-card {
-      padding: 1.5rem;
-    }
-
-    .tweet-author-header {
-      display: flex;
-      align-items: center;
-      gap: 0.65rem;
-      margin-bottom: 0.75rem;
-    }
-
-    .tweet-av {
-      font-size: 1.75rem;
-    }
-
-    .tweet-names {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .tweet-name-line {
-      display: flex;
-      align-items: center;
-      gap: 0.35rem;
-      font-weight: 700;
-      color: #FFF;
-      font-size: 0.95rem;
-    }
-
-    .tweet-verified {
-      background: #1D9BF0;
-      color: #FFF;
-      font-size: 0.65rem;
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .tweet-handle {
-      font-size: 0.8rem;
-      color: var(--text-dim);
-    }
-
-    .tweet-quote-box {
-      background: #05070B;
-      border: 1px solid var(--card-border);
-      border-radius: 8px;
-      padding: 0.85rem 1rem;
-      font-family: var(--font-mono);
-      font-size: 0.8rem;
-      color: #38BDF8;
-      margin: 0.75rem 0;
-    }
-
-    .tweet-stats-line {
-      display: flex;
-      gap: 1.25rem;
-      font-size: 0.8rem;
-      color: var(--text-dim);
-      border-top: 1px solid var(--card-border);
-      padding-top: 0.75rem;
-    }
-
-    .tweet-stats-line strong {
-      color: var(--text-main);
-    }
-
-    /* Format: Status Page */
-    .status-card {
-      padding: 1.5rem;
-    }
-
-    .status-header-line {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid var(--card-border);
-      padding-bottom: 0.75rem;
-      margin-bottom: 1rem;
-      font-weight: 700;
-    }
-
-    .status-banner {
-      background: rgba(16, 185, 129, 0.1);
-      border: 1px solid rgba(16, 185, 129, 0.3);
-      color: #34D399;
-      padding: 0.65rem 1rem;
-      border-radius: 8px;
-      font-weight: 700;
-      font-size: 0.9rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      margin-bottom: 1rem;
-    }
-
-    .status-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 0.45rem;
-      font-size: 0.85rem;
-    }
-
-    .status-row {
-      display: flex;
-      justify-content: space-between;
-      padding: 0.4rem 0.6rem;
-      background: rgba(255, 255, 255, 0.02);
-      border-radius: 6px;
-    }
-
-    .status-row.failing {
-      background: rgba(239, 68, 68, 0.1);
-      color: #F87171;
-      font-weight: 700;
-    }
-
-    /* Format: Receipt / Stamp */
-    .receipt-card {
-      padding: 1.5rem;
-      font-family: var(--font-mono);
+    /* panic-window-stack container */
+    .panic-window-stack {
       position: relative;
     }
 
-    .receipt-stamp-overlay {
-      position: absolute;
-      top: 35%;
-      right: 1.5rem;
-      border: 3px solid #EF4444;
-      color: #EF4444;
-      font-size: 1.25rem;
-      font-weight: 900;
-      padding: 0.35rem 0.85rem;
-      border-radius: 6px;
-      transform: rotate(-10deg);
-      background: rgba(239, 68, 68, 0.12);
-      letter-spacing: 0.05em;
-    }
-
-    /* Footnote */
+    /* =====================================================================
+       FOOTNOTE & TOOLBAR
+       ===================================================================== */
     .joke-footnote-text {
       font-family: var(--font-mono);
       font-size: 0.75rem;
       color: var(--text-dim);
-      margin-bottom: 1.5rem;
+      max-width: 640px;
     }
 
-    /* Bottom Action Toolbar */
     .action-toolbar {
       display: flex;
       gap: 0.65rem;
       flex-wrap: wrap;
       justify-content: center;
+      padding-bottom: 1.5rem;
     }
 
     .btn-action {
@@ -520,14 +293,22 @@ export function getFullPageSceneStyles(): string {
       color: #FFFFFF;
     }
 
-    @keyframes jumpDot {
-      0%, 60%, 100% { transform: translateY(0); }
-      30% { transform: translateY(-4px); }
+    /* =====================================================================
+       GLITCH 404 ANIMATION
+       ===================================================================== */
+    @keyframes glitch404 {
+      0%, 82%, 100% { filter: none; transform: none; }
+      83%  { filter: hue-rotate(90deg); transform: skewX(-4deg) translateX(3px); }
+      84%  { filter: hue-rotate(270deg); transform: skewX(3deg) translateX(-3px); }
+      85%  { filter: none; transform: none; }
+      92%  { filter: hue-rotate(180deg) saturate(2); transform: skewX(2deg); }
+      93%  { filter: none; transform: none; }
     }
 
-    @media (max-width: 600px) {
-      body { padding: 1.5rem 1rem; }
-      .receipt-stamp-overlay { position: static; transform: none; margin-top: 1rem; text-align: center; }
+    @media (max-width: 640px) {
+      body { padding: 1rem 0.75rem; }
+      .action-toolbar { gap: 0.45rem; }
+      .btn-action { font-size: 0.78rem; padding: 0.45rem 0.75rem; }
     }
   `;
 }

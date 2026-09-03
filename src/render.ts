@@ -1,6 +1,7 @@
 import { Joke } from './jokes';
 import { escapeHtml } from './template';
 import { RenderOptions } from './templates/types';
+import { getJokeFormatConfig } from './templates/registry';
 import { getSceneNumeralsHtml } from './scene/numerals';
 import { getSceneDebrisHtml, SceneContext } from './scene/debris';
 import { getFullPageSceneStyles } from './scene/styles';
@@ -8,9 +9,6 @@ import { getFullPageSceneScripts } from './scene/scripts';
 
 export { RenderOptions } from './templates/types';
 
-/**
- * Converts simple markdown formatting (**bold**, *italic*, `code`) into safe HTML.
- */
 function formatMarkdown(text: string): string {
   return escapeHtml(text)
     .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
@@ -21,6 +19,7 @@ function formatMarkdown(text: string): string {
 
 export function renderHtmlPage(joke: Joke, options: RenderOptions = {}): string {
   const selectedTheme = options.theme || 'system';
+  const cfg = getJokeFormatConfig(joke.id);
 
   const context: SceneContext = {
     joke,
@@ -36,14 +35,14 @@ export function renderHtmlPage(joke: Joke, options: RenderOptions = {}): string 
   const scripts = getFullPageSceneScripts(joke.logs);
 
   return `<!DOCTYPE html>
-<html lang="en" data-theme="${escapeHtml(selectedTheme)}">
+<html lang="en" data-theme="${escapeHtml(selectedTheme)}" data-archetype="${escapeHtml(cfg.archetype)}">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>404 — ${escapeHtml(joke.title.split('\n')[0])}</title>
-  <meta name="description" content="${escapeHtml(joke.subtitle.replace(/[*`_]/g, ''))}" />
+  <meta name="description" content="${escapeHtml(joke.subtitle.replace(/[*\`_]/g, ''))}" />
   <meta property="og:title" content="404 — ${escapeHtml(joke.title.replace(/\n/g, ' '))}" />
-  <meta property="og:description" content="${escapeHtml(joke.subtitle.replace(/[*`_]/g, ''))}" />
+  <meta property="og:description" content="${escapeHtml(joke.subtitle.replace(/[*\`_]/g, ''))}" />
   <meta property="og:image" content="/svg?id=${encodeURIComponent(joke.id)}&theme=${encodeURIComponent(selectedTheme)}" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="404 — ${escapeHtml(joke.title.replace(/\n/g, ' '))}" />
@@ -56,7 +55,6 @@ export function renderHtmlPage(joke: Joke, options: RenderOptions = {}): string 
 <body>
 
   <main class="main-wrapper">
-    <!-- Top Status Indicator -->
     <div class="top-hud">
       <div class="hud-badge">
         <span class="dot"></span>
@@ -67,24 +65,14 @@ export function renderHtmlPage(joke: Joke, options: RenderOptions = {}): string 
       </div>
     </div>
 
-    <!-- Big Bold 404 -->
     ${numeralsHtml}
 
-    <!-- Joke Headline Block -->
-    <div class="joke-headline-block">
-      <h1 class="joke-title">${joke.emoji} ${context.formattedTitle}</h1>
-      <p class="joke-subtitle">${context.formattedSubtitle}</p>
-    </div>
-
-    <!-- Core Meme Card / Terminal Set Piece -->
     ${debrisHtml}
 
-    <!-- Footnote -->
     <div class="joke-footnote-text">
       ${context.formattedFootnote}
     </div>
 
-    <!-- Action Toolbar -->
     <footer class="action-toolbar">
       <button type="button" class="btn-action" id="btn-copy-logs" onclick="copyLogs()">
         📋 Copy Logs

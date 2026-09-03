@@ -71,7 +71,7 @@ describe('Worker Routes Smoke Tests', () => {
     const html = await res.text();
     expect(html).toContain('<!DOCTYPE html>');
     expect(html).toContain('big-404-title');
-    expect(html).toContain('terminal-card');
+    expect(html).toContain('format-news-chyron');
     expect(html).toContain('data-theme="dark"');
   });
 
@@ -79,7 +79,7 @@ describe('Worker Routes Smoke Tests', () => {
     const reqDave = new Request('https://witty-404.dev/html?id=daves-laptop');
     const resDave = await worker.fetch(reqDave, mockEnv, mockCtx);
     const htmlDave = await resDave.text();
-    expect(htmlDave).toContain('imessage-card');
+    expect(htmlDave).toContain('format-imessage');
     expect(htmlDave).toContain('is typing...');
 
     const reqTweet = new Request('https://witty-404.dev/html?id=friday-deploy');
@@ -90,7 +90,7 @@ describe('Worker Routes Smoke Tests', () => {
     const reqStatus = new Request('https://witty-404.dev/html?id=perfect-uptime');
     const resStatus = await worker.fetch(reqStatus, mockEnv, mockCtx);
     const htmlStatus = await resStatus.text();
-    expect(htmlStatus).toContain('status-card');
+    expect(htmlStatus).toContain('statuspage-card');
   });
 
   it('GET /text returns 200 plain text', async () => {
