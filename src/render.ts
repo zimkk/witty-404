@@ -18,83 +18,27 @@ function formatMarkdown(text: string): string {
 }
 
 /**
- * Generates bespoke visual hero set pieces for key jokes.
+ * Generates the universal synchronized airplane flight & crash animation.
+ * The crash impact (💥) is synchronized to hit at the exact moment the witty punchline appears.
  */
-function getHeroVisualHtml(joke: Joke): string {
-  switch (joke.id) {
-    case 'plane-crash':
-      return `
-        <div class="hero-anim anim-plane-crash" aria-label="Plane crash flight animation">
-          <div class="flight-trajectory">
-            <div class="plane-flight-body">✈️</div>
-            <div class="smoke-puff-trail s1">💨</div>
-            <div class="smoke-puff-trail s2">💨</div>
-            <div class="crash-explosion">💥</div>
-            <div class="debris-particle dp1">⚙️</div>
-            <div class="debris-particle dp2">📦</div>
-            <div class="crash-404-stamp">404 CRASH</div>
-          </div>
-          <div class="impact-skid-line"></div>
-        </div>
-      `;
+function getHeroAirplaneCrashHtml(punchTime: number, flightStart: number): string {
+  const smoke1Time = (flightStart + (punchTime - flightStart) * 0.45).toFixed(2);
+  const smoke2Time = (flightStart + (punchTime - flightStart) * 0.75).toFixed(2);
 
-    case 'daves-laptop':
-      return `
-        <div class="hero-anim anim-daves-laptop" aria-label="Dave's abandoned laptop">
-          <div class="laptop-shell">
-            <div class="laptop-screen">
-              <span class="prompt">dave@mbp:~$</span> <span class="cmd">npm run prod</span>
-              <span class="cursor-blink">_</span>
-            </div>
-            <div class="dave-tag">Owner: Dave (left 6 mos ago)</div>
-          </div>
-        </div>
-      `;
-
-    case 'folder-structure':
-      return `
-        <div class="hero-anim anim-folder-structure" aria-label="Collapsing directory structure">
-          <div class="folder-demolition">
-            <div class="folder-block fb-1">📁 /src</div>
-            <div class="folder-block fb-2">📁 /infrastructure/v2</div>
-            <div class="folder-block fb-3">📁 /adapters/old</div>
-            <div class="eta-tag">🏷️ Clean Architecture</div>
-          </div>
-        </div>
-      `;
-
-    case 'node-modules':
-      return `
-        <div class="hero-anim anim-node-modules" aria-label="Node modules disk overflow">
-          <div class="progress-box">
-            <div class="progress-label">
-              <span>Resolving transitive dependencies...</span>
-              <span class="pct-readout">99%</span>
-            </div>
-            <div class="progress-track">
-              <div class="progress-fill"></div>
-            </div>
-            <div class="overflow-badge">⚠️ 4.8 GB (Disk Full)</div>
-          </div>
-        </div>
-      `;
-
-    case 'perfect-uptime':
-      return `
-        <div class="hero-anim anim-perfect-uptime" aria-label="Status page illusion">
-          <div class="status-row">
-            <div class="status-node node-ok"><span class="badge">🟢</span> API</div>
-            <div class="status-node node-ok"><span class="badge">🟢</span> Auth</div>
-            <div class="status-node node-failing"><span class="badge ok-icon">🟢</span><span class="badge fire-icon">🔥</span> Router</div>
-            <div class="status-node node-ok"><span class="badge">🟢</span> CDN</div>
-          </div>
-          <div class="status-banner">99.999% UPTIME CLAIMED</div>
-        </div>
-      `;
-
-    default:
-      return '';
-  }
+  return `
+    <div class="hero-anim anim-plane-crash" style="--punch-time: ${punchTime.toFixed(2)}s; --flight-start: ${flightStart.toFixed(2)}s; --smoke1-time: ${smoke1Time}s; --smoke2-time: ${smoke2Time}s;" aria-label="Plane crash flight animation">
+      <div class="flight-trajectory">
+        <div class="plane-flight-body">✈️</div>
+        <div class="smoke-puff-trail s1">💨</div>
+        <div class="smoke-puff-trail s2">💨</div>
+        <div class="crash-explosion">💥</div>
+        <div class="debris-particle dp1">⚙️</div>
+        <div class="debris-particle dp2">📦</div>
+        <div class="crash-404-stamp">404 CRASH</div>
+      </div>
+      <div class="impact-skid-line"></div>
+    </div>
+  `;
 }
 
 export function renderHtmlPage(joke: Joke, options: RenderOptions = {}): string {
@@ -102,19 +46,28 @@ export function renderHtmlPage(joke: Joke, options: RenderOptions = {}): string 
   const formattedTitle = formatMarkdown(joke.title);
   const formattedSubtitle = formatMarkdown(joke.subtitle);
   const formattedFootnote = formatMarkdown(joke.footnote);
-  const heroVisual = getHeroVisualHtml(joke);
+
+  // Calculate synchronized choreography timings
+  const lineInterval = 0.32;
+  const firstLineDelay = 0.25;
+  const numLines = joke.logs.length;
+  const punchLineIdx = numLines - 1;
+  const punchTime = firstLineDelay + punchLineIdx * lineInterval;
+  const flightStart = 0.3;
+
+  const heroVisual = getHeroAirplaneCrashHtml(punchTime, flightStart);
 
   const logLinesHtml = joke.logs
     .map((line, idx) => {
       const isStatusLine = line.includes('status:') || line.includes('GREEN') || line.includes('PASS') || line.includes('RESOLVED');
       const isLast = idx === joke.logs.length - 1;
       const highlightClass = isStatusLine ? ' status-green' : isLast ? ' punch-line' : '';
-      const delay = (0.15 + idx * 0.1).toFixed(2);
+      const delay = (firstLineDelay + idx * lineInterval).toFixed(2);
       return `<div class="log-line${highlightClass}" style="--line-delay: ${delay}s">${escapeHtml(line)}</div>`;
     })
     .join('');
 
-  const cursorDelay = (0.15 + joke.logs.length * 0.1).toFixed(2);
+  const cursorDelay = (firstLineDelay + numLines * lineInterval).toFixed(2);
 
   return `<!DOCTYPE html>
 <html lang="en" data-theme="${escapeHtml(selectedTheme)}">
@@ -190,7 +143,7 @@ export function renderHtmlPage(joke: Joke, options: RenderOptions = {}): string 
       line-height: 1.5;
       display: flex;
       justify-content: center;
-      padding: 3.5rem 1.5rem 3rem;
+      padding: 3rem 1.5rem 3rem;
     }
 
     .container {
@@ -208,7 +161,7 @@ export function renderHtmlPage(joke: Joke, options: RenderOptions = {}): string 
       align-items: center;
       justify-content: space-between;
       width: 100%;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.25rem;
       animation: fadeIn 0.3s ease forwards;
     }
 
@@ -232,24 +185,23 @@ export function renderHtmlPage(joke: Joke, options: RenderOptions = {}): string 
     }
 
     /* ==========================================================================
-       HERO VISUAL SET PIECES (AIRPLANE CRASH & FRIENDS)
+       SYNCHRONIZED AIRPLANE CRASH HERO ANIMATION
        ========================================================================== */
     .hero-container {
       width: 100%;
-      margin-bottom: 1rem;
+      margin-bottom: 0.5rem;
     }
 
-    /* 1. Airplane Crash Flight Animation */
     .anim-plane-crash {
       width: 100%;
-      height: 75px;
+      height: 72px;
       position: relative;
       overflow: visible;
     }
 
     .flight-trajectory {
       position: absolute;
-      top: 10px;
+      top: 5px;
       left: 0;
       width: 100%;
       height: 100%;
@@ -260,7 +212,8 @@ export function renderHtmlPage(joke: Joke, options: RenderOptions = {}): string 
       font-size: 2.2rem;
       left: 0;
       top: 0;
-      animation: planeFlightAndNosedive 1.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+      opacity: 0;
+      animation: planeFlightAndNosedive calc(var(--punch-time, 1.6s) - var(--flight-start, 0.3s)) cubic-bezier(0.25, 1, 0.5, 1) var(--flight-start, 0.3s) forwards;
     }
 
     @keyframes planeFlightAndNosedive {
@@ -270,55 +223,55 @@ export function renderHtmlPage(joke: Joke, options: RenderOptions = {}): string 
       }
       15% {
         opacity: 1;
-        transform: translate(60px, -8px) rotate(-10deg);
+        transform: translate(60px, -10px) rotate(-10deg);
       }
       50% {
-        transform: translate(220px, 0px) rotate(5deg);
+        transform: translate(200px, -4px) rotate(4deg);
       }
       75% {
-        transform: translate(320px, 20px) rotate(35deg);
+        transform: translate(300px, 15px) rotate(35deg);
       }
       100% {
-        transform: translate(360px, 35px) rotate(65deg) scale(0.9);
-        opacity: 0.9;
+        transform: translate(360px, 32px) rotate(65deg) scale(0.9);
+        opacity: 0.85;
       }
     }
 
     .crash-explosion {
       position: absolute;
-      font-size: 2.4rem;
-      left: 360px;
-      top: 25px;
+      font-size: 2.5rem;
+      left: 350px;
+      top: 20px;
       opacity: 0;
-      animation: explosionBoom 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1.2s forwards;
+      animation: explosionBoom 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) var(--punch-time, 1.6s) forwards;
     }
 
     @keyframes explosionBoom {
-      0% { transform: scale(0.2); opacity: 0; }
-      60% { transform: scale(1.3); opacity: 1; }
+      0% { transform: scale(0.1); opacity: 0; }
+      50% { transform: scale(1.4); opacity: 1; }
       100% { transform: scale(1); opacity: 1; }
     }
 
     .smoke-puff-trail {
       position: absolute;
-      font-size: 1.4rem;
+      font-size: 1.3rem;
       opacity: 0;
     }
     .smoke-puff-trail.s1 {
-      left: 200px;
+      left: 190px;
       top: 5px;
-      animation: smokeFade 1s ease 0.8s forwards;
+      animation: smokeFade 0.8s ease var(--smoke1-time, 0.9s) forwards;
     }
     .smoke-puff-trail.s2 {
-      left: 280px;
-      top: 18px;
-      animation: smokeFade 1s ease 1.0s forwards;
+      left: 270px;
+      top: 15px;
+      animation: smokeFade 0.8s ease var(--smoke2-time, 1.2s) forwards;
     }
 
     @keyframes smokeFade {
-      0% { opacity: 0; transform: scale(0.5); }
-      50% { opacity: 0.7; transform: scale(1.1) translateY(-5px); }
-      100% { opacity: 0; transform: scale(1.5) translateY(-12px); }
+      0% { opacity: 0; transform: scale(0.4); }
+      50% { opacity: 0.75; transform: scale(1.1) translateY(-4px); }
+      100% { opacity: 0; transform: scale(1.5) translateY(-10px); }
     }
 
     .debris-particle {
@@ -327,28 +280,28 @@ export function renderHtmlPage(joke: Joke, options: RenderOptions = {}): string 
       opacity: 0;
     }
     .debris-particle.dp1 {
-      left: 350px;
-      top: 20px;
-      animation: debrisFly1 0.6s ease-out 1.25s forwards;
+      left: 340px;
+      top: 22px;
+      animation: debrisFly1 0.6s ease-out calc(var(--punch-time, 1.6s) + 0.05s) forwards;
     }
     .debris-particle.dp2 {
-      left: 375px;
-      top: 30px;
-      animation: debrisFly2 0.6s ease-out 1.25s forwards;
+      left: 365px;
+      top: 28px;
+      animation: debrisFly2 0.6s ease-out calc(var(--punch-time, 1.6s) + 0.05s) forwards;
     }
 
     @keyframes debrisFly1 {
       0% { opacity: 0; transform: translate(0, 0) rotate(0deg); }
-      100% { opacity: 1; transform: translate(-30px, -20px) rotate(-90deg); }
+      100% { opacity: 1; transform: translate(-32px, -22px) rotate(-90deg); }
     }
     @keyframes debrisFly2 {
       0% { opacity: 0; transform: translate(0, 0) rotate(0deg); }
-      100% { opacity: 1; transform: translate(35px, -15px) rotate(120deg); }
+      100% { opacity: 1; transform: translate(36px, -18px) rotate(120deg); }
     }
 
     .crash-404-stamp {
       position: absolute;
-      left: 410px;
+      left: 400px;
       top: 20px;
       background: rgba(239, 68, 68, 0.15);
       border: 1px solid #EF4444;
@@ -360,125 +313,23 @@ export function renderHtmlPage(joke: Joke, options: RenderOptions = {}): string 
       border-radius: 4px;
       letter-spacing: 0.08em;
       opacity: 0;
-      animation: stampBounce 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1.35s forwards;
+      animation: stampBounce 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) calc(var(--punch-time, 1.6s) + 0.08s) forwards;
     }
 
     @keyframes stampBounce {
-      0% { opacity: 0; transform: scale(2) rotate(-15deg); }
+      0% { opacity: 0; transform: scale(2.2) rotate(-15deg); }
       100% { opacity: 1; transform: scale(1) rotate(-6deg); }
     }
 
     .impact-skid-line {
       position: absolute;
       bottom: 0;
-      left: 80px;
-      width: 300px;
+      left: 60px;
+      width: 320px;
       height: 2px;
-      background: linear-gradient(90deg, transparent, rgba(239, 68, 68, 0.4), transparent);
+      background: linear-gradient(90deg, transparent, rgba(239, 68, 68, 0.5), transparent);
       opacity: 0;
-      animation: fadeIn 0.4s ease 1.2s forwards;
-    }
-
-    /* 2. Dave's Laptop */
-    .anim-daves-laptop {
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid var(--card-border);
-      border-radius: 8px;
-      padding: 0.75rem 1rem;
-      font-family: var(--font-mono);
-      display: inline-flex;
-      flex-direction: column;
-      gap: 0.35rem;
-    }
-    .laptop-screen {
-      font-size: 0.8rem;
-      color: #38BDF8;
-    }
-    .dave-tag {
-      font-size: 0.7rem;
-      color: var(--text-dim);
-    }
-
-    /* 3. Folder Demolition */
-    .anim-folder-structure {
-      display: flex;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-      align-items: center;
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      color: #FCD34D;
-    }
-    .folder-block {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid var(--card-border);
-      padding: 0.25rem 0.6rem;
-      border-radius: 4px;
-    }
-    .eta-tag {
-      color: #34D399;
-      margin-left: auto;
-    }
-
-    /* 4. Node Modules Overflow */
-    .anim-node-modules {
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid var(--card-border);
-      border-radius: 8px;
-      padding: 0.75rem 1rem;
-    }
-    .progress-box {
-      display: flex;
-      flex-direction: column;
-      gap: 0.35rem;
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-    }
-    .progress-track {
-      height: 8px;
-      background: #1E2538;
-      border-radius: 4px;
-      overflow: hidden;
-    }
-    .progress-fill {
-      height: 100%;
-      background: linear-gradient(90deg, #F59E0B, #EF4444);
-      width: 99%;
-      animation: expandFill 1.2s ease-out;
-    }
-    @keyframes expandFill {
-      0% { width: 0%; }
-      100% { width: 99%; }
-    }
-    .overflow-badge {
-      color: #EF4444;
-      font-weight: 700;
-      text-align: right;
-    }
-
-    /* 5. Perfect Uptime */
-    .anim-perfect-uptime {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid var(--card-border);
-      border-radius: 8px;
-      padding: 0.6rem 1rem;
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-    }
-    .status-row {
-      display: flex;
-      gap: 1rem;
-    }
-    .node-failing {
-      color: #EF4444;
-      font-weight: 700;
-    }
-    .status-banner {
-      color: #34D399;
-      font-weight: 700;
+      animation: fadeIn 0.4s ease var(--punch-time, 1.6s) forwards;
     }
 
     /* Main Headline & Subtitle */
@@ -565,7 +416,7 @@ export function renderHtmlPage(joke: Joke, options: RenderOptions = {}): string 
       white-space: pre-wrap;
       opacity: 0;
       transform: translateY(3px);
-      animation: logLineIn 0.35s ease forwards;
+      animation: logLineIn 0.25s ease forwards;
       animation-delay: var(--line-delay, 0s);
     }
 
@@ -576,7 +427,9 @@ export function renderHtmlPage(joke: Joke, options: RenderOptions = {}): string 
 
     .log-line.punch-line {
       color: #38BDF8;
-      font-weight: 600;
+      font-weight: 700;
+      animation: punchLineIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+      animation-delay: var(--line-delay, 0s);
     }
 
     .cursor-line {
@@ -685,6 +538,12 @@ export function renderHtmlPage(joke: Joke, options: RenderOptions = {}): string 
       }
     }
 
+    @keyframes punchLineIn {
+      0% { opacity: 0; transform: translateY(6px) scale(0.96); }
+      70% { transform: translateY(-1px) scale(1.02); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
     @keyframes blinkCursor {
       0%, 49% { opacity: 1; }
       50%, 100% { opacity: 0; }
@@ -707,7 +566,7 @@ export function renderHtmlPage(joke: Joke, options: RenderOptions = {}): string 
       body { padding: 2.5rem 1rem 2rem; }
       .buttons-row { width: 100%; flex-direction: column; align-items: stretch; }
       .btn-abort, .btn-primary-read { justify-content: center; width: 100%; }
-      .flight-trajectory { transform: scale(0.75); transform-origin: left top; }
+      .flight-trajectory { transform: scale(0.72); transform-origin: left top; }
     }
   </style>
 </head>
@@ -720,8 +579,8 @@ export function renderHtmlPage(joke: Joke, options: RenderOptions = {}): string 
       <span class="sparkle-icon">💥</span>
     </div>
 
-    <!-- Hero Visual Set Piece (Airplane Crash, etc.) -->
-    ${heroVisual ? `<div class="hero-container">${heroVisual}</div>` : ''}
+    <!-- Universal Airplane Flight & Crash Animation (Choreographed to Punchline) -->
+    <div class="hero-container">${heroVisual}</div>
 
     <!-- Main Title -->
     <h1 class="hero-title">${formattedTitle}</h1>
@@ -729,7 +588,7 @@ export function renderHtmlPage(joke: Joke, options: RenderOptions = {}): string 
     <!-- Dev Subtitle -->
     <p class="hero-subtitle">${formattedSubtitle}</p>
 
-    <!-- Diagnostic Terminal Box -->
+    <!-- Diagnostic Terminal Box with Synchronized Streaming Logs -->
     <div class="diagnostic-terminal">
       <div class="terminal-bar">
         <div class="mac-dots">
