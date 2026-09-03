@@ -28,9 +28,12 @@ export function renderHtmlPage(joke: Joke, options: RenderOptions = {}): string 
       const isStatusLine = line.includes('status:') || line.includes('GREEN') || line.includes('PASS') || line.includes('RESOLVED');
       const isLast = idx === joke.logs.length - 1;
       const highlightClass = isStatusLine ? ' status-green' : isLast ? ' punch-line' : '';
-      return `<div class="log-line${highlightClass}">${escapeHtml(line)}</div>`;
+      const delay = (0.15 + idx * 0.1).toFixed(2);
+      return `<div class="log-line${highlightClass}" style="--line-delay: ${delay}s">${escapeHtml(line)}</div>`;
     })
     .join('');
+
+  const cursorDelay = (0.15 + joke.logs.length * 0.1).toFixed(2);
 
   return `<!DOCTYPE html>
 <html lang="en" data-theme="${escapeHtml(selectedTheme)}">
@@ -125,6 +128,7 @@ export function renderHtmlPage(joke: Joke, options: RenderOptions = {}): string 
       justify-content: space-between;
       width: 100%;
       margin-bottom: 2rem;
+      animation: fadeIn 0.3s ease forwards;
     }
 
     .http-404-badge {
@@ -143,6 +147,7 @@ export function renderHtmlPage(joke: Joke, options: RenderOptions = {}): string 
     .sparkle-icon {
       font-size: 1.25rem;
       opacity: 0.8;
+      animation: sparkleFloat 2.5s infinite ease-in-out;
     }
 
     /* Main Headline & Subtitle */
@@ -153,6 +158,7 @@ export function renderHtmlPage(joke: Joke, options: RenderOptions = {}): string 
       line-height: 1.12;
       letter-spacing: -0.035em;
       margin-bottom: 1.25rem;
+      animation: fadeIn 0.4s ease 0.05s both;
     }
 
     h1.hero-title code {
@@ -171,6 +177,7 @@ export function renderHtmlPage(joke: Joke, options: RenderOptions = {}): string 
       line-height: 1.6;
       margin-bottom: 2rem;
       max-width: 680px;
+      animation: fadeIn 0.4s ease 0.1s both;
     }
 
     /* Diagnostic Terminal Card */
@@ -182,6 +189,7 @@ export function renderHtmlPage(joke: Joke, options: RenderOptions = {}): string 
       overflow: hidden;
       margin-bottom: 2rem;
       box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.5);
+      animation: terminalPop 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
     }
 
     .terminal-bar {
@@ -224,6 +232,10 @@ export function renderHtmlPage(joke: Joke, options: RenderOptions = {}): string 
       color: var(--text-muted);
       line-height: 1.55;
       white-space: pre-wrap;
+      opacity: 0;
+      transform: translateY(3px);
+      animation: logLineIn 0.35s ease forwards;
+      animation-delay: var(--line-delay, 0s);
     }
 
     .log-line.status-green {
@@ -233,6 +245,22 @@ export function renderHtmlPage(joke: Joke, options: RenderOptions = {}): string 
 
     .log-line.punch-line {
       color: #38BDF8;
+      font-weight: 600;
+    }
+
+    .cursor-line {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      color: var(--text-dim);
+      font-size: 0.85rem;
+      margin-top: 0.25rem;
+    }
+
+    .cursor-prompt {
+      color: #38BDF8;
+      animation: blinkCursor 1s infinite;
+      font-size: 0.8em;
     }
 
     /* Action Buttons Row */
@@ -242,6 +270,7 @@ export function renderHtmlPage(joke: Joke, options: RenderOptions = {}): string 
       gap: 0.75rem;
       flex-wrap: wrap;
       margin-bottom: 2.5rem;
+      animation: fadeIn 0.4s ease 0.3s both;
     }
 
     .btn-abort {
@@ -296,6 +325,7 @@ export function renderHtmlPage(joke: Joke, options: RenderOptions = {}): string 
       color: var(--text-dim);
       line-height: 1.6;
       margin-top: 1rem;
+      animation: fadeIn 0.4s ease 0.4s both;
     }
 
     .fine-print code {
@@ -304,6 +334,42 @@ export function renderHtmlPage(joke: Joke, options: RenderOptions = {}): string 
       padding: 0.15rem 0.4rem;
       border-radius: 4px;
       color: var(--text-muted);
+    }
+
+    /* Keyframe Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes terminalPop {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes logLineIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes blinkCursor {
+      0%, 49% { opacity: 1; }
+      50%, 100% { opacity: 0; }
+    }
+
+    @keyframes sparkleFloat {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-3px) rotate(8deg); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+      }
     }
 
     @media (max-width: 600px) {
@@ -340,6 +406,9 @@ export function renderHtmlPage(joke: Joke, options: RenderOptions = {}): string 
       </div>
       <div class="terminal-body">
         ${logLinesHtml}
+        <div class="log-line cursor-line" style="--line-delay: ${cursorDelay}s">
+          <span>&gt; </span><span class="cursor-prompt">█</span>
+        </div>
       </div>
     </div>
 
