@@ -47,8 +47,8 @@ describe('Worker Routes Smoke Tests', () => {
     expect(res.status).toBe(200);
     expect(res.headers.get('Content-Type')).toContain('text/html');
     const html = await res.text();
-    expect(html).toContain('API Docs — witty-404');
-    expect(html).toContain('The API You Call When Everything Has Gone Horribly Wrong');
+    expect(html).toContain('API Documentation — witty-404');
+    expect(html).toContain('Live API Tester Console');
   });
 
   it('GET /favicon.svg returns 200 SVG favicon', async () => {

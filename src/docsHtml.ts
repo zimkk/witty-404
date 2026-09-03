@@ -1,499 +1,752 @@
-export const docsHtml = `<!DOCTYPE html>
-<html lang="en" data-theme="dark">
+export const docsHtml: string = `<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>API Docs — witty-404 | The API for Broken Things</title>
-  <meta name="description" content="Complete API documentation and integration guide for witty-404. Embed witty error pages and JSON responses in under 60 seconds." />
+  <title>API Documentation — witty-404</title>
+  <meta name="description" content="Complete API reference, integration recipes, and endpoint tester for witty-404." />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    /* ==========================================================================
+       OBSIDIAN MINIMALIST API DOCUMENTATION
+       ========================================================================== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     :root {
       --bg: #07090E;
-      --sidebar-bg: #0B0E17;
-      --card-bg: #111522;
-      --card-border: #1E2638;
-      --accent: #3B82F6;
-      --accent-glow: rgba(59, 130, 246, 0.25);
-      --danger: #EF4444;
+      --sidebar-bg: #0B0E14;
+      --card-bg: #0D1117;
+      --card-elevated: #161B22;
+      --border: #21262D;
+      --border-hover: #30363D;
+      --text-white: #F0F6FC;
+      --text-muted: #8B949E;
+      --text-dim: #6E7681;
+      --accent: #38BDF8;
+      --accent-dim: rgba(56, 189, 248, 0.1);
       --success: #10B981;
+      --danger: #EF4444;
       --warning: #F59E0B;
-      --text-main: #F8FAFC;
-      --text-muted: #94A3B8;
-      --text-dim: #64748B;
       --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco, Consolas, monospace;
     }
-    body {
-      background: var(--bg);
-      color: var(--text-main);
+
+    html {
+      background-color: var(--bg);
+      color: var(--text-white);
       font-family: var(--font-sans);
-      line-height: 1.6;
-      display: flex;
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
       min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.6;
     }
-    a { color: var(--accent); text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    code {
-      font-family: var(--font-mono);
-      background: rgba(255, 255, 255, 0.06);
-      padding: 0.15rem 0.4rem;
-      border-radius: 4px;
-      color: #93C5FD;
-      font-size: 0.85em;
-    }
-    pre {
-      background: #05070B;
-      border: 1px solid var(--card-border);
-      border-radius: 8px;
-      padding: 1rem;
-      overflow-x: auto;
-      font-family: var(--font-mono);
-      font-size: 0.85rem;
-      color: #E2E8F0;
-      margin: 0.75rem 0 1.25rem;
-    }
-    
-    /* Layout */
-    .sidebar {
-      width: 280px;
-      background: var(--sidebar-bg);
-      border-right: 1px solid var(--card-border);
-      padding: 2rem 1.5rem;
+
+    /* Top Nav */
+    header.docs-nav {
       position: sticky;
       top: 0;
-      height: 100vh;
-      overflow-y: auto;
-      flex-shrink: 0;
+      z-index: 100;
+      background: rgba(7, 9, 14, 0.9);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
     }
-    .brand {
+
+    .nav-container {
+      max-width: 1360px;
+      margin: 0 auto;
+      padding: 0.8rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-brand {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
-      font-weight: 900;
-      font-size: 1.25rem;
-      margin-bottom: 2rem;
-      color: #FFF;
-    }
-    .brand-spark { color: var(--danger); font-size: 1.4rem; }
-    .nav-section { margin-bottom: 1.5rem; }
-    .nav-title {
-      font-size: 0.7rem;
-      font-weight: 800;
-      color: var(--text-dim);
-      letter-spacing: 0.08em;
-      margin-bottom: 0.5rem;
-      font-family: var(--font-mono);
-    }
-    .nav-list { list-style: none; display: flex; flex-direction: column; gap: 0.35rem; }
-    .nav-link {
-      color: var(--text-muted);
-      font-size: 0.85rem;
-      padding: 0.35rem 0.6rem;
-      border-radius: 6px;
-      display: block;
-      transition: all 0.15s;
-    }
-    .nav-link:hover {
-      background: rgba(255, 255, 255, 0.04);
-      color: var(--text-main);
+      gap: 0.6rem;
       text-decoration: none;
+      color: var(--text-white);
+      font-weight: 700;
+      font-size: 1.05rem;
     }
-    .nav-link.active {
-      background: rgba(59, 130, 246, 0.12);
-      color: #60A5FA;
+
+    .nav-brand-badge {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--accent);
+      background: var(--accent-dim);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
       font-weight: 600;
     }
 
-    .main-content {
-      flex-grow: 1;
-      padding: 3rem 4rem;
-      max-width: 1000px;
+    .nav-actions {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
     }
-    .hero-banner {
-      border-bottom: 1px solid var(--card-border);
-      padding-bottom: 2.5rem;
-      margin-bottom: 3rem;
-    }
-    .hero-tag {
-      display: inline-block;
-      background: rgba(239, 68, 68, 0.15);
-      border: 1px solid rgba(239, 68, 68, 0.35);
-      color: #F87171;
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      font-weight: 800;
-      padding: 0.2rem 0.6rem;
-      border-radius: 999px;
-      margin-bottom: 0.75rem;
-    }
-    .hero-title {
-      font-size: 2.5rem;
-      font-weight: 900;
-      letter-spacing: -0.03em;
-      margin-bottom: 0.75rem;
-      line-height: 1.15;
-    }
-    .hero-desc {
-      font-size: 1.15rem;
+
+    .nav-link {
       color: var(--text-muted);
-      max-width: 720px;
+      text-decoration: none;
+      font-size: 0.875rem;
+      transition: color 0.15s;
+    }
+    .nav-link:hover { color: var(--text-white); }
+
+    .nav-btn {
+      background: var(--card-elevated);
+      color: var(--text-white);
+      border: 1px solid var(--border);
+      padding: 0.35rem 0.8rem;
+      border-radius: 6px;
+      font-size: 0.825rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.15s;
+    }
+    .nav-btn:hover { border-color: var(--accent); }
+
+    /* Docs Main Layout: Sidebar + Content */
+    .docs-layout {
+      max-width: 1360px;
+      margin: 0 auto;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      flex: 1;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* Sidebar */
+    aside.docs-sidebar {
+      background: var(--sidebar-bg);
+      border-right: 1px solid var(--border);
+      padding: 2rem 1.25rem 4rem;
+      position: sticky;
+      top: 55px;
+      height: calc(100vh - 55px);
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.75rem;
+    }
+
+    .sidebar-section-title {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--text-dim);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .sidebar-nav-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .sidebar-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      padding: 0.3rem 0.6rem;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.15s;
+    }
+
+    .sidebar-link:hover, .sidebar-link.active {
+      color: var(--text-white);
+      background: var(--card-elevated);
+    }
+
+    .sidebar-badge {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 0.1rem 0.35rem;
+      border-radius: 3px;
+    }
+    .badge-get { background: rgba(16, 185, 129, 0.15); color: #10B981; }
+
+    /* Content Area */
+    main.docs-content {
+      padding: 2.5rem 3rem 6rem;
+      max-width: 960px;
+      display: flex;
+      flex-direction: column;
+      gap: 3.5rem;
     }
 
     .doc-section {
-      margin-bottom: 3.5rem;
-    }
-    .section-title {
-      font-size: 1.6rem;
-      font-weight: 800;
-      margin-bottom: 1rem;
       display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      border-bottom: 1px solid var(--card-border);
-      padding-bottom: 0.5rem;
+      flex-direction: column;
+      gap: 1.25rem;
+      scroll-margin-top: 80px;
     }
-    .endpoint-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 12px;
-      padding: 1.75rem;
-      margin-bottom: 2rem;
-    }
-    .endpoint-header {
+
+    .doc-heading {
+      font-size: 1.85rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--text-white);
       display: flex;
       align-items: center;
       gap: 0.75rem;
-      margin-bottom: 0.75rem;
-      flex-wrap: wrap;
     }
-    .method-get {
-      background: #059669;
-      color: #FFF;
-      font-family: var(--font-mono);
-      font-weight: 800;
-      font-size: 0.75rem;
-      padding: 0.2rem 0.6rem;
-      border-radius: 4px;
-    }
-    .endpoint-path {
-      font-family: var(--font-mono);
-      font-size: 1.1rem;
+
+    .doc-subheading {
+      font-size: 1.3rem;
       font-weight: 700;
-      color: #FFF;
+      color: var(--text-white);
+      margin-top: 0.5rem;
     }
-    .endpoint-desc {
+
+    .doc-lead {
       color: var(--text-muted);
-      font-size: 0.95rem;
-      margin-bottom: 1rem;
+      font-size: 1rem;
+      line-height: 1.65;
     }
-    .table-params {
+
+    /* Tables */
+    .docs-table-container {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow-x: auto;
+    }
+
+    table.docs-table {
       width: 100%;
       border-collapse: collapse;
-      margin: 1rem 0;
       font-size: 0.85rem;
-    }
-    .table-params th, .table-params td {
-      border: 1px solid var(--card-border);
-      padding: 0.6rem 0.85rem;
       text-align: left;
     }
-    .table-params th {
-      background: rgba(255, 255, 255, 0.03);
-      color: var(--text-dim);
+
+    table.docs-table th {
+      background: var(--card-elevated);
+      padding: 0.65rem 1rem;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-muted);
       font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    table.docs-table td {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-muted);
+    }
+    table.docs-table tr:last-child td { border-bottom: none; }
+
+    .param-name {
+      font-family: var(--font-mono);
+      color: #38BDF8;
+      font-weight: 600;
+    }
+
+    .param-type {
+      font-family: var(--font-mono);
+      color: var(--text-dim);
+      font-size: 0.75rem;
+    }
+
+    /* Code Blocks */
+    .code-block-container {
+      background: #040508;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+      position: relative;
+      overflow-x: auto;
+    }
+
+    .code-block {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: #93C5FD;
+      white-space: pre;
+      line-height: 1.5;
+    }
+
+    .btn-copy-code {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      background: var(--card-elevated);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-family: var(--font-sans);
+      font-size: 0.7rem;
+      padding: 0.2rem 0.55rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .btn-copy-code:hover {
+      border-color: var(--accent);
+      color: var(--text-white);
+    }
+
+    /* Callout Note */
+    .callout-note {
+      background: rgba(56, 189, 248, 0.06);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 6px 6px 0;
+      padding: 0.85rem 1.15rem;
+      color: var(--text-muted);
+      font-size: 0.875rem;
+    }
+
+    .callout-note strong { color: var(--text-white); }
+
+    /* Interactive API Tester Console */
+    .tester-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .tester-form-row {
+      display: grid;
+      grid-template-columns: 120px 1fr 100px;
+      gap: 0.75rem;
+    }
+
+    .tester-select, .tester-input {
+      background: var(--card-elevated);
+      border: 1px solid var(--border);
+      color: var(--text-white);
+      padding: 0.5rem 0.85rem;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+    }
+    .tester-select:focus, .tester-input:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .btn-tester-send {
+      background: var(--accent);
+      color: #000;
+      font-weight: 700;
+      font-size: 0.85rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: filter 0.15s;
+    }
+    .btn-tester-send:hover { filter: brightness(1.15); }
+
+    .tester-response-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-dim);
+    }
+
+    .status-badge-ok {
+      background: rgba(16, 185, 129, 0.15);
+      color: #10B981;
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
       font-weight: 700;
     }
 
-    /* Live Tester Box */
-    .tester-box {
-      background: #090B10;
-      border: 1px solid var(--card-border);
+    .tester-response-viewer {
+      background: #040508;
+      border: 1px solid var(--border);
       border-radius: 8px;
-      padding: 1.25rem;
-      margin-top: 1.25rem;
-    }
-    .tester-title {
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      color: var(--text-dim);
-      font-weight: 700;
-      margin-bottom: 0.75rem;
-    }
-    .tester-inputs {
-      display: flex;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-      margin-bottom: 0.75rem;
-    }
-    .tester-input {
-      background: #111522;
-      border: 1px solid var(--card-border);
-      color: #FFF;
-      padding: 0.4rem 0.75rem;
-      border-radius: 6px;
+      padding: 1rem;
+      max-height: 340px;
+      overflow: auto;
       font-family: var(--font-mono);
       font-size: 0.8rem;
-    }
-    .tester-btn {
-      background: var(--accent);
-      color: #FFF;
-      border: none;
-      padding: 0.4rem 1rem;
-      border-radius: 6px;
-      font-weight: 700;
-      cursor: pointer;
-      font-size: 0.8rem;
-    }
-    .tester-btn:hover { filter: brightness(1.15); }
-    .tester-output {
-      background: #030407;
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      border-radius: 6px;
-      padding: 0.75rem;
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      color: #38BDF8;
-      max-height: 180px;
-      overflow-y: auto;
+      color: #A7F3D0;
       white-space: pre-wrap;
     }
 
     @media (max-width: 860px) {
-      body { flex-direction: column; }
-      .sidebar { width: 100%; height: auto; position: static; border-right: none; border-bottom: 1px solid var(--card-border); }
-      .main-content { padding: 2rem 1rem; }
+      .docs-layout {
+        grid-template-columns: 1fr;
+      }
+      aside.docs-sidebar {
+        display: none;
+      }
+      main.docs-content {
+        padding: 2rem 1.25rem 4rem;
+      }
+      .tester-form-row {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 <body>
 
-  <!-- Sidebar -->
-  <aside class="sidebar">
-    <div class="brand">
-      <span class="brand-spark">💥</span>
-      <span>witty-404 docs</span>
+  <!-- Top Navigation -->
+  <header class="docs-nav">
+    <div class="nav-container">
+      <a href="/" class="nav-brand">
+        <span>💥 witty-404</span>
+        <span class="nav-brand-badge">DOCS</span>
+      </a>
+      <div class="nav-actions">
+        <a href="/demo" class="nav-link">Interactive Demo</a>
+        <a href="/html" target="_blank" class="nav-link">Live Scene ↗</a>
+        <a href="https://github.com/zimkk/witty-404" target="_blank" rel="noopener noreferrer" class="nav-btn">
+          ⭐ GitHub
+        </a>
+      </div>
     </div>
+  </header>
 
-    <div class="nav-section">
-      <div class="nav-title">GETTING STARTED</div>
-      <ul class="nav-list">
-        <li><a href="#overview" class="nav-link active">Overview</a></li>
-        <li><a href="#quickstart" class="nav-link">60-Second Quickstart</a></li>
-        <li><a href="#frameworks" class="nav-link">Framework Recipes</a></li>
-      </ul>
-    </div>
+  <div class="docs-layout">
+    <!-- Sidebar -->
+    <aside class="docs-sidebar">
+      <div>
+        <div class="sidebar-section-title">Overview</div>
+        <ul class="sidebar-nav-list">
+          <li><a href="#quickstart" class="sidebar-link active">60-Second Quickstart</a></li>
+          <li><a href="#edge-arch" class="sidebar-link">Edge Architecture</a></li>
+          <li><a href="#tester" class="sidebar-link">Live API Tester</a></li>
+        </ul>
+      </div>
 
-    <div class="nav-section">
-      <div class="nav-title">CORE ENDPOINTS</div>
-      <ul class="nav-list">
-        <li><a href="#get-html" class="nav-link">GET /html (Full Scene)</a></li>
-        <li><a href="#get-json" class="nav-link">GET /json (Structured)</a></li>
-        <li><a href="#get-text" class="nav-link">GET /text (CLI/Plaintext)</a></li>
-        <li><a href="#get-terminal" class="nav-link">GET /terminal (Stack Traces)</a></li>
-        <li><a href="#get-svg" class="nav-link">GET /svg (OpenGraph Card)</a></li>
-        <li><a href="#get-roast" class="nav-link">GET /roast (Path-Aware)</a></li>
-      </ul>
-    </div>
+      <div>
+        <div class="sidebar-section-title">Core Endpoints</div>
+        <ul class="sidebar-nav-list">
+          <li>
+            <a href="#endpoint-html" class="sidebar-link">
+              <span>/html</span> <span class="sidebar-badge badge-get">GET</span>
+            </a>
+          </li>
+          <li>
+            <a href="#endpoint-json" class="sidebar-link">
+              <span>/json</span> <span class="sidebar-badge badge-get">GET</span>
+            </a>
+          </li>
+          <li>
+            <a href="#endpoint-roast" class="sidebar-link">
+              <span>/roast</span> <span class="sidebar-badge badge-get">GET</span>
+            </a>
+          </li>
+          <li>
+            <a href="#endpoint-terminal" class="sidebar-link">
+              <span>/terminal</span> <span class="sidebar-badge badge-get">GET</span>
+            </a>
+          </li>
+          <li>
+            <a href="#endpoint-svg" class="sidebar-link">
+              <span>/svg</span> <span class="sidebar-badge badge-get">GET</span>
+            </a>
+          </li>
+          <li>
+            <a href="#endpoint-text" class="sidebar-link">
+              <span>/text</span> <span class="sidebar-badge badge-get">GET</span>
+            </a>
+          </li>
+          <li>
+            <a href="#endpoint-meta" class="sidebar-link">
+              <span>/all · /stats · /count</span> <span class="sidebar-badge badge-get">GET</span>
+            </a>
+          </li>
+        </ul>
+      </div>
 
-    <div class="nav-section">
-      <div class="nav-title">UTILITY &amp; DATA</div>
-      <ul class="nav-list">
-        <li><a href="#get-stats" class="nav-link">GET /stats (Leaderboard)</a></li>
-        <li><a href="#get-count" class="nav-link">GET /count &amp; /all</a></li>
-        <li><a href="#get-favicon" class="nav-link">GET /favicon.svg</a></li>
-        <li><a href="/demo" target="_blank" class="nav-link">Interactive Sandbox ↗</a></li>
-      </ul>
-    </div>
-  </aside>
+      <div>
+        <div class="sidebar-section-title">Framework Recipes</div>
+        <ul class="sidebar-nav-list">
+          <li><a href="#recipe-nextjs" class="sidebar-link">Next.js 14+ (App Router)</a></li>
+          <li><a href="#recipe-express" class="sidebar-link">Express & Fastify</a></li>
+          <li><a href="#recipe-vercel" class="sidebar-link">Vercel Proxy</a></li>
+          <li><a href="#recipe-netlify" class="sidebar-link">Netlify Redirects</a></li>
+        </ul>
+      </div>
+    </aside>
 
-  <!-- Main Content -->
-  <main class="main-content">
-    
-    <!-- Hero Banner -->
-    <header class="hero-banner" id="overview">
-      <div class="hero-tag">HTTP 404 RESCUE SYSTEM</div>
-      <h1 class="hero-title">The API You Call When Everything Has Gone Horribly Wrong.</h1>
-      <p class="hero-desc">
-        Most 404 pages are depressing. <code>witty-404</code> turns missing routes, broken endpoints, and bad deploys into genuine developer comic relief across Cloudflare edge nodes with zero runtime dependencies.
-      </p>
-    </header>
+    <!-- Content Area -->
+    <main class="docs-content">
+      <!-- Intro / Quickstart -->
+      <section id="quickstart" class="doc-section">
+        <h1 class="doc-heading">API Documentation — witty-404</h1>
+        <p class="doc-lead">
+          <strong>witty-404</strong> is a zero-dependency, open-source HTTP API that delivers hilarious, developer-relatable 404 disaster scenes, formatted JSON payloads, ASCII terminal diagnostics, and dynamic SVG share cards in sub-5ms latency from Cloudflare Workers edge nodes globally.
+        </p>
 
-    <!-- Quickstart -->
-    <section class="doc-section" id="quickstart">
-      <h2 class="section-title">⚡ 60-Second Quickstart</h2>
-      <p style="color: var(--text-muted); margin-bottom: 1rem;">
-        Need a quick emergency fallback right now? Drop this into your terminal:
-      </p>
-      <pre><code># Test random joke in CLI
+        <div class="callout-note">
+          <strong>Zero API Keys Required:</strong> All endpoints are public, unauthenticated, and return <code>Access-Control-Allow-Origin: *</code>. Dynamic responses include strict anti-caching headers (<code>Cache-Control: no-store</code>) so every request shuffles fresh comedic relief.
+        </div>
+
+        <h2 class="doc-subheading">60-Second Terminal Quickstart</h2>
+        <div class="code-block-container">
+          <button class="btn-copy-code" onclick="copyCode(this, 'curl -s https://witty-404.zimkk.workers.dev/json | jq')">Copy</button>
+          <div class="code-block"># 1. Fetch a random JSON joke payload
+curl -s https://witty-404.zimkk.workers.dev/json | jq
+
+# 2. Fetch raw ASCII terminal diagnostics
 curl -s https://witty-404.zimkk.workers.dev/text
 
-# Test path-aware roast
-curl -s "https://witty-404.zimkk.workers.dev/roast?path=/admin/super-secret-dashboard"</code></pre>
-    </section>
-
-    <!-- Framework Recipes -->
-    <section class="doc-section" id="frameworks">
-      <h2 class="section-title">🛠️ Framework Integration Recipes</h2>
-
-      <div class="endpoint-card">
-        <h3 style="color: #FFF; margin-bottom: 0.5rem;">Next.js 14+ (App Router)</h3>
-        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 0.75rem;">Place in <code>app/not-found.tsx</code>:</p>
-        <pre><code>export default function NotFound() {
-  return (
-    &lt;main style={{ width: '100vw', height: '100vh', margin: 0, padding: 0, overflow: 'hidden' }}&gt;
-      &lt;iframe
-        src="https://witty-404.zimkk.workers.dev/html?theme=dark"
-        style={{ width: '100%', height: '100%', border: 'none' }}
-        title="404 Not Found"
-      /&gt;
-    &lt;/main&gt;
-  );
-}</code></pre>
-      </div>
-
-      <div class="endpoint-card">
-        <h3 style="color: #FFF; margin-bottom: 0.5rem;">Express.js / Node.js Middleware</h3>
-        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 0.75rem;">Add as the final middleware in your Express app:</p>
-        <pre><code>app.use(async (req, res) => {
-  const roastUrl = \`https://witty-404.zimkk.workers.dev/roast?path=\${encodeURIComponent(req.originalUrl)}&format=html\`;
-  const response = await fetch(roastUrl);
-  const html = await response.text();
-  res.status(404).set('Content-Type', 'text/html').send(html);
-});</code></pre>
-      </div>
-    </section>
-
-    <!-- Endpoint: GET /html -->
-    <section class="doc-section" id="get-html">
-      <h2 class="section-title">🎭 GET /html — Full-Page Scene</h2>
-      <div class="endpoint-card">
-        <div class="endpoint-header">
-          <span class="method-get">GET</span>
-          <span class="endpoint-path">/html</span>
+# 3. Roast a broken path
+curl -s "https://witty-404.zimkk.workers.dev/roast?path=/api/v1/auth/token"</div>
         </div>
-        <p class="endpoint-desc">
-          Renders the monumental full-viewport "You Died" scene with 3D parallax, physical 404 numerals, scattered sticky notes, and continuous idle physics.
-        </p>
+      </section>
 
-        <table class="table-params">
-          <thead>
-            <tr><th>Param</th><th>Type</th><th>Default</th><th>Description</th></tr>
-          </thead>
-          <tbody>
-            <tr><td><code>id</code></td><td>string</td><td><em>random</em></td><td>Specific joke ID (e.g. <code>plane-crash</code>, <code>daves-laptop</code>, <code>perfect-uptime</code>).</td></tr>
-            <tr><td><code>theme</code></td><td>string</td><td><code>system</code></td><td>Color theme: <code>system</code>, <code>dark</code>, <code>light</code>, <code>matrix</code>, <code>glitch</code>.</td></tr>
-            <tr><td><code>tag</code></td><td>string</td><td><em>none</em></td><td>Filter by category: <code>deploy</code>, <code>git</code>, <code>frontend</code>, <code>backend</code>, <code>infra</code>.</td></tr>
-          </tbody>
-        </table>
+      <!-- Live Interactive API Tester -->
+      <section id="tester" class="doc-section">
+        <h2 class="doc-heading">⚡ Live API Tester Console</h2>
+        <p class="doc-lead">Test any witty-404 endpoint directly in your browser without leaving the documentation.</p>
 
-        <!-- Live Tester -->
-        <div class="tester-box">
-          <div class="tester-title">LIVE API TESTER</div>
-          <div class="tester-inputs">
-            <input type="text" id="test-html-id" class="tester-input" placeholder="id (optional, e.g. plane-crash)" />
-            <select id="test-html-theme" class="tester-input">
-              <option value="dark">dark</option>
-              <option value="light">light</option>
-              <option value="matrix">matrix</option>
-              <option value="glitch">glitch</option>
+        <div class="tester-card">
+          <div class="tester-form-row">
+            <select id="tester-method" class="tester-select">
+              <option value="/json">GET /json</option>
+              <option value="/text">GET /text</option>
+              <option value="/terminal">GET /terminal</option>
+              <option value="/roast?path=/dashboard/settings">GET /roast</option>
+              <option value="/stats">GET /stats</option>
+              <option value="/count">GET /count</option>
             </select>
-            <button type="button" class="tester-btn" onclick="testHtmlEndpoint()">Open Live Scene ↗</button>
+            <input type="text" id="tester-params" class="tester-input" placeholder="Query params (e.g. ?id=plane-crash&theme=dark)" />
+            <button class="btn-tester-send" onclick="runApiTest()">Send ⚡</button>
           </div>
-        </div>
-      </div>
-    </section>
 
-    <!-- Endpoint: GET /json -->
-    <section class="doc-section" id="get-json">
-      <h2 class="section-title">📦 GET /json (or GET /) — Structured Panic</h2>
-      <div class="endpoint-card">
-        <div class="endpoint-header">
-          <span class="method-get">GET</span>
-          <span class="endpoint-path">/json</span>
+          <div class="tester-response-header">
+            <span>RESPONSE OUTPUT:</span>
+            <span id="tester-status" class="status-badge-ok">READY</span>
+          </div>
+
+          <pre id="tester-output" class="tester-response-viewer">// Click "Send ⚡" to inspect live response</pre>
         </div>
-        <p class="endpoint-desc">
-          Returns structured joke metadata, punchlines, terminal logs, and tags for headless apps and mobile clients.
+      </section>
+
+      <!-- Endpoint: GET /html -->
+      <section id="endpoint-html" class="doc-section">
+        <h2 class="doc-heading"><code>GET /html</code> — Standalone Error Scene</h2>
+        <p class="doc-lead">
+          Renders a complete, full-bleed standalone HTML 404 page with the diagnostic terminal, animated streaming logs, and synchronized airplane flight crash sequence.
         </p>
-        <pre><code>{
+
+        <h3 class="doc-subheading">Query Parameters</h3>
+        <div class="docs-table-container">
+          <table class="docs-table">
+            <thead>
+              <tr><th>PARAM</th><th>TYPE</th><th>DEFAULT</th><th>DESCRIPTION</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="param-name">id</span></td>
+                <td><span class="param-type">string</span></td>
+                <td>random</td>
+                <td>Specific joke ID (e.g. <code>plane-crash</code>, <code>daves-laptop</code>, <code>friday-deploy</code>).</td>
+              </tr>
+              <tr>
+                <td><span class="param-name">theme</span></td>
+                <td><span class="param-type">string</span></td>
+                <td><code>dark</code></td>
+                <td>Color theme: <code>dark</code>, <code>light</code>, <code>matrix</code>, <code>glitch</code>, or <code>system</code>.</td>
+              </tr>
+              <tr>
+                <td><span class="param-name">tag</span></td>
+                <td><span class="param-type">string</span></td>
+                <td>all</td>
+                <td>Filter random selection by topic: <code>deploy</code>, <code>infra</code>, <code>legacy</code>, <code>frontend</code>.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="code-block-container">
+          <button class="btn-copy-code" onclick="copyCode(this, '<iframe src=\"https://witty-404.zimkk.workers.dev/html?theme=dark\" style=\"width:100vw;height:100vh;border:none;display:block;\" title=\"404\"></iframe>')">Copy</button>
+          <div class="code-block">&lt;!-- Embed as full-page 404 handler in any web app --&gt;
+&lt;iframe
+  src="https://witty-404.zimkk.workers.dev/html?theme=dark"
+  style="width: 100vw; height: 100vh; border: none; display: block;"
+  title="404 Error Page"
+&gt;&lt;/iframe&gt;</div>
+        </div>
+      </section>
+
+      <!-- Endpoint: GET /json -->
+      <section id="endpoint-json" class="doc-section">
+        <h2 class="doc-heading"><code>GET /json</code> (or <code>GET /</code>) — Random Joke Payload</h2>
+        <p class="doc-lead">
+          Returns the complete structured JSON payload for a joke, including title, subtitle, diagnostic logs array, footnote, and metadata.
+        </p>
+
+        <div class="code-block-container">
+          <button class="btn-copy-code" onclick="copyCode(this, 'curl -s https://witty-404.zimkk.workers.dev/json?id=plane-crash')">Copy</button>
+          <div class="code-block">{
   "id": "plane-crash",
   "emoji": "✈️💥",
   "title": "Your request took off, found nothing, and did not survive re-entry.",
   "subtitle": "The page was deleted during a refactor that was 'just cleanup'.",
   "logs": [
-    "> checking if page exists...",
-    "> it does not.",
+    "> verifying route exists in routing table...",
+    "> route deleted in commit: 3f8a91c ('minor cleanup')",
+    "> PR description: 'cleaned up some unused files'",
+    "> files deleted: 412",
     "> blaming the intern...",
-    "> shipping anyway. 🚀"
+    "> intern quit in 2023.",
+    "> shipping anyway 🚀"
   ],
-  "tags": ["deploy", "devops", "cloud"],
-  "footnote": "HTTP 404 • Flight Recorder Recovered"
-}</code></pre>
-      </div>
-    </section>
-
-    <!-- Endpoint: GET /roast -->
-    <section class="doc-section" id="get-roast">
-      <h2 class="section-title">🔥 GET /roast — Dynamic Path-Aware Roast</h2>
-      <div class="endpoint-card">
-        <div class="endpoint-header">
-          <span class="method-get">GET</span>
-          <span class="endpoint-path">/roast?path=...</span>
+  "footnote": "HTTP 404 • Flight Recorder Recovered",
+  "tags": ["deploy", "refactor", "blame"]
+}</div>
         </div>
-        <p class="endpoint-desc">
-          Takes the visitor's requested path and dynamically weaves it into the joke punchline and terminal stack traces with full HTML sanitization.
+      </section>
+
+      <!-- Endpoint: GET /roast -->
+      <section id="endpoint-roast" class="doc-section">
+        <h2 class="doc-heading"><code>GET /roast</code> — Dynamic Broken Path Roaster</h2>
+        <p class="doc-lead">
+          Substitutes the client's requested URL path into the joke's headline with strict XSS sanitization.
         </p>
 
-        <table class="table-params">
-          <thead>
-            <tr><th>Param</th><th>Type</th><th>Required</th><th>Description</th></tr>
-          </thead>
-          <tbody>
-            <tr><td><code>path</code></td><td>string</td><td>Yes</td><td>The unhandled URL (e.g. <code>/admin/dashboard</code> or <code>/api/v1/magic</code>).</td></tr>
-            <tr><td><code>format</code></td><td>string</td><td>No</td><td>Pass <code>html</code> to receive a styled full-page scene, or omit for JSON.</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- Endpoint: GET /svg -->
-    <section class="doc-section" id="get-svg">
-      <h2 class="section-title">🖼️ GET /svg — Vector OpenGraph &amp; README Card</h2>
-      <div class="endpoint-card">
-        <div class="endpoint-header">
-          <span class="method-get">GET</span>
-          <span class="endpoint-path">/svg</span>
+        <div class="docs-table-container">
+          <table class="docs-table">
+            <thead>
+              <tr><th>PARAM</th><th>TYPE</th><th>REQUIRED</th><th>DESCRIPTION</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="param-name">path</span></td>
+                <td><span class="param-type">string</span></td>
+                <td>Yes</td>
+                <td>The missing URL path (e.g. <code>/api/v2/user/delete</code>).</td>
+              </tr>
+              <tr>
+                <td><span class="param-name">format</span></td>
+                <td><span class="param-type">string</span></td>
+                <td>No</td>
+                <td>Set to <code>html</code> to receive a standalone rendered page, or omit for JSON.</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <p class="endpoint-desc">
-          Generates a crisp 1200x630 SVG disaster card suitable for Discord unfurls, Twitter cards, or GitHub README status badges.
-        </p>
-      </div>
-    </section>
+      </section>
 
-    <!-- Endpoint: GET /stats -->
-    <section class="doc-section" id="get-stats">
-      <h2 class="section-title">📊 GET /stats — Live KV Disaster Leaderboard</h2>
-      <div class="endpoint-card">
-        <div class="endpoint-header">
-          <span class="method-get">GET</span>
-          <span class="endpoint-path">/stats</span>
+      <!-- Endpoint: GET /svg -->
+      <section id="endpoint-svg" class="doc-section">
+        <h2 class="doc-heading"><code>GET /svg</code> — Dynamic 1200x630 Social Card</h2>
+        <p class="doc-lead">
+          Generates a crisp 1200x630 vector SVG image with syntax highlights for use in OpenGraph previews, Discord cards, and GitHub README embeds.
+        </p>
+
+        <div class="code-block-container">
+          <button class="btn-copy-code" onclick="copyCode(this, '[![404](https://witty-404.zimkk.workers.dev/svg?theme=dark)](https://witty-404.zimkk.workers.dev)')">Copy</button>
+          <div class="code-block">&lt;!-- GitHub Markdown Embed --&gt;
+[![404](https://witty-404.zimkk.workers.dev/svg?theme=dark)](https://witty-404.zimkk.workers.dev)</div>
         </div>
-        <p class="endpoint-desc">
-          Returns global impression analytics stored in Cloudflare KV: total 404s served, the most triggered disaster joke, and the full leaderboard.
-        </p>
-      </div>
-    </section>
+      </section>
 
-  </main>
+      <!-- Framework Recipes -->
+      <section id="recipe-nextjs" class="doc-section">
+        <h2 class="doc-heading">Framework Integration Recipes</h2>
+
+        <h3 class="doc-subheading">Next.js 14+ (App Router not-found.tsx)</h3>
+        <div class="code-block-container">
+          <button class="btn-copy-code" onclick="copyCode(this, 'export default function NotFound() {\n  return (\n    <iframe\n      src=\"https://witty-404.zimkk.workers.dev/html?theme=dark\"\n      style={{ width: \"100vw\", height: \"100vh\", border: \"none\", display: \"block\" }}\n      title=\"404 Page\"\n    />\n  );\n}')">Copy</button>
+          <div class="code-block">// app/not-found.tsx
+export default function NotFound() {
+  return (
+    &lt;iframe
+      src="https://witty-404.zimkk.workers.dev/html?theme=dark"
+      style={{ width: "100vw", height: "100vh", border: "none", display: "block" }}
+      title="404 Page"
+    /&gt;
+  );
+}</div>
+        </div>
+
+        <h3 class="doc-subheading" id="recipe-express">Express.js / Fastify Middleware</h3>
+        <div class="code-block-container">
+          <button class="btn-copy-code" onclick="copyCode(this, 'app.use((req, res) => {\n  fetch(\"https://witty-404.zimkk.workers.dev/html\")\n    .then(r => r.text())\n    .then(html => res.status(404).type(\"html\").send(html));\n});')">Copy</button>
+          <div class="code-block">// Catch-all 404 handler
+app.use((req, res) => {
+  fetch("https://witty-404.zimkk.workers.dev/html")
+    .then(r => r.text())
+    .then(html => res.status(404).type("html").send(html));
+});</div>
+        </div>
+      </section>
+    </main>
+  </div>
 
   <script>
-    function testHtmlEndpoint() {
-      const id = document.getElementById('test-html-id').value.trim();
-      const theme = document.getElementById('test-html-theme').value;
-      let url = '/html?theme=' + encodeURIComponent(theme);
-      if (id) url += '&id=' + encodeURIComponent(id);
-      window.open(url, '_blank');
+    async function runApiTest() {
+      const methodSelect = document.getElementById('tester-method');
+      const paramsInput = document.getElementById('tester-params');
+      const output = document.getElementById('tester-output');
+      const status = document.getElementById('tester-status');
+
+      const path = methodSelect.value;
+      const extra = paramsInput.value.trim();
+      const delimiter = path.includes('?') ? (extra.startsWith('?') ? '&' + extra.slice(1) : '&' + extra) : extra;
+      const targetUrl = path + (extra ? delimiter : '');
+
+      status.innerText = 'FETCHING...';
+      status.style.color = '#F59E0B';
+
+      try {
+        const start = performance.now();
+        const res = await fetch(targetUrl);
+        const duration = Math.round(performance.now() - start);
+
+        status.innerText = \`\${res.status} OK (\${duration}ms)\`;
+        status.style.color = '#10B981';
+
+        const contentType = res.headers.get('content-type') || '';
+        if (contentType.includes('application/json')) {
+          const json = await res.json();
+          output.innerText = JSON.stringify(json, null, 2);
+        } else {
+          const text = await res.text();
+          output.innerText = text;
+        }
+      } catch (err) {
+        status.innerText = 'ERROR';
+        status.style.color = '#EF4444';
+        output.innerText = String(err);
+      }
+    }
+
+    function copyCode(btn, text) {
+      navigator.clipboard.writeText(text).then(() => {
+        const orig = btn.innerText;
+        btn.innerText = 'Copied!';
+        setTimeout(() => { btn.innerText = orig; }, 2000);
+      }).catch(() => {});
     }
   </script>
 </body>
 </html>`;
+
+export function getDocsHtml(): string {
+  return docsHtml;
+}
