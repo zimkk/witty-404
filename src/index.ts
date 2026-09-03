@@ -48,12 +48,19 @@ const CORS_HEADERS: Record<string, string> = {
   'Access-Control-Max-Age': '86400',
 };
 
+const NO_CACHE_HEADERS: Record<string, string> = {
+  'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0',
+  'Pragma': 'no-cache',
+  'Expires': '0',
+};
+
 function jsonResponse(data: unknown, status = 200, extraHeaders: Record<string, string> = {}): Response {
   return new Response(JSON.stringify(data, null, 2), {
     status,
     headers: {
       'Content-Type': 'application/json; charset=utf-8',
       ...CORS_HEADERS,
+      ...NO_CACHE_HEADERS,
       ...extraHeaders,
     },
   });
@@ -65,6 +72,7 @@ function textResponse(text: string, status = 200, extraHeaders: Record<string, s
     headers: {
       'Content-Type': 'text/plain; charset=utf-8',
       ...CORS_HEADERS,
+      ...NO_CACHE_HEADERS,
       ...extraHeaders,
     },
   });
@@ -77,6 +85,7 @@ function htmlResponse(html: string, status = 200, extraHeaders: Record<string, s
       'Content-Type': 'text/html; charset=utf-8',
       'X-Content-Type-Options': 'nosniff',
       ...CORS_HEADERS,
+      ...NO_CACHE_HEADERS,
       ...extraHeaders,
     },
   });
@@ -87,8 +96,8 @@ function svgResponse(svg: string, status = 200, extraHeaders: Record<string, str
     status,
     headers: {
       'Content-Type': 'image/svg+xml; charset=utf-8',
-      'Cache-Control': 'public, max-age=3600',
       ...CORS_HEADERS,
+      ...NO_CACHE_HEADERS,
       ...extraHeaders,
     },
   });

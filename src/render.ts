@@ -80,7 +80,7 @@ export function renderHtmlPage(joke: Joke, options: RenderOptions = {}): string 
       </div>
 
       <div class="toolbar-grp">
-        <button type="button" class="scene-btn scene-btn-primary" onclick="window.location.reload()">
+        <button type="button" class="scene-btn scene-btn-primary" onclick="loadAnotherJoke()">
           🎲 Another Joke
         </button>
       </div>
