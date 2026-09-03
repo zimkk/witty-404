@@ -48,8 +48,26 @@ describe('Worker Routes Smoke Tests', () => {
     expect(res.headers.get('Content-Type')).toContain('text/html');
     const html = await res.text();
     expect(html).toContain('<!DOCTYPE html>');
-    expect(html).toContain('plane-flight-path');
+    expect(html).toContain('format-news-chyron');
     expect(html).toContain('data-theme="dark"');
+  });
+
+  it('GET /html renders different format archetypes per joke', async () => {
+    const reqDave = new Request('https://witty-404.dev/html?id=daves-laptop');
+    const resDave = await worker.fetch(reqDave, mockEnv, mockCtx);
+    const htmlDave = await resDave.text();
+    expect(htmlDave).toContain('format-imessage');
+    expect(htmlDave).toContain('is typing...');
+
+    const reqTweet = new Request('https://witty-404.dev/html?id=friday-deploy');
+    const resTweet = await worker.fetch(reqTweet, mockEnv, mockCtx);
+    const htmlTweet = await resTweet.text();
+    expect(htmlTweet).toContain('format-tweet');
+
+    const reqStatus = new Request('https://witty-404.dev/html?id=perfect-uptime');
+    const resStatus = await worker.fetch(reqStatus, mockEnv, mockCtx);
+    const htmlStatus = await resStatus.text();
+    expect(htmlStatus).toContain('format-status-page');
   });
 
   it('GET /text returns 200 plain text', async () => {
