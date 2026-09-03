@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>witty-404 Open Graph Banner</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      width: 1280px;
+      height: 640px;
+      background-color: #090B10;
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.12) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(147, 51, 234, 0.10) 0px, transparent 50%),
+        linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: #F3F4F6;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 48px 56px;
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-icon {
+      font-size: 32px;
+      line-height: 1;
+    }
+
+    .brand-name {
+      font-size: 30px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: #FFFFFF;
+    }
+
+    .brand-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      background: rgba(59, 130, 246, 0.15);
+      border: 1px solid rgba(59, 130, 246, 0.35);
+      color: #60A5FA;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    .header-links {
+      display: flex;
+      gap: 12px;
+    }
+
+    .pill {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 13px;
+      color: #94A3B8;
+      background: #131722;
+      border: 1px solid #232938;
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-weight: 500;
+    }
+
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .left-col {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .headline {
+      font-size: 44px;
+      line-height: 1.15;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: #FFFFFF;
+    }
+
+    .headline span.gradient {
+      background: linear-gradient(135deg, #60A5FA 0%, #A78BFA 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subheadline {
+      font-size: 19px;
+      line-height: 1.5;
+      color: #94A3B8;
+      font-weight: 400;
+      max-width: 580px;
+    }
+
+    .features-row {
+      display: flex;
+      gap: 16px;
+      margin-top: 4px;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      color: #CBD5E1;
+      font-weight: 500;
+    }
+
+    .feature-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #3B82F6;
+    }
+
+    /* Terminal / Code Card */
+    .terminal-card {
+      background: #0E121B;
+      border: 1px solid #232A3B;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.05);
+    }
+
+    .terminal-topbar {
+      background: #141A26;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #202738;
+    }
+
+    .window-dots {
+      display: flex;
+      gap: 7px;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+    .dot-red { background: #EF4444; }
+    .dot-yellow { background: #F59E0B; }
+    .dot-green { background: #10B981; }
+
+    .window-title {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 12px;
+      color: #64748B;
+      font-weight: 500;
+    }
+
+    .terminal-body {
+      padding: 20px 22px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 13.5px;
+      line-height: 1.7;
+    }
+
+    .log-command {
+      color: #94A3B8;
+    }
+    .log-command span {
+      color: #38BDF8;
+    }
+    .log-danger {
+      color: #F87171;
+      font-weight: 600;
+    }
+    .log-comment {
+      color: #64748B;
+      font-style: italic;
+    }
+    .log-highlight {
+      color: #FCD34D;
+    }
+    .log-success {
+      color: #4ADE80;
+    }
+
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid #1A202E;
+      padding-top: 18px;
+    }
+
+    .footer-left {
+      display: flex;
+      gap: 24px;
+      font-size: 13.5px;
+      color: #64748B;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    .footer-left strong {
+      color: #94A3B8;
+    }
+
+    .footer-right {
+      font-size: 14px;
+      font-weight: 600;
+      color: #94A3B8;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="brand">
+      <span class="brand-icon">💥</span>
+      <span class="brand-name">witty-404</span>
+      <span class="brand-badge">OPEN SOURCE</span>
+    </div>
+    <div class="header-links">
+      <div class="pill">⚡ Cloudflare Workers</div>
+      <div class="pill">📦 Zero Dependencies</div>
+      <div class="pill">🎭 5 Themes</div>
+    </div>
+  </div>
+
+  <div class="main-grid">
+    <div class="left-col">
+      <div class="headline">
+        Witty 404 error pages <br/>
+        <span class="gradient">your users will actually enjoy.</span>
+      </div>
+      <div class="subheadline">
+        Embeddable humor engine, animated set-pieces, and developer jokes API for Next.js, Astro, and edge runtimes.
+      </div>
+      <div class="features-row">
+        <div class="feature-item"><span class="feature-dot"></span> Drop-in /html iframe</div>
+        <div class="feature-item"><span class="feature-dot"></span> Dynamic /svg cards</div>
+        <div class="feature-item"><span class="feature-dot"></span> Custom /roast paths</div>
+      </div>
+    </div>
+
+    <div class="terminal-card">
+      <div class="terminal-topbar">
+        <div class="window-dots">
+          <div class="dot dot-red"></div>
+          <div class="dot dot-yellow"></div>
+          <div class="dot dot-green"></div>
+        </div>
+        <div class="window-title">404-not-found.ts</div>
+        <div style="width: 34px;"></div>
+      </div>
+      <div class="terminal-body">
+        <div class="log-command">$ <span>curl</span> -I https://api.prod/missing-page</div>
+        <div class="log-danger">HTTP/2 404 Not Found</div>
+        <div class="log-comment">// Error: Dave pushed directly to main on Friday 5:58 PM</div>
+        <div class="log-highlight">"It worked on localhost:3000 five minutes ago."</div>
+        <div style="margin-top: 8px;" class="log-command">$ <span>git</span> blame -L 404,404 src/routes.ts</div>
+        <div class="log-success">8f3c2a1 (dave 3 years ago) // TODO: fix before launch</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-left">
+      <div>Stack: <strong>TypeScript + Cloudflare Edge</strong></div>
+      <div>License: <strong>MIT</strong></div>
+      <div>Latency: <strong>&lt; 5ms Global</strong></div>
+    </div>
+    <div class="footer-right">
+      github.com/zimkk/witty-404
+    </div>
+  </div>
+
+</body>
+</html>
