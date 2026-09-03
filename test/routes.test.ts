@@ -70,27 +70,19 @@ describe('Worker Routes Smoke Tests', () => {
     expect(res.headers.get('Content-Type')).toContain('text/html');
     const html = await res.text();
     expect(html).toContain('<!DOCTYPE html>');
-    expect(html).toContain('big-404-title');
-    expect(html).toContain('format-news-chyron');
+    expect(html).toContain('HTTP 404');
+    expect(html).toContain('diagnostic-terminal');
+    expect(html).toContain('diagnostic.sh — not-found-investigation');
     expect(html).toContain('data-theme="dark"');
   });
 
-  it('GET /html renders tailored meme card formats per joke', async () => {
+  it('GET /html renders clean developer terminal and action buttons', async () => {
     const reqDave = new Request('https://witty-404.dev/html?id=daves-laptop');
     const resDave = await worker.fetch(reqDave, mockEnv, mockCtx);
     const htmlDave = await resDave.text();
-    expect(htmlDave).toContain('format-imessage');
-    expect(htmlDave).toContain('is typing...');
-
-    const reqTweet = new Request('https://witty-404.dev/html?id=friday-deploy');
-    const resTweet = await worker.fetch(reqTweet, mockEnv, mockCtx);
-    const htmlTweet = await resTweet.text();
-    expect(htmlTweet).toContain('tweet-card');
-
-    const reqStatus = new Request('https://witty-404.dev/html?id=perfect-uptime');
-    const resStatus = await worker.fetch(reqStatus, mockEnv, mockCtx);
-    const htmlStatus = await resStatus.text();
-    expect(htmlStatus).toContain('statuspage-card');
+    expect(htmlDave).toContain('diagnostic-terminal');
+    expect(htmlDave).toContain('Read things that exist ↗');
+    expect(htmlDave).toContain('Abort mission');
   });
 
   it('GET /text returns 200 plain text', async () => {
